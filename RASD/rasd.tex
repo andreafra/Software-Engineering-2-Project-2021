@@ -1,10 +1,33 @@
 \documentclass[a4paper]{article}
 
+% imoprts
+
+\usepackage{xargs}
+\usepackage[pdftex,dvipsnames]{xcolor}
+\usepackage[colorinlistoftodos,prependcaption,linecolor=yellow!30,backgroundcolor=yellow!30,bordercolor=yellow!30]{todonotes}
+
+% commands definition
+
+\newcommandx{\warning}[2][1=]{\todo[linecolor=red!30,backgroundcolor=red!30,bordercolor=red!30,#1]{#2}}
+\newcommandx{\request}[2][1=]{\todo[linecolor=blue!30,backgroundcolor=blue!30,bordercolor=blue!30,#1]{#2}}
+\newcommandx{\info}[2][1=]{\todo[linecolor=green!30,backgroundcolor=green!30,bordercolor=green!30,#1]{#2}}
+
+%------------------------------------------------------------------------------------
+
 \begin{document}
+
+\listoftodos
 
 \tableofcontents
 
 \section{Introduction}
+General introduction. \todo{This is a todo}Text.
+
+General introduction. \warning{This is a warning}Text.
+
+General introduction. \request{This is a request}Text.
+
+General introduction. \info{This is an info}Text.
 \subsection{Purpose}
 \subsection{Scope}
 \subsection{Definitions, Acronyms, Abbreviations}
