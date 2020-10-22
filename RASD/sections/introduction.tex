@@ -50,9 +50,9 @@ it can be used with minimal setup.
     \item Allow a User to find Stores nearby their current location.
     \item Allow a User to find Stores nearby a specified location.
     \item Allow a User to preview an estimate of the queue time.
-    \item Allow a User to cancel their booking.
+    \item Allow a User to cancel their reservation.
     \item Allow a User to retrieve a scannable QR Code/Barcode that they must present in order to be granted access to a store.
-    \item Allow a User without Internet access to retrive a ticket from a physical location that counts as a booking for a certain time.
+    \item Allow a User without Internet access to retrive a ticket from a physical location that counts as a reservation for a certain time.
     \item Allow a User to book for someone else.
     \item Allow a User to link their Account to the Store Loyalty Program.
         \begin{enumerate}
@@ -69,11 +69,11 @@ it can be used with minimal setup.
             \item The queue is updated each time a Customer exits or enters the store.
         \end{enumerate}
     \item The System will not admit Users that arrive earlier, even if the current number of Customers isn't maximum.
-    \item The System will grant a User access only after the User's time of booking.
-    \item The System will invalidate a User's booking if they do not show up during a certain time interval.
+    \item The System will grant a User access only after the User's time of reservation.
+    \item The System will invalidate a User's reservation if they do not show up during a certain time interval.
     \item The System will reserve a certain number of the allowed quote of customers for a special category of Users.
         \begin{enumerate}
-            \item The system will grant access to Users without a booking that show up at the store and are pregnant women, elderly or with disabilities.
+            \item The system will grant access to Users without a reservation that show up at the store and are pregnant women, elderly or with disabilities.
         \end{enumerate}
     % System Managers
     \item Allow System Managers to set a limit to the people allowed into the store at a time.
@@ -87,10 +87,13 @@ it can be used with minimal setup.
 \begin{itemize}
     \item Customer/User/Visitor: A person that intends to shop at a store.
     \item Registered User: A User that has registered an Account withing the System.
-    \item System Manager: An employee of the store chain that can tweak the parameters of the System.
+    \item System Manager: A stakeholder (owner, employee, manager etc.) of the store chain that can tweak the parameters of the System and access informations and statistics.
     \item Account: A reference to a specific User in the System, that allows to track the User across multiple visits.
-    \item Booking/Reservation: A User securing beforehand their Visit to a specific Store at a specific time.
+    \item Booking/Making A Reservation: \info{Book is the verb, reservation is the noun (in order to avoid incomprensioni)}Act of making an arrangement my a User to have a Visit to a specific Store at a specific time.
+    \item Reservation: Arrangement made my a User as a result of Booking.
     \item Visit: The time frame in which the User enters the store, shops and exits.
+    \item Time-Slot: The time at which a Customer with a specific Reservation is expected arrive at the store.
+    \item Store: Any concrete distinct building at which it is possible to Book.
 \end{itemize}
 
 \subsubsection{Acronyms}

@@ -17,11 +17,18 @@ The privacy of the customers will be guaranteed according to the latest privacy 
 
 \subsubsection{Scenarios}
     \begin{enumerate}[label=\Alph*.]
-        \item Customer with Mobile App and arrives in time:\\
+        \item Customer with \warning{is the mobile app a design choice?}Mobile App arrives in time:\\
             Ian wants to buy groceries to make a cake. Ian uses CLup to get a ticket for the supermarket with the shortest queue in his area.
             The app provides Ian with an estimate on the travel time (by car or by foot) and the time of the reserved slot. 
-            Ian arrives at the supermarket in the correct time-slot, scans the generated QR code and is granted access the store. Once he pays
+            Ian arrives at the supermarket in the correct time-slot, scans the generated \warning{design choice?}QR code and is granted access the store. Once he pays
             his groceries he scans again his QR code, so that he can increase the points associated with his account in this chain.
+        \item Customer cancels the reservation:\\
+            Luigi, after booking a visit to the store, remembers that he had a visit to the dentist at the same time.
+            Since Luigi cares about others, he cancels his reservation, freeing up a time-slot to be used by other customers.
+        \item Customer is unable to provide their code:\\
+            Andrea books visit and reaches the store in time.
+            However he is distractive and forgot to charge his phone, which turns off as he pulls it out of his pocket in order to show his code.
+            \request{Come si gestisce? Nuovo o logga dal totem (ma poi si complica troppo il tutto)?}Andrea goes at the totem, makes a new reservation, and recieves a new code and a new time-slot.
     \end{enumerate}
 
 
