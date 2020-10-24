@@ -60,20 +60,20 @@ it can be used with minimal setup.
         \end{enumerate}
     % Store
     \item The System notifies the Users affected by delay.
-    \item The System will postpone Users visits in case of a delay.
-    \item The System will not \request{Are we sure about this?}anticipate User visits when a User delete their reservation.
+    \item The System shall postpone Users visits in case of a delay.
+    \item The System shall not \request{Are we sure about this?}anticipate User visits when a User delete their reservation.
     \item The System must enforce the limits on the allowed number of concurrent Customers inside a store.
         \begin{enumerate}
             \item There can be less Customers than the limit.
             \item There cannot be more Customers than the limit.
             \item The queue is updated each time a Customer exits or enters the store.
         \end{enumerate}
-    \item The System will not admit Users that arrive earlier, even if the current number of Customers isn't maximum.
-    \item The System will grant a User access only after the User's time of reservation.
-    \item The System will invalidate a User's reservation if they do not show up during a certain time interval.
-    \item The System will reserve a certain number of the allowed quote of customers for a special category of Users.
+    \item The System shall not admit Users that arrive earlier, even if the current number of Customers isn't maximum.
+    \item The System shall grant a User access only after the User's time of reservation.
+    \item The System shall invalidate a User's reservation if they do not show up during a certain time interval.
+    \item The System shall reserve a certain number of the allowed quote of customers for a special category of Users.
         \begin{enumerate}
-            \item The system will grant access to Users without a reservation that show up at the store and are pregnant women, elderly or with disabilities.
+            \item The system shall grant access to Users without a reservation that show up at the store and are pregnant women, elderly or with disabilities.
         \end{enumerate}
     % System Managers
     \item Allow System Managers to set a limit to the people allowed into the store at a time.
@@ -85,15 +85,14 @@ it can be used with minimal setup.
 
 \subsubsection{Definitions}
 \begin{itemize}
-    \item Customer/User/Visitor: A person that intends to shop at a store.
-    \item Registered User: A User that has registered an Account withing the System.
-    \item System Manager: A stakeholder (owner, employee, manager etc.) of the store chain that can tweak the parameters of the System and access informations and statistics.
-    \item Account: A reference to a specific User in the System, that allows to track the User across multiple visits.
-    \item Booking/Making A Reservation: \info{Book is the verb, reservation is the noun (in order to avoid incomprensioni)}Act of making an arrangement my a User to have a Visit to a specific Store at a specific time.
-    \item Reservation: Arrangement made my a User as a result of Booking.
-    \item Visit: The time frame in which the User enters the store, shops and exits.
-    \item Time-Slot: The time at which a Customer with a specific Reservation is expected arrive at the store.
-    \item Store: Any concrete distinct building at which it is possible to Book.
+    \item \emph{Customer} (also \emph{User} or \emph{Visitor}): A person that intends to shop at a store.
+    \item \emph{Registered User}: A User that has registered an Account withing the System.
+    \item \emph{System Manager}: A stakeholder (owner, employee, manager etc.) of the Store chain that can tweak the parameters of the System and access informations and statistics.
+    \item \emph{Account}: A reference to a specific User in the System, that allows to track the User across multiple visits.
+    \item \emph{Reservation} (or \emph{Booking}): Arrangement made between a User and the System in which the System shall grant the User access to Store at the arranged time.
+    \item \emph{Visit}: The time frame in which the User enters the store, shops and exits.
+    \item \emph{Time slot}: The time at which a Customer with a Reservation is expected arrive at the store.
+    \item \emph{Store}: Any physical location (e.g.: building) where it is possible to utilize the System.
 \end{itemize}
 
 \subsubsection{Acronyms}
