@@ -41,8 +41,28 @@ The privacy of the customers will be guaranteed according to the latest privacy 
     \end{enumerate}
 
 \subsection{Product Functions}\todo{fare dettagliato e numerare}
-here we include the most important requirements
+The functions of Customer Line-Up can be clearly divided in two categories, based on the type of the stakeholder that is being addressed.
 
+\subsubsection{Manager functions}
+The manager is the owner of the store or store chain that is using the system.
+The functions targeted at the manager regard the management of the queue and the knowledge of statistics about the behavior of the clients.
+The system will let managers select the type of commercial exercise (whether single store or chain), manage independently every physical store,
+select the number of slots dedicated to reservation and the ones dedicated to a classical queue,
+as well as to create a high priority queue for special categories of people.
+At the same time the system will provide info about the number of people who are currently in a store,
+how the number of people changes over time and the average visit length.
+
+\subsubsection{Customer functions}
+The customer is the person who visits a store.
+The functions targeted at the customer regard the possibility of skipping queues.
+The system will let people book visits at specific time slots or queue up at the moment.
+If the user is in the queue, they will be updated live with their estimated time of entrance in the store.
+If the user has booked a visit, they will be notified immediately if the system realizes that
+their visit has become unfeasable and automatically assign a new time or, in the worst case, cancel completely the visit.
+The system will offer the possibility of creating an account and of logging in.
+Users using their personal accounts will be able to check their past history.
+
+\begin{comment}
 \begin{itemize}
     \item Manager:
     \begin{itemize}
@@ -80,7 +100,7 @@ here we include the most important requirements
         \item show nearby stores and their availability
     \end{itemize}
 \end{itemize}
-
+\end{comment}
 
 \subsection{User Characteristics}
 Customers Line-Up is mainly aimed at essential and widely used services.
@@ -96,11 +116,18 @@ The main categories of customer are:
     \item \textbf{Tech-unfriendly}\\
         People who are not familiar with modern technologies. They have problems navigating complex application, and are more accustomed to talking to humans.
         They might need aid using the system or misuse the system. They benefit from a system designed around clarity and simplicity, or from different, easier ways of using the system.
-    \item \textbf{People with disabilities}\\
-        People with conditions preventing the use of a normal system, like lack of sight or earing. They might need alternative ways or support for accessbility features.
+        This category includes people with disabilities.
 \end{itemize}
 
 The objective of Customers Line-Up is to be as inclusive as possible, providing utilities targeted at all possible users.
 
 \subsection{Assumptions, Dependencies, and Constraints}
 here we include domain assumptions 
+\begin{enumerate}[label={[D\arabic*]}]
+    \item The number of people in a store cannot go over a certain fixed amount
+    \item If an user enters the store they will exit the store before it closes
+    \item \todo{Dobbiamo mettere che ci sono i tornelli o c'è una persona}The system reliably counts the number of people entering and exiting the store
+    \item The time of real operation of the store corresponds with the one registered in the system
+    \item A customer cannot enter the store without using the system
+    \item External software dependencies the system relies on always provide true data and never fail
+\end{enumerate}
