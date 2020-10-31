@@ -10,30 +10,39 @@ General introduction. \info{This is an info}Text.
 
 \subsection{Purpose}
 This document is the Requirement Analysis and Specification Document for the Customers Line-Up system.
-The purpose of this document is to describe the system focusing on scenarios, use cases, requirements and specifications,
-analyzing what the software will do, how it will be used and the constraints under which it will operate.
-This document is intended both for users and developers.
+The purpose of this document is to describe the system focusing on scenarios, use cases, requirements and 
+specifications, analyzing what the software will do, how it will be used and the constraints under which it
+will operate. This document is intended both for users and developers.
 
 \subsection{Scope}
 \info{here we include an analysis of the world and of the shared phenomena}
-
-\emph{Customers Line-Up} (CLup) is a tool that allows supermarket managers to regulate the influx of people inside
-physical stores and aims reduce the time spent by customers waiting in line, especially in emergency lockdown scenarios.
-The system allows users to 
-This tool reaches the goal by offering a number of functionalities, including:\todo{revise/add more}
+In recent times, it has become clear that avoiding gathering of groups of people in small spaces is critical
+for the safety of the population. During lockdowns some places became more crowded than others. 
+This is the reason that lead to the development of various solutions to solve the problem, but all resulting
+in roughly restricting the capacity of the building, without having a perfect knowledge of the people inside 
+(as sometimes required by the law).\\
+A definitive and articulated systems is therefore still missing. \\
+This system will focus on solving the problem of queues in front of groceries stores but it can be generalized 
+for queues handling in multiple scenarios.\\
+\emph{Customers Line-Up} (CLup) is a system that allows from the prospective of supermarket managers,
+to regulate the influx of people inside physical stores. On the other hand, from the consumer side, provides a way 
+with which the time spent waiting in line is drastically reduced (or completely removed). 
+This tool reaches the goal by offering a number of functionalities, including:
 \begin{itemize}
     \item access to the service via mobile app or website
     \item physical alternatives for people that do not have Internet access
-    \item monitor the amount of people in a store
+    \item monitor and dynamically restrict the amount of people in a store
     \item book a visit, notifying customers of any change in the schedule
-    \item suggest alternate stores and/or time frames
-    \item track the time spent by customers to estimate waiting times
+    \item suggest alternative stores and/or time frames
+    \item track the time spent in the store by customers to provide better estimate of waiting times
 \end{itemize}
 
+
+
 \subsubsection{Current System}
-While there are already existing similar services, they are usually indipendent from store chains and
+While there are already existing similar services, they are usually independent from store chains and
 therefore have limited functionalities. CLup is a service that supermarket chains can implement alongside
-their existing services. The system is as indipendent as possible from existing infrastructures, and
+their existing services. The system is as independent as possible from existing infrastructures, and
 it can be used with minimal setup.
 
 \subsubsection{Goals}
@@ -52,7 +61,7 @@ it can be used with minimal setup.
     \item Allow a User to preview an estimate of the queue time.
     \item Allow a User to cancel their reservation.
     \item Allow a User to retrieve a scannable QR Code/Barcode that they must present in order to be granted access to a store.
-    \item Allow a User without Internet access to retrive a ticket from a physical location that counts as a reservation for a certain time.
+    \item Allow a User without Internet access to retrieve a ticket from a physical location that counts as a reservation for a certain time.
     \item Allow a User to book for someone else.
     \item Allow a User to link their Account to the Store Loyalty Program.
         \begin{enumerate}
@@ -86,7 +95,7 @@ it can be used with minimal setup.
 \subsubsection{Definitions}
 \begin{itemize}
     \item \emph{Customer} (also \emph{User} or \emph{Visitor}): A person that intends to shop at a store.
-    \item \emph{Registered User}: A User that has registered an Account withing the System.
+    \item \emph{Registered User}: A User that has registered an Account within the System.
     \item \emph{System Manager}: A stakeholder (owner, employee, manager etc.) of the Store chain that can tweak the parameters of the System and access informations and statistics.
     \item \emph{Account}: A reference to a specific User in the System, that allows to track the User across multiple visits.
     \item \emph{Reservation} (or \emph{Booking}): Arrangement made between a User and the System in which the System shall grant the User access to Store at the arranged time.
