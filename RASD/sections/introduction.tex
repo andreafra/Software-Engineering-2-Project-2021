@@ -17,21 +17,26 @@ will operate. This document is intended both for users and developers.
 \subsection{Scope}
 \info{here we include an analysis of the world and of the shared phenomena}
 In recent times, it has become clear that avoiding gathering of groups of people in small spaces is critical
-for the safety of the population. During lockdowns some places became more crowded than others. 
-This is the reason that lead to the development of various solutions to solve the problem, but all resulting
-in roughly restricting the capacity of the building, without having a perfect knowledge of the people inside 
-(as sometimes required by the law).\\
-A definitive and articulated systems is therefore still missing. \\
-This system will focus on solving the problem of queues in front of groceries stores but it can be generalized 
-for queues handling in multiple scenarios.\\
-\emph{Customers Line-Up} (CLup) is a system that allows from the prospective of supermarket managers,
-to regulate the influx of people inside physical stores. On the other hand, from the consumer side, provides a way 
-with which the time spent waiting in line is drastically reduced (or completely removed). 
+for the safety of the population. During lockdowns some places become more crowded than others. 
+This reason lead to the development of various solutions, all resulting roughly in restricting the capacity
+of a building, without having a real knowledge of the number of people inside (as ofter required by the law).
+
+A definitive and well-articulated system is still missing, especially considering that most people aren't much
+tech-savvy, and especially elderly aren't familiar with the Internet \todo{relevant statistics \url{https://www.istat.it/it/archivio/216672}}.
+
+The proposed system will focus on solving the problem posed by queues in front of groceries stores but it could
+be generalized for queues handling in multiple scenarios.
+
+\emph{Customers Line-Up} (CLup) is a system that allows supermarket managers to regulate the influx of people
+inside physical stores and giving customers a way to drastically reduce (or remove completely) the time spent
+waiting in a queue. The idea of CLup is being more akin to an open-source framework that can be adoped and improved, rather
+than it being a closed-source product.
+
 This tool reaches the goal by offering a number of functionalities, including:
 \begin{itemize}
     \item access to the service via mobile app or website
     \item physical alternatives for people that do not have Internet access
-    \item monitor and dynamically restrict the amount of people in a store
+    \item monitor and dynamically restrict the amount of people allowed in a store
     \item book a visit, notifying customers of any change in the schedule
     \item suggest alternative stores and/or time frames
     \item track the time spent in the store by customers to provide better estimate of waiting times
@@ -40,8 +45,24 @@ This tool reaches the goal by offering a number of functionalities, including:
 
 
 \subsubsection{Current System}
-While there are already existing similar services, they are usually independent from store chains and
-therefore have limited functionalities. CLup is a service that supermarket chains can implement alongside
+While there are already existing similar services, some are usually independent from store chains and
+therefore have limited functionalities.
+Notable examples are:
+\begin{itemize}
+    \item \href{https://www.ufirst.com}{\emph{Ufirst}} allows customers to virtually get a number
+        and get notified when it's their turn, offers an app for store managers and a tablet app for totems
+        where a customer without a smartphone can get a ticket. Stores are required to register to make use
+        of the service.
+    \item \href{https://play.google.com/store/apps/details?id=com.codaliscia}{\emph{FilaIndiana}} allows customer to
+        know how many people are in queue in front of a store by using GPS data from its userbase. Doesn't allow to
+        book because it's indipendent from store chains. It's similar to what Google Maps offers with location-based
+        crowd prediction.
+    \item \href{https://play.google.com/store/apps/details?id=it.anybot.quandospesa}{\emph{QuandoSpesa}} works similarly
+        to \emph{FilaIndiana}, but allows users to select a certain time slot that is guaranteed to be the less crowded
+        for all the app users.
+    
+\end{itemize} 
+CLup is a service that supermarket chains can implement alongside
 their existing services. The system is as independent as possible from existing infrastructures, and
 it can be used with minimal setup.
 
@@ -56,38 +77,38 @@ it can be used with minimal setup.
             \item Allow a User to book a visit in a specified time.
             \item Allow a User to book a visit as soon as possible.
         \end{enumerate}
+    \item Allow a User without Internet access to retrieve a ticket from a physical location that counts as a reservation for a certain time.
     \item Allow a User to find Stores nearby their current location.
-    \item Allow a User to find Stores nearby a specified location.
+    \item \todo{Merge with above?}Allow a User to find Stores nearby a specified location.
     \item Allow a User to preview an estimate of the queue time.
     \item Allow a User to cancel their reservation.
     \item Allow a User to retrieve a scannable QR Code/Barcode that they must present in order to be granted access to a store.
-    \item Allow a User without Internet access to retrieve a ticket from a physical location that counts as a reservation for a certain time.
     \item Allow a User to book for someone else.
     \item Allow a User to link their Account to the Store Loyalty Program.
         \begin{enumerate}
-            \item Users do not have an Account cannot are not entitled to this feature.
+            \item Users without an Account are not entitled to this feature.
         \end{enumerate}
     % Store
     \item The System notifies the Users affected by delay.
     \item The System shall postpone Users visits in case of a delay.
     \item The System shall not \request{Are we sure about this?}anticipate User visits when a User delete their reservation.
-    \item The System must enforce the limits on the allowed number of concurrent Customers inside a store.
+    \item \warning{Isn't this a requirement?}The System must enforce the limits on the allowed number of concurrent Customers inside a store.
         \begin{enumerate}
             \item There can be less Customers than the limit.
             \item There cannot be more Customers than the limit.
             \item The queue is updated each time a Customer exits or enters the store.
         \end{enumerate}
     \item The System shall not admit Users that arrive earlier, even if the current number of Customers isn't maximum.
-    \item The System shall grant a User access only after the User's time of reservation.
+    \item \todo{Merge with above?}The System shall grant a User access only after the User's time of reservation.
     \item The System shall invalidate a User's reservation if they do not show up during a certain time interval.
     \item The System shall reserve a certain number of the allowed quote of customers for a special category of Users.
         \begin{enumerate}
-            \item The system shall grant access to Users without a reservation that show up at the store and are pregnant women, elderly or with disabilities.
+            \item The system shall grant priority access to Users without a reservation that show up at the store and are pregnant women, elderly or with disabilities.
         \end{enumerate}
     % System Managers
     \item Allow System Managers to set a limit to the people allowed into the store at a time.
     \item Allow System Managers to not provide the physical ticket option.
-    \item Allow System Managers to enable the link Account to Loyalty Program feature.
+    \item Allow System Managers to enable the functionality that allows customers to link their Account with Loyalty Program feature.
 \end{enumerate}
 
 \subsection{Definitions, Acronyms, Abbreviations}
@@ -109,7 +130,6 @@ it can be used with minimal setup.
     \item RASD: Requirement Analysis and Specification Document.
     \item API: Application Programming Interface
     \item CLup: Customer Line-up
-    \item REST: REpresentational State Transfer
 \end{itemize}
 
 
@@ -127,3 +147,17 @@ it can be used with minimal setup.
     \item https://standards.ieee.org/standard/29148-2018.html
 \end{itemize}
 \subsection{Document Structure}
+
+The document is structured in three sections:
+
+\begin{itemize}
+    \item In the \emph{Introduction} we provide a brief explanation of the problem, what the proposed solution
+        consist of and how it differs from existing systems, reference for used resources, language and revisions.
+    \item In the second section, we provide an overall description of the product and its functions, with the help
+    of scenarios to illustrate various situations. We also analyze the possible userbase of the service and then base
+    assumptions and constraint upon them.
+    \item In the third section we explain the more technical details by analyzing the software, hardware and user interfaces
+    with the help of UML diagrams (sequence, activity) and mockups.
+    We explore also aspects related to reliability, availability, security, maintainability and portability.
+    We also analyze formally the proposed models with the help of the Alloy Tool.
+\end{itemize}
