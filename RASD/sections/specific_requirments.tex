@@ -13,6 +13,50 @@ can be useful for the development team.
 Definition of use case diagrams, use cases and associated
 sequence/activity diagrams, and mapping on requirements
 
+\begin{enumerate}[label={[R\arabic*]}]
+    % Users
+    \item Allow a User to find Stores nearby a specified location.
+    \item Allow a User to get in the virtual line.
+    \item Allow a User to preview an estimate of the queue time.
+    \item Allow a User to cancel their reservation.
+    \item Allow a User to retrieve a scannable QR Code/Barcode that they must present in order to be granted access to a store.
+    \item Allow a User to sign up for an Account after providing a mobile phone number.
+    \item Allow a registered User to book a visit for themselves or for someone else to a specific store.
+
+    % Store
+    \item The System notifies the Users affected by delay.
+    \item The System postpones Users visits in case of a delay.
+    \item The System enforces the limits on the allowed number of concurrent Customers inside a store.
+    \item The System does not admit Users that arrive earlier, even if the current number of Customers isn't maximum.
+    \item The System grants a User access only after the User's time of reservation.
+    \item The System invalidates a User's reservation if they do not show up during a certain time interval.
+    \item The System reserves a certain number of the allowed quote of customers for a special category of Users.
+    \item The system grants priority access to Users without a reservation that show up at the store and are pregnant women, elderly or with disabilities.
+    
+    % System Managers
+    \item Allow System Managers to set a limit to the people allowed into the store at a time.
+    \item Allow System Managers to not provide the physical ticket option.
+    \item Allow System Managers to enable the functionality that allows customers to link their Account with Loyalty Program feature.
+\end{enumerate}
+
+\begin{center}
+    \begin{tabular}{ |c||c|c| }
+        \hline
+        \textbf{Goal} & \textbf{Requirements} & \textbf{Assumptions} \\
+        \hline
+        G1 & R1, R2, R3, R4, R5, R6 & \\
+        \hline
+        G2 & R3, R7, R8, & \\
+        \hline
+        G3 & R5, R10 & \\
+        \hline
+        G4 & & \\
+        \hline
+        G5 & & \\
+        \hline
+    \end{tabular}
+\end{center}
+
 \subsection{Performance Requirements}
 \subsection{Design Constraints}
 \subsubsection{Standards Compliance}
