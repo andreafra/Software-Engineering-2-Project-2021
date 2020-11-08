@@ -6,4 +6,5 @@
 *.gz
 *.toc
 *.tdo
+*.out
 .vscode/settings.json

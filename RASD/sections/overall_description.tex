@@ -44,7 +44,7 @@ The privacy of the customers will be guaranteed according to the latest privacy 
             logs in with her credentials, and navigates to the correct section, then she increase the number of customers allowed without reservation. The system
             automatically decreases the number of customers allowed by booking with the app.
         \end{enumerate}
-
+        \request{Store employee scans ticket at entrance}
 \subsection{Product Functions}\todo{fare dettagliato e numerare}
 The functions of Customer Line-Up can be clearly divided in two categories, based on the type of the stakeholder that is being addressed.
 
@@ -127,7 +127,8 @@ The main categories of customer are:
 The objective of Customers Line-Up is to be as inclusive as possible, providing utilities targeted at all possible users.
 
 \subsection{Assumptions, Dependencies, and Constraints}
-here we include domain assumptions 
+
+\subsubsection{Domain Assumptions}
 \begin{enumerate}[label={[D\arabic*]}]
     \item The number of people in a store cannot go over a certain fixed amount
     \item If an user enters the store they will exit the store before it closes
@@ -136,3 +137,23 @@ here we include domain assumptions
     \item A customer cannot enter the store without using the system
     \item External software dependencies the system relies on always provide true data and never fail
 \end{enumerate}
+
+\subsubsection{Dependencies}
+\begin{itemize}
+    \item The system requires access to a third party maps API.
+    \item The system needs a third party API in order to send SMS to customers' phones.
+    \item The mobile app shall be deployed on major mobile phones operating systems (Android, iOS).
+    \item The website requires a modern browser (no legacy browser support).
+    \item The application deployed on the totem has to be compatible with its operative system. \warning{maybe it should be the web app?}
+\end{itemize}
+
+\subsubsection{Constraints}
+\begin{itemize}
+    \item The system shall be compliant to local laws and regulations, in particular users data should
+    be treated according to the \href{https://gdpr.eu/}{GDPR}. This means that users should be always able
+    to request their data.
+    \item The system should in first place limit itself to collect only
+    the necessary ones to function, such as the user telephone number.
+    \item To better protect the users' sensitive information, such as their telephone number, their data should
+    be encrypted.
+\end{itemize}
