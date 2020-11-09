@@ -3,7 +3,7 @@ left to right direction
 User as u
 Manager as m
 "Authenticated User" as au
-Totem as t
+' Totem as t
 rectangle {
     u -- (Login)
     u -- (Sign\nUp)
