@@ -117,6 +117,35 @@ sequence/activity diagrams, and mapping on requirements
     \end{tabular}
 \end{center}
 
+% Example use case, change later if not suitable
+\def\arraystretch{1.5} % This adds padding to table rows (and more)
+\subsubsection{Use Case: Sign Up}
+\begin{tabular}{|l|p{10cm}|}
+    \hline
+    \textbf{Name} & Sign Up \\
+    \hline
+    \textbf{Actors} & Customer \\
+    \hline
+    \textbf{Entry Condition} & The unregisted Customer has installed the application on their device. \\
+    \hline
+    \textbf{Event Flow} & \begin{enumerate}
+        \item The Customer opens the application.
+        \item The Customer may read Privacy Policy and the Terms of Service by clicking on the respective links. If they create an account, it's implied that they accept them.
+        \item The Customer enters their mobile phone number and taps ``Continue''.
+        \item The Customer enters the received code via SMS and taps ``Sign In''.
+    \end{enumerate} \\
+    \hline
+    \textbf{Exit Condition} & The Customer is now registered and they may utilize the application. \\
+    \hline
+    \textbf{Exceptions} & \begin{itemize}
+        \item The Customer inputs invalid data.
+        \item The Customer doesn't fill the required data.
+    \end{itemize} \\
+    \hline
+    \textbf{Notes} & When an exception occurs, the user is informed by a human-readable message. \\
+    \hline
+\end{tabular}
+
 \subsection{Performance Requirements}
 \subsection{Design Constraints}
 \subsubsection{Standards Compliance}

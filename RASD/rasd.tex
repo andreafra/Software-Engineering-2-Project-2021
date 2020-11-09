@@ -25,28 +25,6 @@
 \newcommandx{\request}[2][1=]{\todo[linecolor=blue!30,backgroundcolor=blue!30,bordercolor=blue!30,#1]{#2}}
 \newcommandx{\info}[2][1=]{\todo[linecolor=green!30,backgroundcolor=green!30,bordercolor=green!30,#1]{#2}}
 
-%usecase table
-\newcommand{\usecase}[7]{
-    \begin{tabular}{l | l}
-        \hline
-        Name & #1 \\
-        \hline
-        Actor & #2 \\
-        \hline
-        Entry Condition & #3 \\
-        \hline
-        Event Flow & \begin{enumerate}
-            #4
-        \end{enumerate}
-        \hline
-        Exit Condition & #5 \\
-        \hline
-        Exception & #6 \\
-        \hline
-        Special Requests & #7 \\
-        \hline
-    \end{tabular}
-}
 %------------------------------------------------------------------------------------
 
 \begin{document}
