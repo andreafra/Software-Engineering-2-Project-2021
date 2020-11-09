@@ -32,6 +32,7 @@ Should the customer queue for the first available time slot, then they will rece
 that has a countdown of the time remaining in queue before their visit.
 
 \begin{figure}[h]
+    \caption{Mockup of the Application User Interface}
     \subfloat[Welcome Screen]{
         \includegraphics[width=0.25\textwidth]{images/mockup/welcome-screen.png}
         \label{fig:mockup-welcome}
@@ -61,11 +62,27 @@ that has a countdown of the time remaining in queue before their visit.
         \includegraphics[width=0.25\textwidth]{images/mockup/queue-ticket.png}
         \label{fig:queue-ticket}
     }
-
 \end{figure}
 
 
 \subsubsection{Hardware Interfaces}
+
+To account for Customers without an Internet-connected device,
+an interactive totem (Fig. \ref{fig:totem}) with a touchscreen display should be made available at each store entrance.
+The totem is connected to Internet or the store local network.
+It mirrors the key features of the web application, but it doesn't require the customer to
+authenticate. Customers may reserve a time-slot, or enter the queue, but they won't be able to
+be notified of possible changes. The reservation receipt is printed and the customer must keep it until they're
+admitted to the store, otherwise they won't be able to enter.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.25\textwidth]{images/totem.pdf}
+    \caption{The totem interface: (A) is the touchscreen display,
+    (B) is where the printed ticket is emitted, (C) is a proximity sensor that wakes the
+    totem when a client is nearby.}
+    \label{fig:totem}
+\end{figure}
+
 \subsubsection{Software Interfaces}
 \subsubsection{Communication Interfaces}
 
