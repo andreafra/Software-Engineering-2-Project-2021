@@ -1,26 +1,26 @@
 @startuml
 left to right direction
 User as u
-Manager as m
 "Authenticated User" as au
+Manager as m
 ' Totem as t
 rectangle {
     u -- (Login)
-    u -- (Sign\nUp)
-    u -- (Join\nLine)
     u -- (Check\nStatus)
+    u -- (Join\nQueue)
 
-    au -- (Join\nLine)
-    au -- (Check\nStatus)
+    au -- (Join\nQueue)
     au -- (Book)
-    au -- (View\nHistory)
+    au -- (Check\nStatus)
 
-    (Join\nLine) -- (Find\nStore) : <<includes>>
+    (Join\nQueue) -- (Find\nStore) : <<includes>>
     (Book) -- (Find\nStore) : <<includes>>
 
     m -- (Modify\nStores)
     (Modify\nStores) -- (Add\nStore) : <<extends>>
     (Modify\nStores) -- (Edit\nStore) : <<extends>>
+    (Edit\nStore) -- (Change\nCapacity) : <<extends>>
+    (Edit\nStore) -- (Change\nTime Slots) : <<extends>>
     m -- (Check\nStore)
 }
 @enduml

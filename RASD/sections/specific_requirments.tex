@@ -102,18 +102,19 @@ sequence/activity diagrams, and mapping on requirements
 
     % Store
     \item The System notifies the Users affected by delay.
-    \item The System postpones Users visits in case of a delay.
+    \item The System cancels User reservations in case of a major delay.
     \item The System enforces the limits on the allowed number of concurrent Customers inside a store.
-    \item The System does not admit Users that arrive earlier, even if the current number of Customers isn't maximum.
-    \item The System grants a User access only after the User's time of reservation.
+    \item The System grants a User with a reservation access only within a short time after the User's time of reservation.
     \item The System invalidates a User's reservation if they do not show up during a certain time interval.
     \item The System reserves a certain number of the allowed quote of customers for a special category of Users.
-    \item The system grants priority access to Users without a reservation that show up at the store and are pregnant women, elderly or with disabilities.
+    \item \todo{merge with above}The system grants priority access to Users without a reservation that show up at the store and are pregnant women, elderly or with disabilities.
     
     % System Managers
     \item Allow System Managers to set a limit to the people allowed into the store at a time.
-    \item Allow System Managers to not provide the physical ticket option.
-    \item Allow System Managers to enable the functionality that allows customers to link their Account with Loyalty Program feature.
+    \item Allow System Managers to choose the frequency and size of the time slots.
+    \item Allow System Managers to know the average time spent in the store.
+    \item Allow System Managers to know the current and past number of people in the store.
+    \item Allow System Managers to check the current status of the queue and of the time slots.
 \end{enumerate}
 
 \begin{center}
