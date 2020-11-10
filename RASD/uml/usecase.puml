@@ -1,26 +1,31 @@
 @startuml
 left to right direction
+Manager as m
 User as u
 "Authenticated User" as au
-Manager as m
-' Totem as t
+"Totem User" as tu
 rectangle {
-    u -- (Login)
-    u -- (Check\nStatus)
-    u -- (Join\nQueue)
-
-    au -- (Join\nQueue)
-    au -- (Book)
-    au -- (Check\nStatus)
-
-    (Join\nQueue) -- (Find\nStore) : <<includes>>
-    (Book) -- (Find\nStore) : <<includes>>
-
     m -- (Modify\nStores)
-    (Modify\nStores) -- (Add\nStore) : <<extends>>
-    (Modify\nStores) -- (Edit\nStore) : <<extends>>
-    (Edit\nStore) -- (Change\nCapacity) : <<extends>>
-    (Edit\nStore) -- (Change\nTime Slots) : <<extends>>
     m -- (Check\nStore)
+
+    (Modify\nStores) <-[dashed]- (Add\nStore) : <<extends>>
+    (Modify\nStores) <-[dashed]- (Edit\nStore) : <<extends>>
+    (Edit\nStore) <-[dashed]- (Change\nCapacity) : <<extends>>
+    (Edit\nStore) <-[dashed]- (Change\nTime Slots) : <<extends>>
+
+    u -- (Login)
+
+    au -- (Check\nStatus)
+    au -- (Select\nStore)
+    (Check\nStatus) <-[dashed]- (Leave\nQueue) : <<extends>>
+    (Check\nStatus) <-[dashed]- (Cancel\nReservation) : <<extends>>
+    (Select\nStore) <-[dashed]- (Book) : <<extends>>
+    (Select\nStore) <-[dashed]- (Join\nQueue) : <<extends>>
+
+    tu -- (Join\nQueue)
+    
+
+
+
 }
 @enduml
