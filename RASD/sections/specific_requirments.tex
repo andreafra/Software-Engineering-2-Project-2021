@@ -30,7 +30,7 @@ and a QR code that they'll need to show when they present themselves at the stor
 Should the customer queue for the first available time slot, then they will receive a similar receipt (Fig. \ref{fig:queue-ticket}),
 that has a countdown of the time remaining in queue before their visit.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \caption{Mock-up of the Application User Interface}
     \subfloat[Welcome Screen]{
         \includegraphics[width=0.25\textwidth]{images/mockup/welcome-screen.png}
@@ -73,7 +73,7 @@ It mirrors the key features of the web application, but it doesn't require the c
 authenticate. Customers may reserve a time-slot, or enter the queue, but they won't be able to
 be notified of possible changes. The reservation receipt is printed and the customer must keep it until they're
 admitted to the store, otherwise they won't be able to enter.
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.25\textwidth]{images/totem.pdf}
     \caption{The totem interface: (A) is the touchscreen display,
@@ -83,7 +83,16 @@ admitted to the store, otherwise they won't be able to enter.
 \end{figure}
 
 \subsubsection{Software Interfaces}
+In order to provide its full functionality to all users, the system will make use of the following software interfaces (APIs):
+\begin{itemize}
+    \item \textbf{Maps}: to implement the functionality allowing the Users to look for a store the system will interface with a digital map service. The Store Manager will be able to register on the map the position of their store.
+    \item \textbf{Localization}: localization will be used in the webapp and in the mobile app in order to show the User their current position, helping them to find their desired store.
+    \item \textbf{Mobile OS Notification Service}: notifications will be sent to warn and update continuously Users about their Reservations (if any) and the status of the Virtual Line (if it is joined).
+    \item \textbf{SMS service}: an SMS with a secret code will be sent to the user upon login in order to verify their identity.
+\end{itemize}
+
 \subsubsection{Communication Interfaces}
+\todo{improve?}The backend of the system will expose a unified REST compliant API to communicate with all clients using HTTPS and TCP/IP. The User will need an internet connection as well as cellular network upon login. The Totem will be provided with WiFi or cellular connectivity, depending on the needs of each store.
 
 \subsection{Functional Requirements}
 Definition of use case diagrams, use cases and associated
@@ -91,13 +100,15 @@ sequence/activity diagrams, and mapping on requirements
 
 \begin{enumerate}[label={[R\arabic*]}]
     % Users
-    \item Allow a User to find Stores nearby a specified location.
-    \item Allow a User to get in the virtual line.
-    \item Allow a User to preview an estimate of the queue time.
-    \item Allow a User to cancel their reservation.
-    \item Allow a User to retrieve a scannable QR Code/Barcode that they must present in order to be granted access to a store.
     \item Allow a User to sign up for an Account after providing a mobile phone number.
-    \item Allow a registered User to book a visit for themselves or for someone else to a specific store.
+    \item Allow a Registered User to find Stores nearby a specified location.
+    \item Allow a Registered User to get in the virtual line at a specified store.
+    \item Allow a Totem User to get in the virtual line of the store where the totem is installed.
+    \item Allow a Registered User to preview an estimate of the queue time.
+    \item Allow a Registered User to book a visit for themselves or for someone else to a specific store.
+    \item Allow a Registered User to cancel their reservation.
+    \item Allow a Registered User to leave the virtual queue.
+    \item Allow a Registered User and a Totem User to retrieve a scannable QR Code/Barcode that they must present in order to be granted access to a store.
 
     % Store
     \item The System notifies the Users affected by delay.
