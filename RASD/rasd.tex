@@ -1,5 +1,6 @@
 \documentclass[a4paper]{article}
 
+%------------------------------------------------------------------------------------
 % import packages
 \usepackage[scaled]{helvet}
 \renewcommand\familydefault{\sfdefault} 
@@ -14,16 +15,43 @@
 \usepackage{hyperref}
 \usepackage[position=top]{subfig}
 
+
+%------------------------------------------------------------------------------------
 % Margins
 \usepackage[margin=0.5in]{geometry}
 \textwidth=426pt
 \marginparwidth=100pt
 
-% commands definition
 
+%------------------------------------------------------------------------------------
+% commands definition
 \newcommandx{\warning}[2][1=]{\todo[linecolor=red!30,backgroundcolor=red!30,bordercolor=red!30,#1]{#2}}
 \newcommandx{\request}[2][1=]{\todo[linecolor=blue!30,backgroundcolor=blue!30,bordercolor=blue!30,#1]{#2}}
 \newcommandx{\info}[2][1=]{\todo[linecolor=green!30,backgroundcolor=green!30,bordercolor=green!30,#1]{#2}}
+%automatically creates use case table
+\newcommand{\usecase}[7]{
+    \def\arraystretch{1.5} % This adds padding to table rows (and more)
+    \subsubsection{Use Case: #1}
+    \begin{tabular}{|l|p{10cm}|}
+        \hline
+        \textbf{Name} & #1\\
+        \hline
+        \textbf{Actors} & #2 \\
+        \hline
+        \textbf{Entry Condition} & #3 \\
+        \hline
+        \textbf{Event Flow} & #4 \\
+        \hline
+        \textbf{Exit Condition} & #5 \\
+        \hline
+        \textbf{Exceptions} & #6 \\
+        \hline
+        \textbf{Notes} & #7 \\
+        \hline
+    \end{tabular}
+}
+
+
 
 %------------------------------------------------------------------------------------
 

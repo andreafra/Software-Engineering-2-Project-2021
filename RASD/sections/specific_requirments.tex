@@ -1,4 +1,3 @@
-
 \section{Specific Requirements}\label{sec:spec_req}
 
 Here we include more details on all aspects in Section 2 if they
@@ -15,7 +14,7 @@ they are prompted to register for an account: they have to provide their mobile 
 If the code inserted is the one sent to the phone number inserted in the first screen, the
 account creation is successful.
 
-If the registration is successful, the user can immediatly see a map (Fig \ref{fig:select-store})
+If the registration is successful, the user can immediately see a map (Fig \ref{fig:select-store})
 with stores nearby their location (they might have to allow the app do receive their location through
 the OS API), otherwise they can manually search stores by typing an address.
 Stores are also listed by distance and queue length.
@@ -32,7 +31,7 @@ Should the customer queue for the first available time slot, then they will rece
 that has a countdown of the time remaining in queue before their visit.
 
 \begin{figure}[h]
-    \caption{Mockup of the Application User Interface}
+    \caption{Mock-up of the Application User Interface}
     \subfloat[Welcome Screen]{
         \includegraphics[width=0.25\textwidth]{images/mockup/welcome-screen.png}
         \label{fig:mockup-welcome}
@@ -135,34 +134,91 @@ sequence/activity diagrams, and mapping on requirements
     \end{tabular}
 \end{center}
 
-% Example use case, change later if not suitable
-\def\arraystretch{1.5} % This adds padding to table rows (and more)
-\subsubsection{Use Case: Sign Up}
-\begin{tabular}{|l|p{10cm}|}
-    \hline
-    \textbf{Name} & Sign Up \\
-    \hline
-    \textbf{Actors} & Customer \\
-    \hline
-    \textbf{Entry Condition} & The unregisted Customer has installed the application on their device. \\
-    \hline
-    \textbf{Event Flow} & \begin{enumerate}
+
+
+
+%----------------------------------------------------------------------------------------------------
+%                                           USE CASES
+%----------------------------------------------------------------------------------------------------
+
+%LOGIN
+\usecase
+{Sign Up}
+{Customer}
+{The Customer has installed the application on their device.}
+{
+    \begin{enumerate}
         \item The Customer opens the application.
         \item The Customer may read Privacy Policy and the Terms of Service by clicking on the respective links. If they create an account, it's implied that they accept them.
         \item The Customer enters their mobile phone number and taps ``Continue''.
         \item The Customer enters the received code via SMS and taps ``Sign In''.
-    \end{enumerate} \\
-    \hline
-    \textbf{Exit Condition} & The Customer is now registered and they may utilize the application. \\
-    \hline
-    \textbf{Exceptions} & \begin{itemize}
+    \end{enumerate}
+}
+{The Customer is now logged-in and they may utilize the application.}
+{
+    \begin{itemize}
         \item The Customer inputs invalid data.
         \item The Customer doesn't fill the required data.
-    \end{itemize} \\
-    \hline
-    \textbf{Notes} & When an exception occurs, the user is informed by a human-readable message. \\
-    \hline
-\end{tabular}
+    \end{itemize}
+}
+{
+    When an exception occurs, the user is informed by a human-readable message.
+}
+
+
+%Join Line
+\usecase
+{Join Line}
+{Authenticated User}
+{Authenticated User selects a Supermarket in the application}
+{
+        \begin{enumerate}
+            \item The Authenticated User pushes the "Queue Now" button.
+            \item The system provides the Queue Receipt with the generated QR code and the estimated time remaining.
+        \end{enumerate}
+}
+{
+    The customer is now in the queue waiting for their turn.
+}
+{
+    \begin{itemize}
+        \item There is a major delay in the store. 
+        \item The time remaining to wait in the queue exeeds the opening hours of the store. 
+    \end{itemize}
+}
+{
+    When an exception occurs, the user has the possibility to remain in the queue or leave it. 
+}
+
+
+%Check Status
+\usecase
+{Check Status}
+{Authenticated User}
+{Authenticated User logs-in in the application}
+{
+        \begin{enumerate}
+            \item The System provides the user a list of the supermarkets near him.
+            \item The Authenticated User is able to see a preview of the number of people in queue and the estimated waiting time. 
+            \item The user selects the desired store. 
+            \item The user is now able to see full screen the waiting time and the number of people in queue (and possibly other stats on the store).  
+        \end{enumerate}
+}
+{
+    The Authenticated User gain the knowledge on the waiting times and the number of people in queue in the stores near him/her. 
+}
+{
+    \begin{itemize}
+        \item There are no open stores in the area. 
+        \item There are no stores in the area. 
+    \end{itemize}
+}
+{
+    When an exception occurs the users is promted to check the application again later or change the search area. 
+}
+
+
+
 
 \subsection{Performance Requirements}
 \subsection{Design Constraints}
