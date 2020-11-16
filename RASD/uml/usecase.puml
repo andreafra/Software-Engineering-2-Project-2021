@@ -10,19 +10,21 @@ rectangle {
 
     (Modify\nStores) <-[dashed]- (Add\nStore) : <<extends>>
     (Modify\nStores) <-[dashed]- (Edit\nStore) : <<extends>>
-    (Edit\nStore) <-[dashed]- (Change\nCapacity) : <<extends>>
-    (Edit\nStore) <-[dashed]- (Change\nTime Slots) : <<extends>>
 
     u -- (Login)
 
-    au -- (Check\nStatus)
-    au -- (Select\nStore)
-    (Check\nStatus) <-[dashed]- (Leave\nQueue) : <<extends>>
-    (Check\nStatus) <-[dashed]- (Cancel\nReservation) : <<extends>>
-    (Select\nStore) <-[dashed]- (Book) : <<extends>>
-    (Select\nStore) <-[dashed]- (Join\nQueue) : <<extends>>
+    (Book) -- au 
+    (Join\nLine) -- au 
+    (Leave\nLine) -- au 
+    (Cancel\nReservation) -- au
+    (Select\nStore) <-[dashed]- (Book)  : <<includes>>
+    (Select\nStore) <-[dashed]- (Join\nLine)  : <<includes>>
 
-    tu -- (Join\nQueue)
+    (Add\nStore) -[hidden]- (Select\nStore)
+    (Select\nStore) -[hidden]- (Leave\nLine)
+    (Select\nStore) -[hidden]- (Cancel\nReservation)
+
+    tu -- (Join\nLocal\nLine)
     
 
 

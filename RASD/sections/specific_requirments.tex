@@ -157,9 +157,8 @@ sequence/activity diagrams, and mapping on requirements
 %                                           USE CASES
 %----------------------------------------------------------------------------------------------------
 
-%LOGIN
 \usecase
-{Sign Up}
+{Login}
 {Customer}
 {The Customer has installed the application on their device.}
 {
@@ -181,8 +180,31 @@ sequence/activity diagrams, and mapping on requirements
     When an exception occurs, the user is informed by a human-readable message.
 }
 
+\usecase
+{Select Store}
+{Authenticated User}
+{Authenticated User clicks the 'Find a Store' button, which appears if the user is not currently in Line or does not have a pending reservation.}
+{
+        \begin{enumerate}
+            \item The System provides the user with a list of the supermarkets near him.
+            \item The Authenticated User is able to see a preview of the number of people in queue and the estimated waiting time. 
+            \item The user selects the desired store. 
+            \item The user is now able to see full screen the waiting time and the number of people in queue (and possibly other stats on the store), and is given the possibility to join the line or make a reservation if time slots are available.  
+        \end{enumerate}
+}
+{
+    The Authenticated User has selected a store that suits their need, and is given the possibility to join the line or make a reservation. 
+}
+{
+    \begin{itemize}
+        \item There are no open stores in the area. 
+        \item There are no stores in the area. 
+    \end{itemize}
+}
+{
+    When an exception occurs the users is promted to check the application again later. 
+}
 
-%Join Line
 \usecase
 {Join Line}
 {Authenticated User}
@@ -207,32 +229,77 @@ sequence/activity diagrams, and mapping on requirements
 }
 
 
-%Check Status
 \usecase
-{Check Status}
+{Book}
 {Authenticated User}
-{Authenticated User logs-in in the application}
+{Authenticated User selects a Supermarket in the application}
 {
         \begin{enumerate}
-            \item The System provides the user a list of the supermarkets near him.
-            \item The Authenticated User is able to see a preview of the number of people in queue and the estimated waiting time. 
-            \item The user selects the desired store. 
-            \item The user is now able to see full screen the waiting time and the number of people in queue (and possibly other stats on the store).  
+            \item The Authenticated User pushes the "Make a Reservation" button.
+            \item The user chooses a suitable time among the available ones. 
+            \item The system provides the Reservation Receipt with the generated QR code.
         \end{enumerate}
 }
 {
-    The Authenticated User gain the knowledge on the waiting times and the number of people in queue in the stores near him/her. 
+    The customer has now a pending reservation.
 }
 {
     \begin{itemize}
-        \item There are no open stores in the area. 
-        \item There are no stores in the area. 
+        \item There is a major delay.
     \end{itemize}
 }
 {
-    When an exception occurs the users is promted to check the application again later or change the search area. 
+    When an exception occurs the reservation is either postponed with the confirmation of the user or automatically cancelled, depending on the estimated waiting time. 
 }
 
+
+\usecase
+{Leave Line}
+{Authenticated User}
+{Authenticated user enters the home page of the application and is currently in Line.}
+{
+    \begin{enumerate}
+        \item The Authenticated User clicks the "Leave Current Line" button.
+        \item The Authenticated User confirms the selection.
+    \end{enumerate}
+}
+{
+    The customer has now left the line.
+}
+{}
+{}
+
+\usecase
+{Cancel Reservation}
+{Authenticated User}
+{Authenticated user enters the home page of the application and has a pending Reservation.}
+{
+    \begin{enumerate}
+        \item The Authenticated User clicks the "Cancel Current Reservation" button.
+        \item The Authenticated User confirms the selection.
+    \end{enumerate}
+}
+{
+    The customer has now canceled the reservation.
+}
+{}
+{}
+
+\usecase
+{Join Local Line}
+{Totem User}
+{A user approaches the totem in front of a store while the store is open.}
+{
+    \begin{enumerate}
+        \item The user clicks the button appearing on screen.
+        \item The totem prints a ticket containing a QR code and the estimated waiting time.
+    \end{enumerate}
+}
+{
+    The user is now in line.
+}
+{}
+{}
 
 
 
