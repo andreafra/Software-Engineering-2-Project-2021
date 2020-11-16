@@ -237,13 +237,57 @@ sequence/activity diagrams, and mapping on requirements
 
 
 \subsection{Performance Requirements}
+The system backend needs to handle a fair amount of customers, but little amount of data. It needs to be scalable, capable of load-balancing and reactive in order to notify customers on time. Protection against denial of service attacks would be necessary.
+Since each store chain has to deploy its own version of this system, they should estimate server resources based on the average amount of customers visiting their stores.
+Client-side and web applications must be responsive, fluid and handle correctly asynchronous interactions with the server (especially when the connection quality is bad), in order to provide the best experience possible to the end user.
+\request{Do we really want to provide an estimate for customers? Like 1M Customers at launch or whatever}
+
 \subsection{Design Constraints}
+% Specify constraints on the system design imposed by external standards, regulatory requirements or
 \subsubsection{Standards Compliance}
+The system shall keep track of interactions with the system by the customers (i.e. joining the queue, entering the store, exiting the store).
+The data should be named accordingly to this document (RASD) and the Design Document (DD).
+All users sensible data shall be handled according to existing regulations, such as the GDPR.
+
 \subsubsection{Hardware Limitations}
-\subsubsection{Any Other Constraint}
+\todo{Check if it's ok, I didnt find much on this section in the IEEE ref}
+\begin{itemize}
+    \item Mobile Application
+    \begin{itemize}
+        \item iOS or Android smartphone
+        \item Cellular data connection
+        \item WiFi
+        \item GPS
+    \end{itemize}
+    \item Web Application
+    \begin{itemize}
+        \item Internet connection
+        \item Computer with a display
+        \item Major recent browser release (Firefox or WebKit based browser)
+    \end{itemize}
+    \item Backend
+    \begin{itemize}
+        \item Up-to-date webserver capable of virtualization
+    \end{itemize}
+\end{itemize}
+
+% \subsubsection{Any Other Constraint}
 \subsection{Software System Attributes}
 \subsubsection{Reliability}
+The system infrastructure should have the lowest MTTR reasonably achievable; should the system need maintenance, it should take place outside store opening hours or during the weekend. It's important to prevent data loss through redundant storage methods.
+
 \subsubsection{Availability}
+The whole system doesn't need to be functional 24/7, but certain parts (i.e. backend for the web and mobile app) must be functional at all times; the totems can be powered off after a certain hour to save energy. The managers web portal should not be heavy on computing resources therefore it's feasible to keep it online all the time.
 \subsubsection{Security}
+To protect customers sensible data (i.e. phone number, visits to stores, location) the system should collect in first place the required minimum data possible, and store them in an encrypted database. The connections to the system should follow modern standard protocols (HTTPS over TLS) and be encryped as well. Since managers must log in with username and password, those data should be encrypted and the password salted and hashed. The system could provide additional security by enabling two-factor authentication  (2FA).
+
 \subsubsection{Maintainability}
+The backend should be able to be updated without downtime, by using multiple instances behind a \emph{reverse proxy}.
+Mobile applications can be updated through their OS app store.
+
 \subsubsection{Portability}
+The application must be available on major mobile OSs (Android and iOS) targeting at least the current release, even though the previous would be ideal.
+The web application must run at least on the most recent browsers, but browser support can be limited.
+It would be a smart choice to reuse most of the codebase across mobile and web by using cross platform tools.
+
+The web server should be able to run on any major webserver, and support containerization.
