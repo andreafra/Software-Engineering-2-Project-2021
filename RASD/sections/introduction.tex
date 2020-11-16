@@ -15,7 +15,7 @@ specifications, analyzing what the software will do, how it will be used and the
 will operate. This document is intended both for users and developers.
 
 \subsection{Scope}
-\info{here we include an analysis of the world and of the shared phenomena}
+%\info{here we include an analysis of the world and of the shared phenomena}
 In recent times, it has become clear that avoiding gathering of groups of people in small spaces is critical
 for the safety of the population. During lockdowns some places become more crowded than others. 
 This reason lead to the development of various solutions, all resulting roughly in restricting the capacity
@@ -93,15 +93,18 @@ CLup is a service that supermarket chains can implement alongside their existing
     \item \emph{Visit}: The time frame in which the User enters the store, shops and exits.
     \item \emph{Time slot}: The time at which a Customer with a Reservation is expected arrive at the store.
     \item \emph{Store}: Any physical location (e.g.: building) where it is possible to utilize the System.
-    \item \emph{Totem}: A physical device with a touchscreen display that allows Customers to join the Virtual Line.
-    \item \emph{Virtual Line}: the virtual equivalent of a physical line in front of the store, regulating the access of people by ordering them.
+    \item \emph{Totem}: A physical device with a touchscreen display and an attached printer that allows Customers to join the Virtual Queue.
+    \item \emph{Virtual Queue}: the virtual equivalent of a physical queue in front of the store, regulating the access of people by ordering them.
+    \item \emph{Web App}: A web application, consisting of a back-end and a front-end accessible from a web browser.
+    \item \emph{Line}: Synonim for \emph{queue}.
 \end{itemize}
 
 \subsubsection{Acronyms}
 \begin{itemize}
-    \item RASD: Requirement Analysis and Specification Document.
+    \item RASD: Requirement Analysis and Specification Document
     \item API: Application Programming Interface
     \item CLup: Customer Line-up
+    \item REST: REpresentational State Transfers
 \end{itemize}
 
 
@@ -130,5 +133,5 @@ The document is structured in three sections:
     \item In the third section we explain the more technical details by analyzing the software, hardware and user interfaces
     with the help of UML diagrams (sequence, activity) and mockups.
     We explore also aspects related to reliability, availability, security, maintainability and portability.
-    We also analyze formally the proposed models with the help of the Alloy Tool.
+    \item In the fourth section we analyze formally the proposed models with the help of the Alloy Tool.
 \end{itemize}

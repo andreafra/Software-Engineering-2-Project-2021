@@ -85,14 +85,16 @@ admitted to the store, otherwise they won't be able to enter.
 \subsubsection{Software Interfaces}
 In order to provide its full functionality to all users, the system will make use of the following software interfaces (APIs):
 \begin{itemize}
-    \item \textbf{Maps}: to implement the functionality allowing the Users to look for a store the system will interface with a digital map service. The Store Manager will be able to register on the map the position of their store.
-    \item \textbf{Localization}: localization will be used in the webapp and in the mobile app in order to show the User their current position, helping them to find their desired store.
-    \item \textbf{Mobile OS Notification Service}: notifications will be sent to warn and update continuously Users about their Reservations (if any) and the status of the Virtual Line (if it is joined).
-    \item \textbf{SMS service}: an SMS with a secret code will be sent to the user upon login in order to verify their identity.
+    \item \textbf{Maps}: to implement the functionality allowing the Users to look for a store the system will interface with a digital map service. Store Managers will be able to register on the map the position of their store.
+    \item \textbf{Geolocalization}: geolocalization through GPS (when available) or other means (cellular, wifi or IP location) will be used in the web app and in the mobile app in order to show the User their current position and help them find a nearby store.
+    \item \textbf{Mobile OS Notification Service}: notifications will be sent to warn and update Users in real time about their Reservations (if any) and the status of the Virtual Line (if it is joined).
+    \item \textbf{SMS service}: an SMS with a secret code will be sent to the user upon login in order to verify their identity through a third party service.
 \end{itemize}
 
 \subsubsection{Communication Interfaces}
-\todo{improve?}The backend of the system will expose a unified REST compliant API to communicate with all clients using HTTPS and TCP/IP. The User will need an internet connection as well as cellular network upon login. The Totem will be provided with WiFi or cellular connectivity, depending on the needs of each store.
+The backend of the system will expose a unified REST compliant API to communicate with all clients using HTTPS and TCP/IP.
+The User will need a working Internet connection as well as cellular network upon login.
+The Totem will be provided with WiFi, wired or cellular connectivity, depending on the physical constraints of each store.
 
 \subsection{Functional Requirements}
 Definition of use case diagrams, use cases and associated
@@ -116,8 +118,7 @@ sequence/activity diagrams, and mapping on requirements
     \item The System enforces the limits on the allowed number of concurrent Customers inside a store.
     \item The System grants a User with a reservation access only within a short time after the User's time of reservation.
     \item The System invalidates a User's reservation if they do not show up during a certain time interval.
-    \item The System reserves a certain number of the allowed quote of customers for a special category of Users.
-    \item \todo{merge with above}The system grants priority access to Users without a reservation that show up at the store and are pregnant women, elderly or with disabilities.
+    \item The System reserves a portion of the allowed quote of customers for a special category of Users (pregnant women, elderly or people with disabilities) who should be granted priority access.
     
     % System Managers
     \item Allow System Managers to set a limit to the people allowed into the store at a time.
@@ -132,15 +133,17 @@ sequence/activity diagrams, and mapping on requirements
         \hline
         \textbf{Goal} & \textbf{Requirements} & \textbf{Assumptions} \\
         \hline
-        G1 & R1, R2, R3, R4, R5, R6 & \\
+        G1 & R1, R2, R3, R4, R5, R6, R14 & D1, D2, D3, D5 \\ % G: Avoid crowds
         \hline
-        G2 & R3, R7, R8, & \\
+        G2 & R3, R7, R8, R15 & D3, D4, D5 \\ % G: Priority Access
         \hline
-        G3 & R5, R10 & \\
+        G3 & R5, R10 & D2, D5, D6\\ % G: Save time
         \hline
-        G4 & & \\
+        G4 & R12, R13, R15, R16, R17 & D1, D3, D4 \\ % G: Set Max No. of Customers
         \hline
-        G5 & & \\
+        G5 & R18 & D3, D4, D5, D6 \\ % G: Statistics
+        \hline
+        G6 & R19 & D1, D3, D4, D5, D6 \\ % G: Monitor
         \hline
     \end{tabular}
 \end{center}

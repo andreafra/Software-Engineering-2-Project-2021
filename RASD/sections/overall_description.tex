@@ -132,12 +132,12 @@ The objective of Customers Line-Up is to be as inclusive as possible, providing 
 
 \subsubsection{Domain Assumptions}
 \begin{enumerate}[label={[D\arabic*]}]
-    \item The number of people in a store cannot go over a certain fixed amount
-    \item If an user enters the store they will exit the store before it closes
-    \item \todo{Dobbiamo mettere che ci sono i tornelli o c'è una persona}The system reliably counts the number of people entering and exiting the store
-    \item The time of real operation of the store corresponds with the one registered in the system\todo{rephrase}
-    \item A customer cannot enter the store without using the system
-    \item External software dependencies the system relies on always provide true data and never fail
+    \item The number of people in a store cannot go over a certain fixed amount.
+    \item If an user enters the store they will exit the store before it closes.
+    \item The system reliably counts (e.g. with a turnstyle, through an employee) the number of people entering and exiting the store.
+    \item There's no mismatch between the real state of the store and its representation by the system.
+    \item A customer cannot enter the store without using the system.
+    \item External software dependencies the system relies on always provide true data and never fail.
 \end{enumerate}
 
 \subsubsection{Dependencies}
@@ -146,7 +146,7 @@ The objective of Customers Line-Up is to be as inclusive as possible, providing 
     \item The system needs a third party API in order to send SMS to customers' phones.
     \item The mobile app shall be deployed on major mobile phones operating systems (Android, iOS).
     \item The website requires a modern browser (no legacy browser support).
-    \item The application deployed on the totem has to be compatible with its operative system. \warning{maybe it should be the web app?}
+    \item The application deployed on the totem has to be compatible with its operative system.
 \end{itemize}
 
 \subsubsection{Constraints}
