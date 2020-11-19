@@ -166,7 +166,7 @@ sequence/activity diagrams, and mapping on requirements
         \item The Customer opens the application.
         \item The Customer may read Privacy Policy and the Terms of Service by clicking on the respective links. If they create an account, it's implied that they accept them.
         \item The Customer enters their mobile phone number and taps ``Continue''.
-        \item The Customer enters the received code via SMS and taps ``Sign In''.
+        \item The Customer enters the received token via SMS and taps ``Sign In''.
     \end{enumerate}
 }
 {The Customer is now logged-in and they may utilize the application.}
@@ -178,6 +178,7 @@ sequence/activity diagrams, and mapping on requirements
 }
 {
     When an exception occurs, the user is informed by a human-readable message.
+    In case the user thinks the SMS hasn't been sent/received, they can ask the system for a new token.
 }
 
 \usecase
@@ -206,7 +207,7 @@ sequence/activity diagrams, and mapping on requirements
 }
 
 \usecase
-{Join Line}
+{Join Queue}
 {Authenticated User}
 {Authenticated User selects a Supermarket in the application}
 {
@@ -254,17 +255,17 @@ sequence/activity diagrams, and mapping on requirements
 
 
 \usecase
-{Leave Line}
+{Leave Queue}
 {Authenticated User}
 {Authenticated user enters the home page of the application and is currently in Line.}
 {
     \begin{enumerate}
-        \item The Authenticated User clicks the "Leave Current Line" button.
+        \item The Authenticated User clicks the "Leave Current Queue" button.
         \item The Authenticated User confirms the selection.
     \end{enumerate}
 }
 {
-    The customer has now left the line.
+    The customer has now left the queue.
 }
 {}
 {}
@@ -286,7 +287,7 @@ sequence/activity diagrams, and mapping on requirements
 {}
 
 \usecase
-{Join Local Line}
+{Join Local Queue}
 {Totem User}
 {A user approaches the totem in front of a store while the store is open.}
 {
@@ -296,10 +297,57 @@ sequence/activity diagrams, and mapping on requirements
     \end{enumerate}
 }
 {
-    The user is now in line.
+    The user is now in queue.
 }
 {}
 {}
+
+\usecase
+{Edit Store}
+{Manger}
+{The manager knows their own credentials for the web panel.}
+{
+    \begin{enumerate}
+        \item The manager opens the apposite web portal.
+        \item The manager inserts their credentials and confirm the login.
+        \item The manager chooses from a menu the operation they want to perform.
+        \item The manager edits the parameters of the system.
+    \end{enumerate}
+}
+{
+    The new parameters are applied.
+}
+{
+    \begin{itemize}
+        \item The Manager inputs the wrong credentials.
+    \end{itemize}
+}
+{
+    In case of a failed login, the Manager is informed by the System on how to retrieve their credentials, had they been forgotten.
+}
+
+\usecase
+{Add Store}
+{Manger}
+{The Manager is logged into the web panel.}
+{
+    \begin{enumerate}
+        \item The manager chooses from a menu the option to add a new store.
+        \item The manager enters the details of the new store in a form.
+        \item The manager submits the form.
+    \end{enumerate}
+}
+{
+    A new store is added to system.
+}
+{
+    \begin{itemize}
+        \item The store can't be added.
+    \end{itemize}
+}
+{
+    In case of exceptions, the manager is informed by a human-readable message.
+}
 
 \subsubsection*{Sequence Diagrams}
 
