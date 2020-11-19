@@ -1,0 +1,14 @@
+@startuml join queue
+actor Customer as c
+participant CLup as sys
+
+c -> sys ++ : retrieveStoreList
+return storeList
+
+c -> sys ++ : selectStore
+return storeDetails
+
+c -> sys ++ : joinQueue
+return sendQueueReceipt
+
+@enduml

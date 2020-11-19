@@ -301,8 +301,28 @@ sequence/activity diagrams, and mapping on requirements
 {}
 {}
 
+\subsubsection*{Sequence Diagrams}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{uml/login.png}
+    \label{fig:seqdiag-login}
+    \caption{Login Sequence Diagrams}
+\end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{uml/join_queue.png}
+    \label{fig:seqdiag-join-queue}
+    \caption{Join Queue}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{uml/reserve_timeslot.png}
+    \label{fig:seqdiag-reserve-timeslot}
+    \caption{Reserve Timeslot}
+\end{figure}
 \subsection{Performance Requirements}
 The system backend needs to handle a fair amount of customers, but little amount of data. It needs to be scalable, capable of load-balancing and reactive in order to notify customers on time. Protection against denial of service attacks would be necessary.
 Since each store chain has to deploy its own version of this system, they should estimate server resources based on the average amount of customers visiting their stores.

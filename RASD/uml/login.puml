@@ -1,0 +1,24 @@
+@startuml login
+actor Customer as c
+participant CLup as sys
+participant "SMS Third Party" as sms
+
+c -> sys ++ : sendPhoneNumber
+sys -> sms ++ : sendSMSWithToken
+
+loop Until customer receives the token
+    alt Customer fails to receive the token
+        c -> sys : askNewToken
+        sys -> sms : sendSMSWithToken
+    else Customer successfully receives the token
+        return token
+        c -> sys : sendToken
+        alt The token is valid
+            sys --> c : success
+        else The token isn't valid, start over
+            return error
+        end
+    end
+end
+
+@enduml

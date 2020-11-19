@@ -1,0 +1,17 @@
+@startuml reserve timeslot
+actor Customer as c
+participant CLup as sys
+
+c -> sys ++ : retrieveStoreList
+return storeList
+
+c -> sys ++ : selectStore
+return storeDetails
+
+c -> sys ++ : retrieveAvailableTimeSlots
+return timeSlots
+
+c -> sys ++ : reserveTimeSlot
+return reservationReceipt
+
+@enduml
