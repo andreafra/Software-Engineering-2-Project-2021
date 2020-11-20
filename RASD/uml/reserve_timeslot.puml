@@ -1,4 +1,9 @@
 @startuml reserve timeslot
+skinparam dpi 300
+skinparam ActorFontSize 15
+skinparam UsecaseFontSize 12
+scale 1000 width
+
 actor Customer as c
 participant CLup as sys
 

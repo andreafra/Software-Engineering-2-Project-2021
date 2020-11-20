@@ -1,5 +1,12 @@
 @startuml
+
+skinparam dpi 300
+skinparam ActorFontSize 20
+skinparam UsecaseFontSize 15
+
 left to right direction
+
+
 Manager as m
 User as u
 "Authenticated User" as au
@@ -30,4 +37,5 @@ rectangle {
 
 
 }
+
 @enduml

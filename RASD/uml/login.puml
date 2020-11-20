@@ -1,4 +1,12 @@
 @startuml login
+
+skinparam dpi 300
+skinparam ActorFontSize 15
+skinparam UsecaseFontSize 12
+skinparam ParticipantPadding 150
+
+
+
 actor Customer as c
 participant CLup as sys
 participant "SMS Third Party" as sms
