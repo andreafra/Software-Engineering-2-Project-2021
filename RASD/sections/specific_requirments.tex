@@ -86,7 +86,7 @@ admitted to the store, otherwise they won't be able to enter.
 In order to provide its full functionality to all users, the system will make use of the following software interfaces (APIs):
 \begin{itemize}
     \item \textbf{Maps}: to implement the functionality allowing the Users to look for a store the system will interface with a digital map service. Store Managers will be able to register on the map the position of their store.
-    \item \textbf{Geolocalization}: geolocalization through GPS (when available) or other means (cellular, wifi or IP location) will be used in the web app and in the mobile app in order to show the User their current position and help them find a nearby store.
+    \item \textbf{Geolocalization}: geolocalization through GPS (when available) or other means (cellular, WI-FI or IP location) will be used in the web app and in the mobile app in order to show the User their current position and help them find a nearby store.
     \item \textbf{Mobile OS Notification Service}: notifications will be sent to warn and update Users in real time about their Reservations (if any) and the status of the Virtual Line (if it is joined).
     \item \textbf{SMS service}: an SMS with a secret code will be sent to the user upon login in order to verify their identity through a third party service.
 \end{itemize}
@@ -351,7 +351,7 @@ sequence/activity diagrams, and mapping on requirements
 
 
 
-\subsubsection*{Sequence Diagrams}
+\subsubsection{Sequence Diagrams}
 
 \begin{figure}[H]
     \centering
@@ -360,18 +360,20 @@ sequence/activity diagrams, and mapping on requirements
     \caption{Login Sequence Diagrams}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{uml/join_queue.png}
-    \label{fig:seqdiag-join-queue}
-    \caption{Join Queue}
-\end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{uml/reserve_timeslot.png}
-    \label{fig:seqdiag-reserve-timeslot}
-    \caption{Reserve Timeslot}
+    \begin{minipage}[b]{0.4\textwidth}
+      \includegraphics[width=\textwidth]{uml/join_queue.png}
+      \label{fig:seqdiag-join-queue}
+      \caption{Join Queue}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.4\textwidth}
+      \includegraphics[width=\textwidth]{uml/reserve_timeslot.png}
+      \label{fig:seqdiag-reserve-timeslot}
+      \caption{Reserve Timeslot}
+    \end{minipage}
 \end{figure}
 
 
@@ -420,7 +422,7 @@ The system infrastructure should have the lowest MTTR reasonably achievable; sho
 \subsubsection{Availability}
 The whole system doesn't need to be functional 24/7, but certain parts (i.e. backend for the web and mobile app) must be functional at all times; the totems can be powered off after a certain hour to save energy. The managers web portal should not be heavy on computing resources therefore it's feasible to keep it online all the time.
 \subsubsection{Security}
-To protect customers sensible data (i.e. phone number, visits to stores, location) the system should collect in first place the required minimum data possible, and store them in an encrypted database. The connections to the system should follow modern standard protocols (HTTPS over TLS) and be encryped as well. Since managers must log in with username and password, those data should be encrypted and the password salted and hashed. The system could provide additional security by enabling two-factor authentication  (2FA).
+To protect customers sensible data (i.e. phone number, visits to stores, location) the system should collect in first place the required minimum data possible, and store them in an encrypted database. The connections to the system should follow modern standard protocols (HTTPS over TLS) and be encrypted as well. Since managers must log in with username and password, those data should be encrypted and the password salted and hashed. The system could provide additional security by enabling two-factor authentication  (2FA).
 
 \subsubsection{Maintainability}
 The backend should be able to be updated without downtime, by using multiple instances behind a \emph{reverse proxy}.

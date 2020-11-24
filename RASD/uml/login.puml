@@ -1,10 +1,10 @@
 @startuml login
 
 skinparam dpi 300
-skinparam ActorFontSize 15
-skinparam UsecaseFontSize 12
-skinparam ParticipantPadding 150
-
+skinparam ActorFontSize 20
+skinparam UsecaseFontSize 20
+skinparam ParticipantPadding 70
+skinparam sequenceMessageAlign center
 
 
 actor Customer as c
@@ -14,16 +14,16 @@ participant "SMS Third Party" as sms
 c -> sys ++ : sendPhoneNumber
 sys -> sms ++ : sendSMSWithToken
 
-loop Until customer receives the token
-    alt Customer fails to receive the token
+loop Until token received
+    alt Missed token
         c -> sys : askNewToken
         sys -> sms : sendSMSWithToken
-    else Customer successfully receives the token
+    else Token received
         return token
         c -> sys : sendToken
         alt The token is valid
             sys --> c : success
-        else The token isn't valid, start over
+        else Invalid token, restart
             return error
         end
     end
