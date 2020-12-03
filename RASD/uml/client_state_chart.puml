@@ -7,6 +7,8 @@ skinparam UsecaseFontSize 12
 
 [*] --> signed_in : login
 signed_in -> store_selected : select_store
+signed_in --> filtered_stores : apply_filter
+filtered_stores -> store_selected : select_store
 store_selected -> waiting_in_line : join_line
 store_selected -> slot_reserved : book_a_visit
 waiting_in_line --> qr_code_scanned

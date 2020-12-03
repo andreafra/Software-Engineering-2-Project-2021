@@ -19,6 +19,7 @@ object totem{
 object customer{
     - phone_number
     - loyalty_card
+    - preferred store
 }
 object queue{
     - instant_ticket_list
