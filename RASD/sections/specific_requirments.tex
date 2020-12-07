@@ -3,22 +3,16 @@
 \subsection{External Interface Requirements}
 \subsubsection{User Interfaces}
 
-The application is designed to allow the customer to make a reservation for a certain hour
-or to register in the current queue of a supermarket. The first time the user opens the app,
-they are prompted to register for an account: they have to provide their mobile phone number
+The application is designed to allow the customer to make a reservation for a certain hour or to register in the current queue of a supermarket. The first time the user opens the app, they are prompted to register for an account: they have to provide their mobile phone number
 (Fig. \ref{fig:mockup-welcome}), then they'll receive an SMS with a confirmation code
 (Fig. \ref{fig:mockup-login}) to insert.
-If the code inserted is the one sent to the phone number inserted in the first screen, the
-account creation is successful.
+If the code inserted is the one sent to the phone number inserted in the first screen, the account creation is successful, otherwise the user can ask for a new SMS or go back and enter another phone number.
 
-If the registration is successful, the user can immediately see a map (Fig \ref{fig:select-store})
-with stores nearby their location (they might have to allow the app do receive their location through
-the OS API), otherwise they can manually search stores by typing an address.
-Stores are also listed by distance and queue length.
+After a successful registration, the user sees a map (Fig \ref{fig:select-store}) with stores nearby their current location (they might have to allow the app using their location through the OS API), otherwise they can manually search stores by typing an address. The user can narrow their search through filters (Fig. \ref{fig:filters}).
+Users can also see shortcuts to stores they have previously marked as ``favorites''.
 
 Upon selecting a store (Fig. \ref{fig:store-details}), the current number of people in queue is shown to the user,
-as well as the estimated waiting time in queue. They can choose to enter the queue as soon as
-possible, or to pick an available time slot.
+as well as the estimated waiting time in queue. They can choose to enter the queue as soon as possible, or to pick an available time slot. The system also suggests possible alternatives.
 
 If they choose to pick a time slot, they are shown a list of time slots sorted by day (Fig. \ref{fig:select-timeslot}).
 Upon confirmation, the user receive a receipt (Fig. \ref{fig:receipt}) with the date and time of their reservation,
@@ -26,7 +20,8 @@ and a QR code that they'll need to show when they present themselves at the stor
 
 Should the customer queue for the first available time slot, then they will receive a similar receipt (Fig. \ref{fig:queue-ticket}),
 that has a countdown of the time remaining in queue before their visit.
-\todo{Integrate with filters, preferred store, suggestions + new mockups}
+
+In either case, users can cancel their reservations/queue from the receipt screen.
 
 \begin{figure}[H]
     \caption{Mock-up of the Application User Interface}
@@ -42,11 +37,15 @@ that has a countdown of the time remaining in queue before their visit.
         \includegraphics[width=0.25\textwidth]{images/mockup/map-select.png}
         \label{fig:select-store}
     }
+    \subfloat[Filters]{
+        \includegraphics[width=0.25\textwidth]{images/mockup/filters.png}
+        \label{fig:filters}
+    }
+    \newline
     \subfloat[Store Details]{
         \includegraphics[width=0.25\textwidth]{images/mockup/store-detail.png}
         \label{fig:store-details}
     }
-    \newline
     \subfloat[Select Timeslot]{
         \includegraphics[width=0.25\textwidth]{images/mockup/time-slots.png}
         \label{fig:select-timeslot}
@@ -64,8 +63,7 @@ that has a countdown of the time remaining in queue before their visit.
 
 \subsubsection{Hardware Interfaces}
 
-To account for Customers without an Internet-connected device,
-an interactive totem (Fig. \ref{fig:totem}) with a touchscreen display should be made available at each store entrance.
+An interactive totem (Fig. \ref{fig:totem}) with a touchscreen display should be made available at each store entrance, to account for Customers that do not have an Internet connected device at their disposal.
 The totem is connected to Internet or the store local network.
 It mirrors the key features of the web application, but it doesn't require the customer to
 authenticate. Customers is able to enter the queue, but they won't be able to
@@ -434,7 +432,7 @@ The system infrastructure should have the lowest MTTR reasonably achievable; sho
 The whole system doesn't need to be functional 24/7, but certain parts (i.e. backend for the web and mobile app) must be functional at all times to allow user to book a visit at any hour of the day; the totems can be powered off after a certain hour to save energy. The managers web portal should not be heavy on computing resources therefore it's feasible to keep it online all the time.
 
 \subsubsection{Security}
-To protect customers sensible data (i.e. phone number, visits to stores, location) the system should collect in first place the required minimum data possible, and store them in an encrypted database. The connections to the system should follow modern standard protocols (HTTPS over TLS) and be encrypted as well. Since managers must log in with username and password, those data should be encrypted and the password salted and hashed. The system could provide additional security by enabling two-factor authentication  (2FA).
+To protect customers sensible data (i.e. phone number, visits to stores, location) the system should collect in first place the required minimum data possible, and store them in an encrypted database. The connections to the system should follow modern standard protocols (HTTPS over TLS) and be encrypted as well. Since managers must log in with username and password, those data should be encrypted and the password salted and hashed.
 
 \subsubsection{Maintainability}
 All the code produced should be well commented and tested. The system structure should provide the ability to deploy updates in the backend without the user noticing it. 
