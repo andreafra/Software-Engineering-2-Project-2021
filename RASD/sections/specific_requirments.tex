@@ -217,17 +217,10 @@ sequence/activity diagrams, and mapping on requirements
         \end{enumerate}
 }
 {
-    The customer is now in the queue waiting for their turn.
+    The customer is now in the queue waiting for their turn, and will receive notifications about the state of the queue.
 }
-{
-    \begin{itemize}
-        \item There is a major delay in the store. 
-        \item The time remaining to wait in the queue exeeds the opening hours of the store. 
-    \end{itemize}
-}
-{
-    When an exception occurs, the user has the possibility to remain in the queue or leave it. 
-}
+{}
+{}
 
 
 \usecase
@@ -250,14 +243,8 @@ sequence/activity diagrams, and mapping on requirements
 {
     The customer has now a pending reservation.
 }
-{
-    \begin{itemize}
-        \item There is a major delay.
-    \end{itemize}
-}
-{
-    When an exception occurs the reservation is either postponed with the confirmation of the user or automatically cancelled, depending on the estimated waiting time. 
-}
+{}
+{}
 
 
 \usecase
@@ -292,6 +279,7 @@ sequence/activity diagrams, and mapping on requirements
 {}
 {}
 
+
 \usecase
 {Join Local Queue}
 {Totem User}
@@ -307,6 +295,54 @@ sequence/activity diagrams, and mapping on requirements
 }
 {}
 {}
+
+
+\usecase
+{Enter Store from Queue}
+{Registered User, Totem User}
+{A user is in Queue.}
+{
+    \begin{enumerate}
+        \item The user waits until the ID on their ticket comes up on the ??? at the store or until a notification on the app appears.
+        \item The user enters the store by letting the totem read their QR code, shops, and exits the store.
+    \end{enumerate}
+}
+{
+    The user has shopped.
+}
+{
+    \begin{itemize}
+        \item There is a major delay in the store. 
+        \item The time remaining to wait in the queue exeeds the opening hours of the store. 
+    \end{itemize}
+}
+{
+    When an exception occurs, the user is asked to leave, through a notification on the app or at the store at the ???. 
+}
+
+\usecase
+{Enter Store from Reservation}
+{Authenticated User}
+{User has a reservation}
+{
+        \begin{enumerate}
+            \item The user reaches the store at the specified time.
+            \item The user enters the store by letting the totem read their QR code, shops, and exits the store.
+        \end{enumerate}
+}
+{
+    The user has shopped.
+}
+{
+    \begin{itemize}
+        \item There is a major delay.
+        \item The user does not reach the store in time.
+    \end{itemize}
+}
+{
+    When there is a major delay the reservation is either postponed with the confirmation of the user or automatically cancelled, depending on the estimated waiting time.
+    If the user does not reach the store in time the reservation is automatically canceled.
+}
 
 \usecase
 {Edit Store}
@@ -356,7 +392,6 @@ sequence/activity diagrams, and mapping on requirements
 }
 
 
-
 \subsubsection{Sequence Diagrams}
 
 \todo{Add another one?}
@@ -368,6 +403,12 @@ sequence/activity diagrams, and mapping on requirements
     \caption{Login Sequence Diagrams}
 \end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{uml/enter_queue.png}
+    \label{fig:seqdiag-enter_queue}
+    \caption{Enter Store from Queue Sequence Diagram}
+\end{figure}
 
 \begin{figure}[H]
     \centering
