@@ -1,0 +1,61 @@
+\documentclass[a4paper]{article}
+
+%------------------------------------------------------------------------------------
+% import packages
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault} 
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{xargs}
+\usepackage{graphicx}
+\usepackage[pdftex,dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage[position=top]{subfig}
+\usepackage{float}
+
+
+%------------------------------------------------------------------------------------
+% Margins
+\usepackage[margin=0.5in]{geometry}
+%\textwidth=426pt
+%\marginparwidth=100pt
+
+\begin{document}
+
+\begin{titlepage}
+	\centering
+    
+    {\normalsize 
+        Software Engineering 2 - Prof. Di Nitto Elisabetta \\ 
+		Dipartimento di Elettronica, Informazione e Bioingegneria \\
+        Politecnico di Milano \par
+    }     \vspace{3cm}
+
+    {\Huge \textbf{CLup - Customer Line-up\\} }    \vspace{1cm}
+  
+    {\large \textbf{DD\\Design Document} \par}     \vspace{4cm}
+
+	{\normalsize Andrea Franchini(10560276) \\ Ian Di Dio Lavore (10580652)\\ Luigi Fusco(10601210)\par}     \vspace{3cm}
+
+    \includegraphics[scale=0.4]{images/logo.pdf}
+    \vspace{0.5cm}
+
+	{\normalsize xx-xx-2020 \par}
+	
+\end{titlepage}
+
+\tableofcontents
+
+    \include{sections/introduction.tex}
+    \include{sections/architectural_design.tex}
+    \include{sections/user_interface_design.tex}
+    \include{sections/requirements_traceability.tex}
+    \include{sections/implementation_integration_test_plan.tex}
+    \include{sections/effort_spent.tex}
+    \include{sections/references.tex}
+
+    
+\end{document}
