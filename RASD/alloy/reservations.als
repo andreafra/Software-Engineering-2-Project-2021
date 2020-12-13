@@ -21,8 +21,9 @@ fact baseRespectedTime {
 
 // there are not valid concurrent reservation for the same slot
 fact noConcurrentReservation {
-	all disjoint r1, r2: Reservation | (r1.state = Ok and r2.state = Ok and r1.slot = r2.slot) =>
-		(r1.entrance >= r2.exit or r2.entrance >= r2.exit)
+	all disjoint r1, r2: Reservation | 
+		(r1.state = Ok and r2.state = Ok and r1.slot = r2.slot)
+	 		=> (r1.entrance >= r2.exit or r2.entrance >= r2.exit)
 }
 
 // if a reservation is cancelled it means that someone who came before was shopping slowly

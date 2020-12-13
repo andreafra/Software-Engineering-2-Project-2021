@@ -21,7 +21,8 @@ fact one_person_at_max_for_each_StoreSlot {
 
 assert no_StoreSlot_with_two_people{
  no disjoint t1,t2 : Ticket | (t1.slot = t2.slot) and
-  ( (t1.entrance<t2.entrance and t1.exit>=t2.entrance) or (t2.entrance<t1.entrance and t2.exit>=t1.entrance))
+  ( (t1.entrance<t2.entrance and t1.exit>=t2.entrance) or 
+  (t2.entrance<t1.entrance and t2.exit>=t1.entrance))
 }
 
 pred base {
