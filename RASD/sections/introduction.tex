@@ -43,11 +43,40 @@ This tool reaches the goal by offering a number of functionalities, including:
     \item physical alternatives for people that do not have Internet access
     \item monitor and dynamically restrict the amount of people allowed in a store
     \item book a visit, notifying customers of any change in the schedule
+    \item restrict the store selection by using filters 
     \item suggest alternative stores and/or time frames
     \item track the time spent in the store by customers to provide better estimate of waiting times
 \end{itemize}
 
+\subsubsection{World Phenomena}
+\begin{enumerate}[label={[WP\arabic*]}]
+    \item new law on the limit on the maximum number of people in a store
+    \item User reaches to the store
+    \item User enters the store
+    \item User exits the store
+    \item User wants to shop
+    \item User can't reach the store in time
+    \item new store is built
+    \item store is closed
+    \item maximum number of people in a store is reached
+\end{enumerate}
 
+\subsubsection{Shared Phenomena}
+\begin{enumerate}[label={[SP\arabic*]}]
+    \item User makes a reservation
+    \item User joins Queue
+    \item User cancels reservation
+    \item User leaves the Queue
+    \item System cancels reservation
+    \item System kicks User out of Queue
+    \item User scans the QR code
+    \item The system is notified that an User has finished shopping
+    \item The system let an allowed User enter the store 
+    \item Manager adds a store
+    \item Manager removes a store
+    \item Manager changes the maximum number of people allowed in a store
+    \item Manager changes time and size of reservation slots
+\end{enumerate}
 
 \subsubsection{Current System}
 While there are already existing similar services, some are usually independent from store chains and
@@ -76,11 +105,10 @@ CLup is a service that supermarket chains can implement alongside their existing
         \item allow users to join a virtual queue
         \item allow users to book a visit at a specific time
     \end{enumerate}
-    \item allow users with special needs to have priority over regular users
-    \item allow users to save time
-    \item allow managers to have control over the maximum number in a store
-    \item allow managers to get insights on the behavior of the users
-    \item allow managers to monitor the current status of the store
+    \item allow users with special needs to have priority over regular users by providing a dedicated   queue
+    \item allow users to save time by booking a reserved slot to do the groceries
+    \item allow managers to have control over the store by setting the maximum number of people or allocating slots for reservations, people in need, and queue
+    \item allow managers to monitor the current and past status of the store (for example, number of people in the store, fullness of the queues and slots) by tracking the enter/exit time of users
 \end{enumerate}
 
 \subsection{Definitions, Acronyms, Abbreviations}
@@ -115,6 +143,8 @@ CLup is a service that supermarket chains can implement alongside their existing
     \item {[Gn]}: n-goal.
     \item {[Dn]}: n-domain assumption.
     \item {[Rn]}: n-functional requirement.
+    \item {[WPn]}: n-world phenomenon.
+    \item {[SPn]}: n-shared phenomenon.
 \end{itemize}
 
 \subsection{Revision History}

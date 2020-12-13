@@ -1,0 +1,79 @@
+@startuml high_level_UML
+'--------------------------
+'settings
+skinparam dpi 300
+skinparam ActorFontSize 15
+skinparam UsecaseFontSize 12
+
+'--------------------------
+'OBJECTS
+object user{
+    - id
+}
+object manager{
+    - store
+}
+object totem{
+    - store
+}
+object customer{
+    - phone_number
+    - loyalty_card
+    - preferred store
+}
+object queue{
+    - instant_ticket_list
+    - current_load
+    - max_capacity
+}
+
+object slot{
+    - time_window
+    - capacity
+    - reservation_list
+}
+
+object reservation{
+    - time_slot
+}
+
+object ticket{
+    - id
+    - customer
+}
+
+object instant_ticket{
+    - creation_time
+}
+
+object store{
+    - name
+    - manager
+    - capacity
+    - current_load
+    - slot_list
+    - queue
+    - totem_list
+}
+
+'--------------------------
+'relations
+ticket <|-- reservation
+ticket <|-- instant_ticket
+
+store *-- slot
+store *-- queue
+store o-- manager
+store o-- totem
+
+queue *-- ticket
+
+slot *-- ticket
+
+customer o-- ticket
+
+user <|-- totem
+user <|-- manager
+user <|-- customer
+
+@enduml

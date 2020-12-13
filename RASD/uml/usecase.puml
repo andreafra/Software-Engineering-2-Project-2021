@@ -20,22 +20,17 @@ rectangle {
 
     u -- (Login)
 
-    (Book) -- au 
-    (Join\nLine) -- au 
-    (Leave\nLine) -- au 
-    (Cancel\nReservation) -- au
-    (Select\nStore) <-[dashed]- (Book)  : <<includes>>
-    (Select\nStore) <-[dashed]- (Join\nLine)  : <<includes>>
-
-    (Add\nStore) -[hidden]- (Select\nStore)
-    (Select\nStore) -[hidden]- (Leave\nLine)
-    (Select\nStore) -[hidden]- (Cancel\nReservation)
+    au -- (Book) 
+    au -- (Join\nLine) 
+    au -- (Leave\nLine) 
+    au -- (Cancel\nReservation)
+    au -- (Enter Store\nfrom Reservation)
+    au -- (Enter Store\nfrom Line)
+    (Book) -[dashed]-> (Select\nStore)  : <<includes>>
+    (Join\nLine) -[dashed]-> (Select\nStore)  : <<includes>>
 
     tu -- (Join\nLocal\nLine)
-    
-
-
-
+    tu -- (Enter Store\nfrom Line)
 }
 
 @enduml

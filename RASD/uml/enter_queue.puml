@@ -1,0 +1,25 @@
+@startuml login
+
+skinparam dpi 300
+skinparam ActorFontSize 20
+skinparam UsecaseFontSize 20
+skinparam ParticipantPadding 70
+skinparam sequenceMessageAlign center
+
+
+actor RegisteredCustomer as c
+participant Totem as tot
+participant CLup as sys
+
+
+c -> tot : showQR
+tot -> sys : askQROk
+alt Customer's turn
+    sys --> tot : ack
+    tot --> c : unlockGate
+else Not Customer's turn
+    sys --> tot : nack
+    tot --> c : reject
+end
+
+@enduml
