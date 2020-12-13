@@ -69,6 +69,7 @@ It mirrors the key features of the web application, but it doesn't require the c
 authenticate. Customers is able to enter the queue, but they won't be able to
 be notified of possible changes/delays. The reservation receipt is printed and the customer must keep it until they're
 admitted to the store, otherwise they won't be able to enter.
+The store will also have a monitor showing the current status of the queue and the users in queue who have to enter the store.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.25\textwidth]{images/totem.pdf}
@@ -114,8 +115,8 @@ sequence/activity diagrams, and mapping on requirements
     \item The System cancels User reservations in case of a major delay.
     \item The System enforces the limits on the allowed number of concurrent Customers inside a store by restricting the access at the entry points (for example, automatic doors or turnstile).
     \item The System grants a User with a reservation access only within a short time (set by the manager) after the User's time of reservation.
-    \item The System invalidates a User's reservation if they do not show up during a certain time interval.
-    \item The System reserves a portion of the allowed quote of customers for a special category of Users (pregnant women, elderly or people with disabilities) who should be granted priority access.
+    \item Allow System Managers to set the division of the maximum number of people allowed between the normal queue, the priority queue for people with special needs and the book a visit slot capacity.    
+    \item The System calculates the average shopping time by recording every time a user enters and exits the store.
     
     % System Managers
     \item Allow System Managers to set a limit to the people allowed into the store at a time.
@@ -123,7 +124,6 @@ sequence/activity diagrams, and mapping on requirements
     \item Allow System Managers to know the average time spent in the store.
     \item Allow System Managers to know the current and past number of people in the store.
     \item Allow System Managers to check the current status of the queue and of the time slots.
-    \item Allow System Managers to set the division of the maximum number of people allowed between the normal queue, the queue for people with special needs and the book a visit slot capacity.
     
 \end{enumerate}
 
@@ -132,17 +132,15 @@ sequence/activity diagrams, and mapping on requirements
         \hline
         \textbf{Goal} & \textbf{Requirements} & \textbf{Assumptions} \\
         \hline
-        G1 & R1, R2, R3, R4, R5, R6, R14 & D1, D2, D3, D5 \\ % G: Avoid crowds
+        G1 & R1, R2, R3, R4, R5, R6, R7, R10, R13, R14, R17 & D1, D2, D3, D5 \\ % G: Avoid crowds
         \hline
-        G2 & R3, R7, R8, R15 & D3, D4, D5 \\ % G: Priority Access
+        G2 & R15 & D3, D4, D5 \\ % G: Priority Access
         \hline
-        G3 & R5, R10 & D2, D5, D6\\ % G: Save time
+        G3 & R6, R7, R11, R12 & D2, D5, D6\\ % G: Save time
         \hline
-        G4 & R12, R13, R15, R16, R17 & D1, D3, D4 \\ % G: Set Max No. of Customers
+        G4 & R10, R13, R14, R15, R17, R18 & D1, D3, D4 \\ % G: Set Max No. of Customers and other parameters
         \hline
-        G5 & R18 & D3, D4, D5, D6 \\ % G: Statistics
-        \hline
-        G6 & R19 & D1, D3, D4, D5, D6 \\ % G: Monitor
+        G5 & R16, R19, R20, R21 & D1, D3, D4, D5, D6 \\ % G: Monitor and Statistics
         \hline
     \end{tabular}
 \end{center}
@@ -303,7 +301,7 @@ sequence/activity diagrams, and mapping on requirements
 {A user is in Queue.}
 {
     \begin{enumerate}
-        \item The user waits until the ID on their ticket comes up on the ??? at the store or until a notification on the app appears.
+        \item The user waits until the ID on their ticket comes up on the monitor at the store or until a notification on the app appears.
         \item The user enters the store by letting the totem read their QR code, shops, and exits the store.
     \end{enumerate}
 }
@@ -317,7 +315,7 @@ sequence/activity diagrams, and mapping on requirements
     \end{itemize}
 }
 {
-    When an exception occurs, the user is asked to leave, through a notification on the app or at the store at the ???. 
+    When an exception occurs, the user is asked to leave, through a notification on the app or at the store at the monitor. 
 }
 
 \usecase
