@@ -4,12 +4,87 @@
 
 \subsection{Purpose}
 
+The purpose of this document is to give a more detailed view of the \emph{Customers Line-up} system presented in the RASD, explaining architecture, components, processes and algorithms that will satisfy the RASD requirements.
+
+Because of its technical nature, it's aimed towards the software development team. It also includes instructions regarding the implementation, integration and testing plan.
+
 \subsection{Scope}
 
+\emph{Customers Line-Up} (CLup) is a system that allows supermarket managers to regulate the influx of people inside physical stores and reduce the time spent in queue by customers.
+
+The idea of CLup is being more akin to an open-source framework that can be adoped and improved modularly, rather than it being a closed-source product.
+
+In particular, CLup allows customers to search and then reserve a visit to a store, either at a specific time or as soon as possible, and get notifyied, if possible, when it's their turn or if there's been a delay in the schedule.
+
+Additionally, CLup aims to provide:
+\begin{itemize}
+    \item access to the service via mobile app or website
+    \item physical alternatives for people that do not have Internet access
+    \item book a visit, notifying customers of any change in the schedule
+    \item restrict the store selection by using filters
+    \item suggest alternative stores and/or time frames
+    \item monitor and dynamically restrict the amount of people allowed in a store
+    \item track the time spent in the store by customers to provide better estimate of waiting times
+\end{itemize}
+
+
 \subsection{Definitions, Acronyms, Abbreviations}
+
+\subsubsection{Definitions}
+
+\begin{itemize}
+    \item \emph{User} (also \emph{Customer} or \emph{Visitor}): A person that uses the system to shop at a store.
+    \item \emph{Registered User}: A User that has registered an Account within the System.
+    \item \emph{System Manager}: A stakeholder (owner, employee, manager etc.) of the Store chain that can tweak the parameters of the System and access informations and statistics.
+    \item \emph{Account}: A reference to a specific User in the System, that allows to track the User across multiple visits.
+    \item \emph{Reservation} (or \emph{Booking}): Arrangement made between a User and the System in which the System shall grant the User access to Store at the arranged time.
+    \item \emph{Visit}: The time frame in which the User enters the store, shops and exits.
+    \item \emph{Time slot}: The time at which a Customer with a Reservation is expected arrive at the store.
+    \item \emph{Store}: Any physical location (e.g.: building) where it is possible to utilize the System.
+    \item \emph{Totem}: A physical device with a touchscreen display and an attached printer that allows Customers to join the Virtual Queue.
+    \item \emph{Virtual Queue}: the virtual equivalent of a physical queue in front of the store, regulating the access of people by ordering them.
+    \item \emph{Web App}: A web application, consisting of a back-end and a front-end accessible from a web browser.
+    \item \emph{Line}: Synonim for \emph{queue}.
+\end{itemize}
+
+\subsubsection{Acronyms}
+
+\begin{itemize}
+    \item CLup: Customer Line-up
+    \item RASD: Requirement Analysis and Specification Document
+    \item API: Application Programming Interface
+    \item REST: REpresentational State Transfers
+    \item DB: Database
+    \item DBMS: Database Management System
+    \item GPS: Global Positioning System
+    \item MVC: Model-View-Controller (a design pattern)
+\end{itemize}
+
+
+\subsubsection{Abbreviations}
+
+\begin{itemize}
+    \item {[Gn]}: n-goal.
+    \item {[Dn]}: n-domain assumption.
+    \item {[Rn]}: n-functional requirement.
+\end{itemize}
 
 \subsection{Revision History}
 
 \subsection{Reference Documents}
 
+\begin{itemize}
+    \item Problem Specification Document: ``Assignment AY 2020-21.pdf''
+\end{itemize}
+
 \subsection{Document Structure}
+
+The first chapter gives an introduction of the design document and presents to the reader explanations for most of the acronyms and technical language that they'll encounter later in the document.
+
+The second chapter is about the architecture of the system, explaining the most important components, interfaces, patterns as well as deployment and runtime aspects of the system.
+
+The third chapter explains the connection between the UI presented in the RASD and the components presented in this document.
+
+The fourth chapter maps the requirements that have been defined in the RASD to the design elements defined in this document.
+
+The fifth chapter shows the order in which the subcomponents of the system will be implemented as well as the order in which subcomponents will be integrated and how to test the integration. 
