@@ -11,12 +11,12 @@ state end1 <<end>>
 visit_active -> visit_delayed : problem_occurs
 visit_active --> visit_cancelled : user_abort
 visit_active --> visit_cancelled : user_late
-visit_active -> visit_done : qr_code_scanned
+visit_active -> qr_code_scanned : scan_qr
 
 visit_delayed --> visit_cancelled : user_abort
-visit_delayed -> visit_done : qr_code_scanned
+visit_delayed -> qr_code_scanned : scan_qr
 
-visit_done --> end1
+qr_code_scanned --> end1
 visit_cancelled --> [*]
 
 @enduml

@@ -1,0 +1,17 @@
+@startuml visit_state_diagram
+hide empty description
+skinparam dpi 300
+skinparam ActorFontSize 15
+skinparam UsecaseFontSize 12
+
+[*] -> waiting_code : insert_phone_number
+waiting_code -> logged_in : insert_confirmation_code
+logged_in -> logged_in : add_favourites
+logged_in --> busy : join_line
+logged_in --> busy : make_reservation
+busy -> logged_in : cancel
+busy -> logged_in : shop
+
+logged_in --> [*] : log_out
+
+@enduml

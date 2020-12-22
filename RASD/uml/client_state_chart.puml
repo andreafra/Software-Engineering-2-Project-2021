@@ -5,15 +5,13 @@ skinparam dpi 300
 skinparam ActorFontSize 15
 skinparam UsecaseFontSize 12
 
-[*] --> signed_in : login
-signed_in -> store_selected : select_store
-signed_in --> filtered_stores : apply_filter
-filtered_stores -> store_selected : select_store
+[*] -> store_results : begin_search
+store_results --> store_selected : select_store
+store_results --> store_results : add_filter
 store_selected -> waiting_in_line : join_line
 store_selected -> slot_reserved : book_a_visit
 waiting_in_line --> qr_code_scanned
-slot_reserved --> qr_code_scanned
-qr_code_scanned --> signed_in
+slot_reserved --> qr_code_scanned : scan_qr
 qr_code_scanned --> [*]
 
 @enduml

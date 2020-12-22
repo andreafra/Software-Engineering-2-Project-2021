@@ -5,13 +5,14 @@
 \subsection{Product Perspective}
 
 Customers Line-Up is developed for both shop managers and customers.
-The intent is to provide functionalities adding value to the interactions between the two.
-Managers have access to a website that will help them to avoid large crowds inside and outside their stores, providing them with useful analytics.
-Customers may avoid queues by booking visits to stores via website or mobile application, and will be guided in selectiong the best place and time.
+The intent is to provide functionalities adding value to the interaction between the two.
+Managers will benefit from a service that will help them to avoid large crowds inside and outside their stores, while providing useful analytics.
+Customers will be able to join the Queue remotely, without having waste time standing in front of the store.
+Customers may avoid queues altogether by booking visits to stores via website or mobile application, and will be guided in selecting the best place and time according to their needs.
 Customers must register an account in order to utilize the website or the mobile app.
-Customers who do not possess an Internet-connected device may still utilize the service via physical totems outside the stores.
+Customers who do not possess an Internet-connected device may still utilize the service with restricted functionalities via physical totems outside the stores.
 
-The system will be developed from scratch, giving great flexibility and scalability.
+The system will be developed from scratch, giving great flexibility and opportunity for scalability.
 The privacy of the customers will be guaranteed according to the latest privacy related norms.
 
 \subsubsection{Entities diagram}
@@ -26,9 +27,16 @@ The privacy of the customers will be guaranteed according to the latest privacy 
 \subsubsection{State Diagrams}
 \begin{figure}[H]
     \centering
+    \includegraphics[width=1\textwidth]{uml/app_state.png}
+    \label{fig:app_state_diag}
+    \caption{Global states of the user application}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
     \includegraphics[width=1\textwidth]{uml/client_state_chart.png}
     \label{fig:client_state_diag}
-    \caption{Client state diagram}
+    \caption{Client visit state diagram}
 \end{figure}
 
 \begin{figure}[H]
@@ -74,21 +82,23 @@ The privacy of the customers will be guaranteed according to the latest privacy 
 The functions of Customer Line-Up can be clearly divided in two categories, based on the type of the stakeholder that is being addressed.
 
 \subsubsection{Manager functions}
-The manager is the owner of the store or store chain that is using the system.
+The manager is a particular stakeholder (usually the owner or a director) of the store or store chain that is using the system.
+It is defined at system deployment.
 The functions targeted at the manager regard the management of the queue and the knowledge of statistics about the behavior of the clients.
 The system will let managers select the type of commercial exercise (whether single store or chain), manage independently every physical store, select the number of slots dedicated to reservation and the ones dedicated to a regular queue, as well as to create a high-priority queue for special categories of customers.
 At the same time the system will provide info about the number of people who are currently in a store,
 how the number of people changes over time and the average visit length.
+Any number of manager accounts can be created, and the management of a single store can be granted to a subset of all managers.
 
 \subsubsection{Customer functions}
 The customer is the person who visits a store.
 The functions targeted at the customer regard the possibility of skipping queues.
-The system will let people book visits at specific time slots or queue up at the moment.
+The system will let people book visits at specific time slots or join the virtual queue at the moment.
 If the user is in the queue, they will be updated live with their estimated time of entrance in the store.
 If the user has booked a visit, they will be notified immediately if the system realizes that
-their visit has become unfeasible and automatically assign a new time or, in the worst case, cancel completely the visit.
+their visit has become unfeasible and automatically delay it or, in the worst case, cancel completely the visit.
 The system will offer the possibility of creating an account and of logging in.
-The system will allow the user to setup ad-hoc notification when specified conditions are met (for example a combination of store, days of the week and a timeframe).
+The system will allow the user to setup ad-hoc notification when specified conditions are met (for example when a free slot is made available at a specific combination of stores, days of the week and a timeframes).
 The system will enable the user to book a visit applying filters to stores based on the following criteria: distance from the current position of the user, available days of the week and time frame of the available slots.  
 
 
@@ -136,7 +146,7 @@ The system will enable the user to book a visit applying filters to stores based
 Customers Line-Up is mainly aimed at essential and widely used services.
 Because of this its audience will be wide and diversified, and the system will be easy to use and accessible in several of ways, accounting in particular for people with disabilities or people who are not familiar with technology.
 On one side of the system there is the system manager (single or multiple), who will monitor how the system is used and obtain useful information.
-They are usually already familiar with othe customer relationship managers and already know what to expext from a control panel.
+They are usually already familiar with other customer relationship managers and already know what to expext from a control panel.
 On the other side there is the customer, who uses the system in order to avoid boring lines and to prevent contact with others.
 The main categories of customer are:
 \begin{itemize}
