@@ -1,0 +1,84 @@
+@startuml db_structure
+
+skinparam {
+   dpi 300
+}
+
+'..... ENTITIES START......'
+together {
+    entity ticket{
+        **id**
+        status
+        creation_date
+    }
+
+    entity queue_ticket { 
+
+    }
+
+    entity reservation_ticket{
+            date_of_reservation
+    }
+}
+
+together {
+    entity user{
+        **id**
+        phone_number
+    }
+    entity free_timeslot_notification{
+        **id**
+        user
+        weekday
+        start_time
+        end_time
+    }
+}
+
+entity timeslot{
+    **id**
+    weekday
+    start_time
+    max_people_allowed
+    status
+}
+
+entity store{
+    **id**
+    name
+    address
+    max_capacity
+}
+
+entity admin{
+    **id**
+    username
+    password
+}
+
+
+
+'.... ENTITIES END ....'
+
+
+'.... RELATIONS START....'
+store }|--|{ admin : manages
+store }o--|| queue_ticket : has_queue
+store }o--|| timeslot : has_timeslot
+store }o--o{ user : fav_stores
+
+
+user }o--|| ticket : associated_with
+user }o--|| free_timeslot_notification : sets
+
+ticket <|-- queue_ticket
+ticket <|-- reservation_ticket
+
+reservation_ticket ||--o{ timeslot : associated_with
+
+
+'.... RELATIONS END .....'
+
+
+
+@enduml
