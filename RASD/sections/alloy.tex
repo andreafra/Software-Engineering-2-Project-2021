@@ -9,8 +9,7 @@ We implemented the concept of queue as a set of ordered Tickets.
 We made the assumption that each customer will stay at least one unit of time inside of the store to be able to model it through Alloy Int variables. 
 To create a fully populated world we used one fact to have all the slot assigned to at least one ticket. 
 We checked that no slot inside of the store is assigned to multiple people at the same time, by respecting the registered entrance and exit time. 
-
-\lstinputlisting[language=C, basicstyle=\small]{alloy/queue.als}
+\lstinputlisting[language=C, basicstyle=\ttfamily\footnotesize]{alloy/queue.als}
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{alloy/Line_Alloy.JPG}
@@ -24,7 +23,7 @@ Users who make a reservation expect to shop at the specific time of the reservat
 In extreme cases reservations can be automatically cancelled by the system.
 This should happen only in case of another user taking too long to shop.
 The objective of this Alloy model is to verify that the presence of two concurent reservations at the same slot implies that one of the two has been cancelled by the system.
-\lstinputlisting[language=C, basicstyle=\small]{alloy/reservations.als}
+\lstinputlisting[language=C, basicstyle=\ttfamily\footnotesize]{alloy/reservations.als}
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{alloy/Reservation_Alloy.JPG}
