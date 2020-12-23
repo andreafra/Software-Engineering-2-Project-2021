@@ -51,5 +51,22 @@ The main components are the following:
 
 \subsection{Selected Architectural Styles and Patterns}
 %  Please explain which styles/patterns you used, why and how
+\subsubsection{Architectural Styles}
+\paragraph{Thick Client}
+The main characteristic of thick clients is offering a wide variety of functionalities independent from the central server.
+The main advantages it offers are greater decoupling of frontend and backend and a reduced computational effort on the application server.
+Recent years have seen a rise in the adoption of single page application, with the advent of rich framework which allow to write code that can be run both in an app and in the browser.
+This allows developers to reuse great part of code across a large number of devices, all using the same API offered by the backend.
+The one page application will be served by a dedicated static webserver, which logically separate from the rest of the system.
+
+\paragraph{REST API}
+REST is an architectural style centered around the definition of a uniform and predefined set of stateless operations defined on top of the HTTP protocol.
+Its main advantages are simplicity, scalability and modifiability.
+
+\paragraph{Three layer architecture}
+Separating presentation, business, and data layers offers great flexibility, maintainability and scalability.
+This combined with a thick client means that the only communication between the client and the server goes trough a predefined API, without having to worry about eachother's internal representation.
+
+\subsubsection{Patterns}
 
 \subsection{Other Design Decisions}
