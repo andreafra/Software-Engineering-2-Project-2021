@@ -218,7 +218,7 @@ sequence/activity diagrams, and mapping on requirements
 {Authenticated User selects a Supermarket in the application}
 {
         \begin{enumerate}
-            \item The Authenticated User pushes the "Queue Now" button.
+            \item The Authenticated User clicks the "Queue Now" button.
             \item The system provides the Queue Receipt with the generated QR code and the estimated time remaining.
         \end{enumerate}
 }
@@ -237,7 +237,7 @@ sequence/activity diagrams, and mapping on requirements
         \begin{enumerate}
             \item One of the following path:  
             \begin{enumerate}
-                \item The Authenticated User pushes the "Make a Reservation" button.
+                \item The Authenticated User clicks the "Make a Reservation" button.
                 \begin{itemize}
                     \item The user chooses a suitable time among the available ones.
                 \end{itemize}
@@ -275,8 +275,9 @@ sequence/activity diagrams, and mapping on requirements
 {Authenticated user enters the home page of the application and has a pending Reservation.}
 {
     \begin{enumerate}
+        \item The user clicks on the button "My Reservation".
         \item The Authenticated User clicks the "Cancel Current Reservation" button.
-        \item The Authenticated User confirms the selection.
+        \item The Authenticated User confirms their choice.
     \end{enumerate}
 }
 {
@@ -310,20 +311,22 @@ sequence/activity diagrams, and mapping on requirements
 {
     \begin{enumerate}
         \item The user waits until the ID on their ticket comes up on the monitor at the store or until a notification on the app appears.
-        \item The user enters the store by letting the totem read their QR code, shops, and exits the store.
+        \item The user enters the store by letting the totem read their QR code.
     \end{enumerate}
 }
 {
-    The user has shopped.
+    The user may now do shopping.
 }
 {
     \begin{itemize}
         \item There is a major delay in the store. 
         \item The time remaining to wait in the queue exeeds the opening hours of the store. 
+        \item The ticket is wrong or can't be read.
     \end{itemize}
 }
 {
-    When an exception occurs, the user is asked to leave, through a notification on the app or at the store at the monitor. 
+    If the ticket can't be approved by the system, the user has to enter the queue again.
+    If the shop is going to close soon, the user is asked to leave, through a notification on the app or at the store at the monitor. 
 }
 
 \usecase
@@ -337,17 +340,19 @@ sequence/activity diagrams, and mapping on requirements
         \end{enumerate}
 }
 {
-    The user has shopped.
+    The user may now do shopping.
 }
 {
     \begin{itemize}
         \item There is a major delay.
         \item The user does not reach the store in time.
+        \item The ticket is wrong or can't be read.
     \end{itemize}
 }
 {
-    When there is a major delay the reservation is either postponed with the confirmation of the user or automatically cancelled, depending on the estimated waiting time.
+    If the ticket can't be approved by the system, the user has to enter the queue again.
     If the user does not reach the store in time the reservation is automatically canceled.
+    When there is a major delay the reservation is either postponed with the confirmation of the user or automatically cancelled, depending on the estimated waiting time.
 }
 
 \usecase

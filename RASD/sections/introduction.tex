@@ -4,54 +4,51 @@
 
 
 \subsection{Purpose}
-This document is the Requirement Analysis and Specification Document for the Customers Line-Up system.
-The purpose of this document is to describe the system focusing on scenarios, use cases, requirements and 
-specifications, analyzing what the software will do, how it will be used and the constraints under which it
-will operate. This document is intended both for users and developers.
+The following document is the Requirement Analysis and Specification Document for the Customers Line-Up system.
+This document provides a description of the system focusing on requirements and specifications, with the aid of scenarios and use cases, in order to analyze what the software will do, how it will be used and the constraints under which it will operate. 
+
+This document is intended both for any stakeholder.
 
 \subsection{Scope}
 %\info{here we include an analysis of the world and of the shared phenomena}
-In recent times, it has become clear that avoiding gathering of groups of people in small spaces is critical
-for the safety of the population. During lockdowns some places become more crowded than others. 
-This reason lead to the development of various solutions, all resulting roughly in restricting the capacity
-of a building, without having a real knowledge of the number of people inside (as ofter required by the law).
+In the past year it has become clear that preventing large groups of people from gathering in small spaces is critical for the safety and health of the population, especially in case of an epidemic such as the SARS-COV-2.
 
-A definitive and well-articulated system is still missing, especially considering that most people aren't much
-tech-savvy, and especially elderly aren't familiar with the Internet.
+This reason lead to the development of various solutions, all resulting roughly in restricting the capacity of a building, but without having a real knowledge of the number of people inside (as ofter required by the law).
+
+There isn't a pervasive well-articulated system yet, because most people aren't very tech-savvy, and especially elderly aren't familiar with the Internet.
 According to recent statistics\footnote[1]{\url{https://www.istat.it/it/archivio/216672}}, in Italy over 30\% of the population has
-never used the Internet, in particular only the 10\% of 75+ years old regularly use it; on the other hand many of
-those able to surf the web do it through a smartphone and lack digital skills.
+never used the Internet, in particular only the 10\% of 75+ years old regularly use it; on the other hand many of those able to surf the web do it through a smartphone and lack digital skills.
 
-The proposed system will focus on solving the problem posed by queues in front of groceries stores but it could
-be generalized for queues handling in multiple scenarios.
+The proposed system will focus on solving the problem posed by queues in front of groceries stores but it could be generalized and extended for queues handling in multiple scenarios.
+It aims to be simple and straightforward, in order to reach as many people as possible.
 
-\emph{Customers Line-Up} (CLup) is a system that allows supermarket managers to regulate the influx of people
-inside physical stores and giving customers a way to drastically reduce (or remove completely) the time spent
-waiting in a queue. The idea of CLup is being more akin to an open-source framework that can be adoped and improved, rather
-than it being a closed-source product.
+\emph{Customers Line-Up} (CLup) is a system that allows supermarket managers to regulate the influx of people inside physical stores and gives customers a way to drastically reduce (or remove completely) the time spent
+waiting in front of a store, by letting them book a timeslot in advance, or by notifying them when they're about to be granted access to a store.
 
-This tool reaches the goal by offering a number of functionalities, including:
+The idea of CLup is being more akin to an open-source framework that can be adoped and improved by store chains, rather being a closed-source off-the-shelf product, but that is still easy to deploy with minimal configuration.
+
+The proposed system achieves its goal by offering a number of functionalities, including:
 \begin{itemize}
-    \item access to the service via mobile app or website
-    \item physical alternatives for people that do not have Internet access
-    \item monitor and dynamically restrict the amount of people allowed in a store
-    \item join a virtual queue avoiding waits in front of the store
-    \item book a visit, notifying customers of any change in the schedule
-    \item suggest alternative stores and/or time frames when the preferred ones are not available
-    \item track the time spent in the store by customers to provide better estimate of waiting times
+    \item joining a virtual queue avoiding waits in front of the store
+    \item accessing to the service via mobile app or website
+    \item providing physical alternatives for people that do not have Internet access
+    \item booking a visit, notifying customers of any change in the schedule
+    \item suggesting alternative stores and/or time frames when the preferred ones are not available
+    \item allowing managers to monitor and dynamically restrict the amount of people allowed in a store
+    \item tracking the time spent in the store by customers to provide better estimate of waiting times
 \end{itemize}
 
 \subsubsection{World Phenomena}
 \begin{enumerate}[label={[WP\arabic*]}]
-    \item new law on the limit on the maximum number of people in a store
+    \item Introduction of a new regulation on the limit on the maximum number of people in a store
     \item User reaches to the store
     \item User enters the store
     \item User exits the store
     \item User wants to shop
     \item User can't reach the store in time
-    \item new store is built
-    \item store is closed
-    \item maximum number of people in a store is reached
+    \item A new store is opened for the first time
+    \item A store is closed
+    \item The maximum allowed number of people in a store is reached
 \end{enumerate}
 
 \subsubsection{Shared Phenomena}
@@ -61,11 +58,11 @@ This tool reaches the goal by offering a number of functionalities, including:
     \item User cancels reservation
     \item User leaves the Queue
     \item System cancels reservation
-    \item System kicks User out of Queue
+    \item System removes User from the Queue
     \item User scans the QR code
-    \item The system is notified that an User has finished shopping
+    \item The system is notified that a User has finished shopping
     \item The system let an allowed User enter the store 
-    \item Manager adds a store
+    \item Manager adds a store to the System
     \item Manager removes a store
     \item Manager changes the maximum number of people allowed in a store
     \item Manager changes time and size of reservation slots
@@ -108,16 +105,16 @@ CLup is a service that supermarket chains can implement alongside their existing
 
 \subsubsection{Definitions}
 \begin{itemize}
-    \item \emph{User} (also \emph{Customer} or \emph{Visitor}): A person that uses the system to shop at a store.
+    \item \emph{User} (also \emph{Customer}): A person that uses the system to shop at a store.
     \item \emph{Registered User}: A User that has registered an Account within the System.
-    \item \emph{System Manager}: Any stakeholder (owner, employee, manager etc.) of the Store chain that can tweak the parameters of the System and access informations and statistics.
+    \item \emph{System Manager} (also \emph{Store Manager}): Any stakeholder (owner, employee, manager etc.) of the Store chain that can tweak the parameters of the System and access informations and statistics.
     \item \emph{Account}: A reference to a specific User in the System, that allows to track the User across multiple visits.
     \item \emph{Reservation} (or \emph{Booking}): Arrangement made between a User and the System in which the System shall grant the User access to Store at the arranged time.
     \item \emph{Visit}: The time frame in which the User enters the store, shops and exits.
     \item \emph{Time slot}: The time at which a Customer with a Reservation is expected arrive at the store.
-    \item \emph{Store}: Any physical location (e.g.: building) where it is possible to utilize the System.
-    \item \emph{Totem}: A physical device with a touchscreen display and an attached printer that allows Customers to join the Virtual Queue.
+    \item \emph{Store}: Any physical location (e.g.: building, a grocery store\dots) where it is possible to utilize the System.
     \item \emph{Virtual Queue}: the virtual equivalent of a physical queue in front of the store, regulating the access of people by ordering them.
+    \item \emph{Totem}: A physical device with a touchscreen display and an attached printer that allows Customers to join the Virtual Queue.
     \item \emph{Web App}: A web application, consisting of a back-end and a front-end accessible from a web browser.
     \item \emph{Line}: Synonim for \emph{queue}.
 \end{itemize}

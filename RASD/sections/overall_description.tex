@@ -4,16 +4,16 @@
 
 \subsection{Product Perspective}
 
-Customers Line-Up is developed for both shop managers and customers.
-The intent is to provide functionalities adding value to the interaction between the two.
+Customers Line-Up is developed for both store managers and customers.
 Managers will benefit from a service that will help them to avoid large crowds inside and outside their stores, while providing useful analytics.
+Customers must register an account in order to utilize the website or the mobile app.
 Customers will be able to join the Queue remotely, without having waste time standing in front of the store.
 Customers may avoid queues altogether by booking visits to stores via website or mobile application, and will be guided in selecting the best place and time according to their needs.
-Customers must register an account in order to utilize the website or the mobile app.
 Customers who do not possess an Internet-connected device may still utilize the service with restricted functionalities via physical totems outside the stores.
+Once a Customer has either entered the queue or booked a visit, a digital ticket (that can be printed) will be emitted, and they shall show it at the store entrace in order to be granted access to the store.
 
 The system will be developed from scratch, giving great flexibility and opportunity for scalability.
-The privacy of the customers will be guaranteed according to the latest privacy related norms.
+The privacy of the customers will be guaranteed according to the latest privacy standards.
 
 \subsubsection{Entities diagram}
 \begin{figure}[H]
@@ -75,32 +75,29 @@ The privacy of the customers will be guaranteed according to the latest privacy 
             logs in with her credentials, and navigates to the correct section, then she increase the number of customers allowed without reservation. The system
             automatically decreases the number of customers allowed by booking with the app.
         \item \textbf{Store employee creates fast-line ticket for pregnant lady}\\
-            The store manager has enabled a dedicated queue for pregnant ladies and people with disabilities
-            Mark is the store employee assigned to control the flow at the entrance of the store. Laura is a pregnant lady that hasn't got a reservation, but she deserves a ticket for the dedicated queue (or even instant access if possible). Laura goes to Mark and asks him to provide her with a fast-line ticket. Mark uses his credential on the totem to create a special ticket and gives it to Laura. Laura enters the store with the provided ticket and is able to get the things that she needed.         
+            The local manager of a store has enabled a dedicated queue for pregnant ladies and people with disabilities.
+            Mark is the store employee assigned to control the access at the store entrance. Laura is a pregnant lady that doesn't have a reservation, but she is eligible for the dedicated queue (or even instant access when possible). Laura goes to Mark and asks him to provide her with a fast-line ticket. Mark uses his credential on the totem to create a special ticket and gives it to Laura. Laura enters the store with the provided ticket and is able to get the things that she needed.         
         \end{enumerate}
 \subsection{Product Functions}
 The functions of Customer Line-Up can be clearly divided in two categories, based on the type of the stakeholder that is being addressed.
 
 \subsubsection{Manager functions}
 The manager is a particular stakeholder (usually the owner or a director) of the store or store chain that is using the system.
-It is defined at system deployment.
+At least one manager is defined at system deployment.
 The functions targeted at the manager regard the management of the queue and the knowledge of statistics about the behavior of the clients.
 The system will let managers select the type of commercial exercise (whether single store or chain), manage independently every physical store, select the number of slots dedicated to reservation and the ones dedicated to a regular queue, as well as to create a high-priority queue for special categories of customers.
-At the same time the system will provide info about the number of people who are currently in a store,
-how the number of people changes over time and the average visit length.
+At the same time the system will provide info about the number of people who are currently in a store, how the number of people changes over time and the average visit length.
 Any number of manager accounts can be created, and the management of a single store can be granted to a subset of all managers.
 
 \subsubsection{Customer functions}
 The customer is the person who visits a store.
-The functions targeted at the customer regard the possibility of skipping queues.
+The functions targeted at the customer aim to reduce or possibly eliminate queues, while optimizing waiting times.
 The system will let people book visits at specific time slots or join the virtual queue at the moment.
-If the user is in the queue, they will be updated live with their estimated time of entrance in the store.
-If the user has booked a visit, they will be notified immediately if the system realizes that
-their visit has become unfeasible and automatically delay it or, in the worst case, cancel completely the visit.
-The system will offer the possibility of creating an account and of logging in.
-The system will allow the user to setup ad-hoc notification when specified conditions are met (for example when a free slot is made available at a specific combination of stores, days of the week and a timeframes).
+If the user is in the queue, they will be notified real-time about their estimated time of entrance in the store.
+If the user has booked a visit, they will be notified immediately if the system realizes that their visit has become unfeasible and automatically delay it or, in the worst case, cancel completely the visit.
+Users must create an account and log in in order to use the service.
+The system will allow the user to setup ad-hoc notification when specified conditions are met (i.e. when a free slot is made available at a specific store, in certain days of the week or in a certain time frame).
 The system will enable the user to book a visit applying filters to stores based on the following criteria: distance from the current position of the user, available days of the week and time frame of the available slots.  
-
 
 \begin{comment}
 \begin{itemize}
@@ -143,11 +140,13 @@ The system will enable the user to book a visit applying filters to stores based
 \end{comment}
 
 \subsection{User Characteristics}
-Customers Line-Up is mainly aimed at essential and widely used services.
-Because of this its audience will be wide and diversified, and the system will be easy to use and accessible in several of ways, accounting in particular for people with disabilities or people who are not familiar with technology.
+Customers Line-Up is mainly aimed at essential and widely used store such as grocery stores.
+Because of this its audience will be wide and diverse, so the system needs to be easy to use and accessible, also accounting for people with disabilities or people who are not familiar with technology.
+
 On one side of the system there is the system manager (single or multiple), who will monitor how the system is used and obtain useful information.
-They are usually already familiar with other customer relationship managers and already know what to expext from a control panel.
-On the other side there is the customer, who uses the system in order to avoid boring lines and to prevent contact with others.
+They might be already familiar with other customer relationship management systems and already know what to expect from a control panel. Nonetheless, the control panel will still be easy to understand and accessible.
+
+On the other side there is the customer, who uses the system in order to avoid queues and prevent contact with others.
 The main categories of customer are:
 \begin{itemize}
     \item \textbf{Tech-friendly}\\
@@ -155,7 +154,7 @@ The main categories of customer are:
         They are able to use the system in an autonomous way and are the ones who will benefit the most from the more complex and advanced features.
     \item \textbf{Tech-unfriendly}\\
         People who are not familiar with modern technologies. They have problems navigating complex application, and are more accustomed to talking to humans.
-        They might need aid using the system or misuse the system. They benefit from a system designed around clarity and simplicity, or from different, easier ways of using the system.
+        They might need aid using the system or misuse the system. They benefit from a system designed around clarity and simplicity.
         This category includes people with disabilities.
 \end{itemize}
 
@@ -167,7 +166,7 @@ The objective of Customers Line-Up is to be as inclusive as possible, providing 
 \begin{enumerate}[label={[D\arabic*]}]
     \item The number of people in a store cannot go over a certain fixed amount.
     \item If an user enters the store they will exit the store before it closes.
-    \item The system reliably counts (e.g. with a turnstyle, through an employee) the number of people entering and exiting the store.
+    \item The system reliably counts the number of people entering and exiting the store (e.g. with a turnstyle, through an employee at the entrance\dots).
     \item There's no mismatch between the real state of the store and its representation by the system.
     \item A customer cannot enter the store without using the system.
     \item External software dependencies the system relies on always provide true data and never fail.

@@ -3,6 +3,7 @@
 %------------------------------------------------------------------------------------
 % import packages
 \usepackage[scaled]{helvet}
+\usepackage{courier}
 \renewcommand\familydefault{\sfdefault} 
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
@@ -17,14 +18,15 @@
 \usepackage{graphicx}
 \usepackage{listings}
 
-
-
 %------------------------------------------------------------------------------------
 % Margins
 \usepackage[margin=1in]{geometry}
 %\textwidth=426pt
 %\marginparwidth=100pt
 
+%---------------
+% Set TOC Depth
+\setcounter{tocdepth}{2}
 
 %------------------------------------------------------------------------------------
 % commands definition
@@ -77,21 +79,16 @@
 
     \includegraphics[scale=0.4]{images/logo.pdf}     \vspace{0.5cm}
 
-	{\normalsize xx-xx-2020 \par}
+	{\normalsize 23-12-2020 \par}
 	
 \end{titlepage}
 
-\listoftodos
+%\listoftodos
 
 \tableofcontents
-
     \include{sections/introduction.tex}
-    
     \include{sections/overall_description.tex}
-
     \include{sections/specific_requirments.tex}
-
     \include{sections/alloy.tex}
-
-    
+    \include{sections/effort.tex}
 \end{document}
