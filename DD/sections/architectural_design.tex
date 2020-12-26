@@ -53,6 +53,18 @@ In order to keep consistency with Reservation Tickets, Timeslots are immutable a
 
 
 \subsection{Deployment View}
+Our system is composed of two independent components: a completely static webserver will be the access point where the client devices will fetch the one-page application, while the application server will offer the APIs to make it work.
+For this reason we decided to use two different solutions.
+
+The static webserver will make use of Cloudflare's content delivery network, in order to guarantee immediate response thanks to its edge location caches and reverse proxies.
+
+The application server, composed of a business logic and a data tier, will be hosted on Amazon Web Services, making for easy scalability, replication, and load balancing.
+
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{images/draw.io/deployment.pdf}
+    \caption{Deployment View}
+    \label{fig:deployment-view}
+\end{figure}
 
 \subsection{Runtime View}
 % You can use sequence diagrams to describe the way components interact
