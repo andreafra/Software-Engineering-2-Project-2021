@@ -32,6 +32,17 @@ The main components are the following:
 \end{figure}
 
 \subsubsection{Data Base Structure}
+The Data layer is composed of a relational database, and its associated DBMS will have the duty of processing and executing parallel requests.
+
+Users and Admins will be stored in different tables.
+Users can set up Free Timeslots Notifications, in order to be notified when a Timeslot at a specific day in a specific time range is made available for one of the favorite stores.
+Users have an association with their Tickets, which include both Queue Tickets and Reservation Tickets.
+In order to preserve the history of Users and for making data analytics possible, Tickets are never deleted, but instead are associated with a status indicating if they are currently active or already used.
+Each Admin manages a number of Stores, having the power of changing their capacity or all details about their associated Timeslots.
+Timeslots refer to a specific weekday and have an associated time.
+In order to keep consistency with Reservation Tickets, Timeslots are immutable and never modified. Their status is instead set to inactive, and another Timeslot is created whenever a change has to be made.
+
+
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{uml/db_structure.png}
     \caption{Data Base main structure}
