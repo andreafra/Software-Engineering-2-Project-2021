@@ -1,0 +1,32 @@
+@startuml seq_register_new_account
+
+skinparam {
+   dpi 300
+}
+
+actor Alice as a
+participant Account_Manager as am
+participant SMS_API as sms
+participant Query_Manager as qm
+database DBMS as db
+
+a -> a : Input phone number
+a -> am : createNewAccount (phoneNum)
+am -> qm : checkPhoneNumberPresence (phoneNum)
+qm -> db : lookupIntoUserTable (phoneNum)
+alt user already registered
+    db -> qm : Match found!
+    qm -> am : Phone number is already present!
+    am->a : <<ERROR>> Phone number already used!
+    |||
+else creation successfull
+    db -> qm : No match found!
+    qm -> am : Phone number not taken!
+    am -> sms : sendVerificationCode (phoneNum,code)
+    sms -> a : Send SMS with code
+    a -> a : Input verification code
+    a -> am : verifyPhoneNumber(phoneNum, code)
+    am -> a : <<OK>> Registraion successful!
+end
+
+@enduml
