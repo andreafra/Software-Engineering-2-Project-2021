@@ -1,0 +1,61 @@
+@startuml seq_search_store
+
+skinparam {
+   dpi 300
+}
+
+actor Alice as a
+participant Store_Search as ss
+participant Reservation_Mng as rm
+participant Queue_Mng as queue
+participant Query_Manager as qm
+database DBMS as db
+
+a -> ss : provideStores ( [optional] filters, currentLocation )
+activate ss 
+ss -> qm : getStoreIds (location, [optional] filters)
+activate qm
+qm -> db : lookIntoStoreTable(location, [optional] filters)
+
+alt No Store matches the query
+    db --> qm : No stores found!
+    qm --> ss : Zero stores found!
+    ss --> a  : <<WARNING>> No store found!
+    |||
+else Stores found
+    db --> qm : IDs of stores
+    qm --> ss : IDs of stores
+    deactivate qm
+    ss --> a : <<OK>> Those are the stores ID's
+    deactivate ss
+    |||
+    loop for all the IDs received
+        a->rm : getReservationInfo (storeID)
+        activate rm
+        rm -> qm : getReservationInfoOnStore (storeID)
+        activate qm
+        qm -> db : lookIntoReservationOfStore (storeID)
+        db --> qm : Avaiable timeslots and respective emptyness
+        qm --> rm : ReservationInfos of storeID
+        deactivate qm
+        rm --> a : <<OK>> Reservation info of storeID
+        deactivate rm
+        |||
+        a-> queue : getQueueInfo (storeID)
+        activate queue
+        queue -> qm : getQueueInfoOnStore (storeID)
+        activate qm
+        qm -> db : lookIntoQueueOfStore (storeID)
+        db --> qm : Queue status
+        qm --> queue : Queue info of storeID
+        deactivate qm
+        queue --> a : <<OK> Queue info of storeID
+        deactivate queue
+        |||
+    end
+    |||
+end
+
+
+
+@enduml
