@@ -31,9 +31,31 @@ The main components are the following:
     \label{fig:component}
 \end{figure}
 
-% What the UML show, what are the blocks, what they do, explain in detail what each block does.
+\subsubsection{App Components}
+The application component makes up the entire frontend logic of the system.
+The role of the application component is to interface the user with the application server API, rendering interfaces and requesting data upon requests. As the entire UI is encoded in the application component, only a minimum amount of data will be passed between frontend and backend, reducind useless and repetitive traffic.
+The application component is divided in three main subcomponents, each targeted at a different type of user:
+\begin{itemize}
+    \item \textbf{Web and Mobile App} are targeted at the user. They contain all the logic required to request and display information about stores, reservation, and queues. They are united in a single component as they will share most of the code and will use the same exact API
+    \item \textbf{Totem} will be deployed in the totems inside the store. They require a more limited set of functionalities compared to the user components (namely, the possibility of joining the queue). Additionally, it will send request to the Application Server in order to validate tickets. On the UX side, it will contain the functionality needed to print tickets and to display the current status of the queue.
+    \item \textbf{Admin Web App} is intended for internal use only. It is the platform through which the store managers will add, remove and manage the stores. It will connect to a different API than the other two components in order to separate the functionalities and the responsibilities as much as possible.
+\end{itemize}
 
-\subsubsection{Database Structure}
+
+\subsubsection{Application Server Components}
+The Application Server Components contain all the business logic needed to provide the functionalities of the application, communicating with the DBMS when needed and responding to queries sent by the App Components. Its structure is loosely coupled, with only few components relying on the services offered by other components.
+The Application Server Components are:
+\begin{itemize}
+    \item \textbf{Account Manager} handles everything related to user accounts. In particular it will offer functionalities related to creating new accounts, logging in, and setting preferences and notifications. When creating an account it will communicate with an external \textbf{SMS API} in order to send confirmation codes. \myworries{add something related to notifications!}
+    \item \textbf{Store Search} will provide functionalities related to searching stores at specific locations and with filters that will be set by the user
+    \item \textbf{Reservation Manager}
+    \item \textbf{Queue Manager}
+    \item \textbf{Ticket Validator}
+    \item \textbf{Account Admin Services}
+    \item \textbf{Query Manager}
+\end{itemize}
+
+\subsubsection{Data Components}
 The Data layer is composed of a relational database, and its associated DBMS will have the duty of processing and executing parallel requests.
 
 Users and Admins will be stored in different tables.
