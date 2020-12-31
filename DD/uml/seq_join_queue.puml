@@ -1,0 +1,18 @@
+@startuml seq_join_queue
+
+actor User as a
+participant QueueManager as queue
+participant QueryManager as qm
+database DBMS as db
+
+a -> a : Select Store
+a -> queue : joinQueue(storeId)
+activate queue
+queue -> qm : addUserToQueue(userId, storeId, receiptId)
+qm -> db : addUserToQueue(userId, storeId, receiptId)
+db --> qm : <OK>
+qm --> queue : <OK>
+queue --> a : Receipt
+deactivate queue
+
+@enduml

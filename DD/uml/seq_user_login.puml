@@ -1,0 +1,37 @@
+@startuml seq_user_login
+
+actor User as a
+participant Account_Manager as am
+participant SMS_API as sms
+participant Query_Manager as qm
+database DBMS as db
+
+a -> a : Input phone number
+a -> am : loginWithPhoneNumber(phoneNum)
+am -> qm : checkIfPhoneNumberIsPresent (phoneNum)
+qm -> db : queryUser (phoneNum)
+alt user already registered
+    db --> qm : user tuple
+    qm --> am : user data
+    |||
+else user not registered
+    db --> qm : No match found!
+    qm -> am : Phone number not taken!
+end
+    am -> sms : sendVerificationCode (phoneNum,code)
+    sms --> a : Send SMS with code
+    a -> a : Input received SMS code
+    a -> am : verifyPhoneNumber(phoneNum, code)
+
+alt user not registered
+    am -> qm : createUser(phoneNum)
+    qm -> db : createUser(phoneNum)
+    db --> qm : <OK>
+    qm --> am : <OK>
+end
+    am -> qm : createUserToken(phoneNum)
+    qm -> db : createUserToken(phoneNum, token)
+    db --> qm : <OK>
+    qm --> am : <OK>
+    am --> a : <OK> user token
+@enduml

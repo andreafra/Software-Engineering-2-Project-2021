@@ -21,7 +21,7 @@ The main components are the following:
     \item \textbf{Static Web Server} It serves the client's browser a bundle that contains the web application code (compressed HTML and JS). It has no ties with the application server.
     \item \textbf{Application Server} It's the main backend component of the service, and contains the logic to process requests made against its API from the clients.
     \item \textbf{Database} It's the component that manages the connection to the database.
-    \item \textbf{External Services} These services provides functionalities that the service can't provide by itself without additional infrastructure. They incluse a \emph{SMS Service} to send messages to users, a \emph{Notification Service} to send \emph{push} notifications to users and a \emph{Maps API} to visualize the location of the store on the user's device.
+    \item \textbf{External Services} These services provides functionalities that the service can't provide by itself without additional infrastructure. They incluse a \emph{SMS Service} to send messages to users and a \emph{Maps API} to visualize the location of the store on the user's device.
 \end{itemize}
 
 \subsection{Component View}
@@ -31,7 +31,9 @@ The main components are the following:
     \label{fig:component}
 \end{figure}
 
-\subsubsection{Data Base Structure}
+% What the UML show, what are the blocks, what they do, explain in detail what each block does.
+
+\subsubsection{Database Structure}
 The Data layer is composed of a relational database, and its associated DBMS will have the duty of processing and executing parallel requests.
 
 Users and Admins will be stored in different tables.
@@ -77,9 +79,9 @@ The application server, composed of a business logic and a data tier, will be ho
 % to accomplish specific tasks typically related to your use cases
 
 \begin{figure}[H]
-    \includegraphics[width=\linewidth]{uml/seq_register_new_account.png}
-    \caption{Register new account}
-    \label{fig:seq_new_account}
+    \includegraphics[width=\linewidth]{uml/seq_user_login.png}
+    \caption{User Login}
+    \label{fig:seq_user_login}
 \end{figure}
 
 \begin{figure}[H]
@@ -88,7 +90,17 @@ The application server, composed of a business logic and a data tier, will be ho
     \label{fig:seq_store_search}
 \end{figure}
 
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{uml/seq_join_queue.png}
+    \caption{User joins queue}
+    \label{fig:seq_join_queue}
+\end{figure}
 
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{uml/seq_make_reservation.png}
+    \caption{User makes a reservation}
+    \label{fig:seq_make_reservation}
+\end{figure}
 
 
 \subsection{Component Interfaces}

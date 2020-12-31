@@ -1,61 +1,55 @@
-@startuml seq_search_store
+@startuml seq_join_queue
 
-skinparam {
-   dpi 300
-}
-
-actor Alice as a
-participant Store_Search as ss
-participant Reservation_Mng as rm
-participant Queue_Mng as queue
-participant Query_Manager as qm
+actor User as a
+participant StoreSearch as ss
+participant ReservationManager as rm
+participant QueueManager as queue
+participant QueryManager as qm
 database DBMS as db
 
-a -> ss : provideStores ( [optional] filters, currentLocation )
+a -> ss : provideStores (currentLocation, [filters])
 activate ss 
-ss -> qm : getStoreIds (location, [optional] filters)
+ss -> qm : getStoreIds (location, [filters])
 activate qm
-qm -> db : lookIntoStoreTable(location, [optional] filters)
+qm -> db : queryStores(location, [filters])
 
-alt No Store matches the query
+alt No Store matching query
     db --> qm : No stores found!
-    qm --> ss : Zero stores found!
-    ss --> a  : <<WARNING>> No store found!
+    qm --> ss : No stores found!
+    ss --> a  : <ALERT> No store found!
     |||
 else Stores found
-    db --> qm : IDs of stores
-    qm --> ss : IDs of stores
+    db --> qm : List of store IDs
+    qm --> ss : List of store IDs
     deactivate qm
-    ss --> a : <<OK>> Those are the stores ID's
+    ss --> a : <OK>  List of store IDs
     deactivate ss
     |||
     loop for all the IDs received
-        a->rm : getReservationInfo (storeID)
+        a->rm : getReservationData(storeID)
         activate rm
-        rm -> qm : getReservationInfoOnStore (storeID)
+        rm -> qm : getReservationDataByStoreId(storeID)
         activate qm
-        qm -> db : lookIntoReservationOfStore (storeID)
-        db --> qm : Avaiable timeslots and respective emptyness
-        qm --> rm : ReservationInfos of storeID
+        qm -> db : queryStoreReservations(storeID)
+        db --> qm : List of timeslots
+        qm --> rm : Reservation data of storeID
         deactivate qm
-        rm --> a : <<OK>> Reservation info of storeID
+        rm --> a : <OK> Reservation data of storeID
         deactivate rm
         |||
-        a-> queue : getQueueInfo (storeID)
+        a-> queue : getQueueData(storeID)
         activate queue
-        queue -> qm : getQueueInfoOnStore (storeID)
+        queue -> qm : getQueueDataByStore(storeID)
         activate qm
-        qm -> db : lookIntoQueueOfStore (storeID)
+        qm -> db : queryStoreQueue(storeID)
         db --> qm : Queue status
-        qm --> queue : Queue info of storeID
+        qm --> queue : Queue data of storeID
         deactivate qm
-        queue --> a : <<OK> Queue info of storeID
+        queue --> a : <OK> Queue data of storeID
         deactivate queue
         |||
     end
     |||
 end
-
-
 
 @enduml

@@ -1,0 +1,17 @@
+@startuml seq_make_reservation
+
+actor User as a
+participant ReservationManager as rm
+participant QueryManager as qm
+database DBMS as db
+
+a -> a : Select Store
+a -> a : Select Timeslot
+a -> rm : makeReservation(storeId, timeslotId)
+rm -> qm : createUserReservation(userId, storeId, timeslotId, receiptId)
+qm -> db : addUserReservation(userId, storeId, timeslotId, receiptId)
+db --> qm : <OK>
+qm --> rm : <OK>
+rm --> a : Receipt
+
+@enduml
