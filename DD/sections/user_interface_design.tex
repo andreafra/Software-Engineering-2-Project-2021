@@ -6,4 +6,32 @@
 % refer to what you have already done, possibly, providing here some
 % extensions if applicable.
 
-The RASD contains already several mockups of the mobile applications. Here we provide the flow diagrams describing the user experience of the client applications, which will be implemented by both the Mobile App and the Web App.
+\subsection{Client Interface}
+
+The \emph{RASD} contains already several mockups of the mobile applications. In Fig. \ref{fig:ux_flowchart} we provide the flow diagrams describing the user experience of the client applications, which will be implemented by both the Mobile App and the Web App.
+
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{images/draw.io/ux_diagram.pdf}
+    \caption{UX flowchart of application views}
+    \label{fig:ux_flowchart}
+\end{figure}
+
+Additional details can be found in \emph{Section 3.1.1} of the \emph{RASD}.
+In the flowchart there are additional views such as a setting page or a viewer for the \emph{Terms of Service} document that don't really need a mockup.
+
+Users need to login in order to use the application, and the can logout through the settings page.
+
+The web application interface will be mostly identical to the mobile application one, in order to provide a coherent experience.
+
+\subsection{Manager Interface}
+
+The admin web panel allows store managers to add, edit and remove stores.
+They need to login beforehand with credentials generated at deployment time.
+Managers can edit store details, timeslots, number of allowed customers, and view statistics about stores and users. The hierarchy of the views is illustrated in Fig. \ref{fig:ux_manager}
+
+
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{images/draw.io/ux_manager.pdf}
+    \caption{UX hierarchy of manager web panel}
+    \label{fig:ux_manager}
+\end{figure}

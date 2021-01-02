@@ -153,19 +153,22 @@ The deployment diagram offers a clearer view over the hardware and software reso
 \paragraph{Thick Client}
 The main characteristic of thick clients is offering a wide variety of functionalities independent from the central server.
 The main advantages it offers are greater decoupling of frontend and backend and a reduced computational effort on the application server.
-Recent years have seen a rise in the adoption of single page application, with the advent of rich framework which allow to write code that can be run both in an app and in the browser.
-This allows developers to reuse great part of code across a large number of devices, all using the same API offered by the backend.
-The one page application will be served by a dedicated static webserver, which logically separate from the rest of the system.
+Recent years have seen a rise in the adoption of single-page applications, with the advent of cross-platform frameworks which allow to write code that can be run both in an app and in a browser.
+This allows developers to reuse significant portions of the codebase across a large number of target platforms, reducing the effort of keeping updated different versions of the same product.
+The single-page web application will be served by a dedicated static webserver, which is isolated from the rest of the system.
 
 \paragraph{REST API}
 REST is an architectural style centered around the definition of a uniform and predefined set of stateless operations defined on top of the HTTP protocol.
 Its main advantages are simplicity, scalability and modifiability.
+It allows to have a single endpoint against which both the mobile application and the web application can make requests, therefore eliminating the need of having multiple interfaces, while making it easier to maintain.
 
 \paragraph{Three layer architecture}
 Separating presentation, business, and data layers offers great flexibility, maintainability and scalability.
-This combined with a thick client means that the only communication between the client and the server goes trough a predefined API, without having to worry about eachother's internal representation.
+This combined with a thick client means that the only communication between the client and the server goes through a predefined API, without having to worry about eachother's internal representation.
 
 \subsubsection{Patterns}
+
+\paragraph{MVC} The software will be based on the \emph{Model-View-Controller architecture}, where the model resides on the server, and the view on the client. A portion of logic is handled by the client to alleviate load on the server, for example filtering map results. The business logic is manager by the server.
 
 \paragraph{Facade}
 All services will be exposed in a reduced minimal API, hiding the real complexity of the system and making available only high level operations to the client.
@@ -174,8 +177,9 @@ All services will be exposed in a reduced minimal API, hiding the real complexit
 The Query Manager component implements the Adapter pattern, as it mediates between the business logic and the DBMS services, exposing only a restricted and higher level set of functionalities.
 
 \subsection{Other Design Decisions}
+
 \paragraph{Maps}
-The store search screen in the client applications will show the stores on a map for easier navigation and to affer a clear view of all possibilities to the user. The maps will be offered by an external service capable of recognizing the addresses of the stores.
+The store search screen in the client applications will show the stores on a map for easier navigation and to show a clear view of all possibilities to the user. The maps will be offered by an external service capable of recognizing the addresses of the stores.
 
 \paragraph{SMS}
-During the creation of an account the user will be asked to insert their mobile phone number into the system. The user will then recieve a confirmation code through an SMS sent with an external service, in order to certify their identity. This step is needed in order to mitigate the problem of the creation of fake accounts and fake reservations, which could be used by hacker in order to clog up the system and damage both stores and users.
+During the creation of an account the user will be asked to insert their mobile phone number into the system. Then, the user will receive a confirmation code through an SMS sent via an external service, in order to certify their identity. This step is needed in order to mitigate the problem of the creation of fake accounts and fake reservations, which could be used by hacker in order to clog up the system and damage both stores and users.
