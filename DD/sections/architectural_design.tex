@@ -82,7 +82,13 @@ For this reason we decided to use two different solutions.
 
 The static webserver will make use of Cloudflare's content delivery network, in order to guarantee immediate response thanks to its edge location caches and reverse proxies.
 
-The application server, composed of a business logic and a data tier, will be hosted on Amazon Web Services, making for easy scalability, replication, and load balancing.
+The application server, composed of a business logic and a data tier, will be hosted on Amazon Web Services, offering many advantages compared to traditional in-house hosting, including:
+\begin{itemize}
+    \item \textbf{Scalability} thanks to the possibility of allocating new virtual machines, greater per formance cores, or more memory when needed, and to the load balancing services
+    \item \textbf{Security} thanks to the firewall services
+    \item \textbf{Cost-Efficiency} as the great flexibility offered by the service allows for paying only the resources that are really needed.
+\end{itemize}
+This makes it the ideal service for hosting big and high traffic applications.
 
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{images/draw.io/deployment.pdf}
@@ -90,9 +96,23 @@ The application server, composed of a business logic and a data tier, will be ho
     \label{fig:deployment_view}
 \end{figure}
 
+The deployment diagram offers a clearer view over the hardware and software resources of the application:
+\begin{itemize}
+    \item \textbf{Mobile Device} is any device capable of hosting the mobile application, which has been previously downloaded from an official application store.
+    \item \textbf{PC} is any device having a modern browser capable of running the javascript based web app.
+    \item \textbf{Cloudflare CDN} will transparently host the one page application, making it available for download without impacting the performance of the main application server. No logic is implemented on this side as the application is completely static, and executes its code on the client machine.
+    \item \textbf{Amazon Web Services} will host the entire business and data logic of the system. It contains:
+    \begin{itemize}
+        \item \textbf{Firewall} services for filtering incoming connections to the business and data layers
+        \item \textbf{Load Balancer} service for redirecting incoming traffic to the least busy application instance
+        \item \textbf{Application Instances} which will run the business logic in parallel and autonomously, and can be instantiated or deleted when needed
+        \item \textbf{Data Instance} which is a data optimized virtual machine containing the DBMS and the database
+    \end{itemize}
+\end{itemize}
+
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{images/draw.io/deployment_structure.pdf}
-    \caption{Deployment Structure}
+    \caption{Deployment Diagram}
     \label{fig:deployment_structure}
 \end{figure}
 
@@ -147,4 +167,15 @@ This combined with a thick client means that the only communication between the 
 
 \subsubsection{Patterns}
 
+\paragraph{Facade}
+All services will be exposed in a reduced minimal API, hiding the real complexity of the system and making available only high level operations to the client.
+
+\paragraph{Adapter}
+The Query Manager component implements the Adapter pattern, as it mediates between the business logic and the DBMS services, exposing only a restricted and higher level set of functionalities.
+
 \subsection{Other Design Decisions}
+\paragraph{Maps}
+The store search screen in the client applications will show the stores on a map for easier navigation and to affer a clear view of all possibilities to the user. The maps will be offered by an external service capable of recognizing the addresses of the stores.
+
+\paragraph{SMS}
+During the creation of an account the user will be asked to insert their mobile phone number into the system. The user will then recieve a confirmation code through an SMS sent with an external service, in order to certify their identity. This step is needed in order to mitigate the problem of the creation of fake accounts and fake reservations, which could be used by hacker in order to clog up the system and damage both stores and users.
