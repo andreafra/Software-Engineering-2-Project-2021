@@ -1,5 +1,9 @@
 @startuml seq_make_reservation
 
+skinparam {
+   dpi 300
+}
+
 actor User as a
 participant ReservationManager as rm
 participant QueryManager as qm
@@ -8,10 +12,14 @@ database DBMS as db
 a -> a : Select Store
 a -> a : Select Timeslot
 a -> rm : makeReservation(storeId, timeslotId)
+activate rm
 rm -> qm : createUserReservation(userId, storeId, timeslotId, receiptId)
+activate qm
 qm -> db : addUserReservation(userId, storeId, timeslotId, receiptId)
 db --> qm : <OK>
 qm --> rm : <OK>
+deactivate qm
 rm --> a : Receipt
+deactivate rm
 
 @enduml

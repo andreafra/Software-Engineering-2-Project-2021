@@ -1,20 +1,20 @@
-@startuml seq_join_queue
+@startuml seq_join_queue_totem
+
 
 skinparam {
    dpi 300
 }
 
-actor User as a
+actor Totem as a
 participant QueueManager as queue
 participant QueryManager as qm
 database DBMS as db
 
-a -> a : Select Store
 a -> queue : joinQueue(storeId)
 activate queue
-queue -> qm : addUserToQueue(userId, storeId, receiptId)
+queue -> qm : addTotemUserToQueue(storeId, receiptId)
 activate qm
-qm -> db : addUserToQueue(userId, storeId, receiptId)
+qm -> db : addTotemUserToQueue(storeId, receiptId)
 db --> qm : <OK>
 qm --> queue : <OK>
 deactivate qm
