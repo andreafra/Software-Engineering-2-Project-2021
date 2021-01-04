@@ -45,15 +45,21 @@ The application component is divided in three main subcomponents, each targeted 
 \subsubsection{Application Server Components}
 The Application Server Components contain all the business logic needed to provide the functionalities of the application, communicating with the DBMS when needed and responding to queries sent by the App Components. Its structure is loosely coupled, with only few components relying on the services offered by other components.
 The Application Server Components are:
-\begin{itemize}
-    \item \textbf{Account Manager} handles everything related to user accounts. In particular it will offer functionalities related to creating new accounts, logging in, and setting preferences and notifications. When creating an account it will communicate with an external \textbf{SMS API} in order to send confirmation codes. \myworries{add something related to notifications!}
-    \item \textbf{Store Search} will provide functionalities related to searching stores at specific locations and with filters that will be set by the user
-    \item \textbf{Reservation Manager}
-    \item \textbf{Queue Manager}
-    \item \textbf{Ticket Validator}
-    \item \textbf{Account Admin Services}
-    \item \textbf{Query Manager}
-\end{itemize}
+\paragraph{Account Manager} handles everything related to user accounts. In particular it will offer functionalities related to creating new accounts, logging in, and setting preferences and notifications. When creating an account it will communicate with an external \textbf{SMS API} in order to send confirmation codes. \myworries{add something related to notifications!}
+\paragraph{Store Search} will provide functionalities related to searching stores at specific locations and with filters that will be set by the user
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/draw.io/store_handler.pdf}
+    \caption{Store Handler Internal View}
+    \label{fig:store_handler}
+\end{figure}
+
+\paragraph{Reservation Manager}
+\paragraph{Queue Manager}
+\paragraph{Ticket Validator}
+\paragraph{Account Admin Services}
+\paragraph{Query Manager}
 
 \subsubsection{Data Components}
 The Data layer is composed of a relational database, and its associated DBMS will have the duty of processing and executing parallel requests.
