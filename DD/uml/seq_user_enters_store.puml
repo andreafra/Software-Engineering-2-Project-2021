@@ -1,0 +1,75 @@
+@startuml seq_user_enters_store
+skinparam {
+   dpi 300
+}
+
+actor User as a
+participant TicketManager as tm
+participant StoreAPIAdaptor as api
+participant ReservationManger as rm
+participant QueueManager as queue
+participant QueryManager as qm
+'database DBMS as db
+
+a->tm : checkTicket(ticketID)
+activate tm
+tm->tm : getTicketType(ticketID,storeID)
+
+alt Reservation ticket
+    tm->rm : isTicketValid(ticketID,storeID)
+    activate rm 
+    rm -> qm : checkIfReservationTicketValid(ticketID,storeID)
+    activate qm
+    'qm->db : queryStoreReservation(ticketID, storeID)
+        alt ticket valid!
+        'db->qm : <OK>
+        qm->rm : <OK> reservation ticket valid
+        rm->tm : <OK> ticket valid
+        tm -> api : letUserEnter()
+        activate api
+        api->api : openDoors()
+        api->tm : <OK> doors unlocked!
+        deactivate api
+        tm->a : <OK> enter
+        |||
+        else ticket not valid!
+        'db->qm : <ERROR>
+        qm->rm : <ERROR> ticket not valid
+        deactivate qm
+        rm->tm : <ERROR> not valid
+        deactivate rm
+        tm->a : <ERROR> not valid
+        |||
+        end
+        |||
+else Queue ticket
+    tm->queue : isTicketValid(ticketID,storeID)
+    activate queue 
+    queue -> qm : checkIfQueueTicketValid(ticketID,storeID)
+    activate qm
+    'qm->db : queryStoreQueue(ticketID, storeID)
+        alt ticket valid!
+        'db->qm : <OK>
+        qm->queue : <OK> reservation ticket valid
+        queue->tm : <OK> ticket valid
+        tm -> api : letUserEnter()
+        activate api
+        api->api : openDoors()
+        api->tm : <OK> doors unlocked!
+        deactivate api
+        tm->a : <OK> enter
+        |||
+        else ticket not valid!
+        'db->qm : <ERROR>
+        qm->queue : <ERROR> ticket not valid
+        deactivate qm
+        queue->tm : <ERROR> not valid               
+        deactivate queue
+        tm->a : <ERROR> not valid
+        deactivate tm
+        |||
+        end
+    |||
+end
+
+@enduml
