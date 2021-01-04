@@ -4,4 +4,47 @@
 % Identify here the order in which you plan
 % to implement the subcomponents of your system and the order in which you plan % to integrate such subcomponents and test the integration.
 
-The application is composed of three decoupled layers (client, business, and data) which can be developed and unit tested independendly, and integration tested at the end. 
+\subsection{Overview}
+
+The application is composed of three decoupled layers (\emph{client}, \emph{business}, and \emph{data}) which can be developed and unit tested independendly, and integration tested at the end.
+
+\paragraph{Front-end components} They consist of the mobile and web application, that have been presented in Chapter \ref{ch:2}. They consist mostly of presentational components that belong to the client layer. Since both applications rely on a REST API, and should likely reuse portions of the codebase, they can be easily unit tested by mocking of the REST API.
+
+\paragraph{Back-end components} They're components that resides in the server, from both the business and the data layer.
+
+\paragraph{External components} They consist of the \emph{Maps API}, the \emph{SMS API}, and the \emph{Notification API}. Since they're provided by third parties, they're supposed to be reliable and conform to their specifications.
+
+\subsection{Feature identification}
+
+To better plan the testing each component will require, it's useful to visualize them in a table (Table \ref{tab:features}) where each components is associated with its difficulty of implementation and its importance for the system.
+
+% TODO TABLE
+\begin{table}[h]
+    \centering
+    \begin{tabular}[h]{|l|l|l|}
+        \hline
+        \textbf{Feature} & \textbf{Importance} & \textbf{Difficulty} \\\hline
+        User login & High & Medium \\
+        Join queue & High & Medium \\
+        Reserve timeslot & High & High \\
+        Search store & Medium & Medium \\
+        View store details & Medium & Low \\
+        Notify customers & High & Medium \\
+        Adjust store parameters (managers) & High & Medium \\
+        Add/Remove/Edit stores (managers) & Medium & Low \\
+        View statistics (managers) & Low & Low \\
+        \hline
+    \end{tabular}
+    \caption{Importance and difficulty of required features}
+    \label{tab:features}
+\end{table}
+
+\subsection{Approach}
+
+All components will be implemented and tested with a \emph{bottom-up} approach, in order to reduce the overhead that would have derived from a \emph{top-down} one.
+
+Components from the same subsystem (for example, the backend) can be implemented, unit-tested and integration-tested without a real need of components from another subsystem. This allows developers to develop in parallel the client and the backend, thus speeding up the development process.
+
+Finally, after the final integration testing is complete, it's important to verify the adherence to the specified requirements.
+
+
