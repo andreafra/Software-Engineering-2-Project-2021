@@ -1,0 +1,52 @@
+@startuml seq_user_gets_notified
+skinparam {
+   dpi 300
+}
+
+actor User as a
+participant NotificationAPI as napi
+participant AccountManager as am
+participant NotificationManager as nm
+participant StoreHandler as sh
+
+== NOTIFICATION PREFERENCE ADDED ==
+a->am : addThisNotification(notificationPref)
+activate am
+am->nm : setNotification(notificationPref, userID)
+activate nm
+note right: DB and Query Manager\n omitted
+nm->nm : addNotification(notificationPref, userID)
+nm --> am : <OK>
+deactivate nm
+am-->a : <OK>
+deactivate am
+... ...
+== NOTIFICATION  TRIGGERED ==
+a -> sh : cancelReservation(ticketID)
+activate sh
+sh->sh : deleteReservation(ticketID,userID)
+sh->sh : triggerNotifications()
+alt Some notifications has to be triggered
+   sh->nm : reservationRemoved(reservation)
+   activate nm
+   nm -> nm : checkMatchingNotificationPref(reservation)
+   alt Found matching notificaiton preference
+      loop for each user found
+         nm->napi : triggerNotification(userID, notificationType)
+         activate napi
+         napi->a : <NOTIFICATION> notification type
+         napi -> nm : <OK>
+         deactivate napi
+         |||
+      end
+      |||
+   end
+   nm->sh : <OK> notifications triggered
+ deactivate nm
+ deactivate sh
+ |||
+end
+
+
+
+@enduml
