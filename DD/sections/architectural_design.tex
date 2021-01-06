@@ -211,6 +211,28 @@ In this section we will describe the interfaces exposed by the components seen i
         
 
     \end{itemize}
+
+    \item \textbf{ReservationManager}
+    \begin{itemize}
+        \item \textbf{getReservationData(storeID)}
+        This method takes as an input the store identification number and contacts the QueryManager to get the reservation data on the specified store id. A reply is then sent to the callee.
+
+        \item \textbf{isTicketValid(ticketID,storeID)}
+        This method takes as input the identification number of the ticket and the store. It checks by contacting the QueryManager if the provided ticket is currently valid for the selected store. 
+        A reply is then sent to the callee. 
+
+        \item \textbf{makeReservation(storeID,timeslotID)}
+        This method takes as input the identification number of the store and of the timeslot. The ReservationManager will then contact the QueryManager to insert the reservation into the system. TO BE CHECKED: THE USER IDENTIFICATION NUMBER IS PROVIDED WITHIN THE SESSION OF THE CURRENT USER. 
+        A reply is then sent to the callee. 
+
+        \item \textbf{cancelReservation(ticketID)}
+        This method takes as input the identification number of the ticket. It removes the associated reservation. 
+        A reply is then sent to the callee. 
+
+    \end{itemize}
+    \item 
+
+
 \end{itemize}
 
 \subsection{Selected Architectural Styles and Patterns}
