@@ -51,7 +51,7 @@ The Application Server Components are:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{images/draw.io/store_handler.pdf}
-    \caption{Store Handler Internal View}
+    \caption{Store Handler Internal View.\\The arrows represent a "uses" relationship}
     \label{fig:store_handler}
 \end{figure}
 
@@ -86,15 +86,15 @@ In order to keep consistency with Reservation Tickets, Timeslots are immutable a
 Our system is composed of two independent components: a completely static webserver will be the access point where the client devices will fetch the one-page application, while the application server will offer the APIs to make it work.
 For this reason we decided to use two different solutions.
 
-The static webserver will make use of Cloudflare's content delivery network, in order to guarantee immediate response thanks to its edge location caches and reverse proxies.
+The static webserver will make use of Cloudflare's CDN, in order to guarantee immediate response thanks to its edge location caches and reverse proxies. Cloudflare is the obvious choice as they are the major CDN providers in the world
 
-The application server, composed of a business logic and a data tier, will be hosted on Amazon Web Services, offering many advantages compared to traditional in-house hosting, including:
+The application server, composed of a business logic and a data tier, will be hosted on a cloud provider, offering many advantages compared to traditional in-house hosting, including:
 \begin{itemize}
     \item \textbf{Scalability} thanks to the possibility of allocating new virtual machines, greater per formance cores, or more memory when needed, and to the load balancing services
-    \item \textbf{Security} thanks to the firewall services
+    \item \textbf{Security} thanks to services like live monitoring and firewalls
     \item \textbf{Cost-Efficiency} as the great flexibility offered by the service allows for paying only the resources that are really needed.
 \end{itemize}
-This makes it the ideal service for hosting big and high traffic applications.
+This makes it the ideal service for hosting big and high traffic applications. The chosen cloud provider will have to offer all of the above features.
 
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{images/draw.io/deployment.pdf}
@@ -107,7 +107,7 @@ The deployment diagram offers a clearer view over the hardware and software reso
     \item \textbf{Mobile Device} is any device capable of hosting the mobile application, which has been previously downloaded from an official application store.
     \item \textbf{PC} is any device having a modern browser capable of running the javascript based web app.
     \item \textbf{Cloudflare CDN} will transparently host the one page application, making it available for download without impacting the performance of the main application server. No logic is implemented on this side as the application is completely static, and executes its code on the client machine.
-    \item \textbf{Amazon Web Services} will host the entire business and data logic of the system. It contains:
+    \item \textbf{Cloud Services} will host the entire business and data logic of the system. It contains:
     \begin{itemize}
         \item \textbf{Firewall} services for filtering incoming connections to the business and data layers
         \item \textbf{Load Balancer} service for redirecting incoming traffic to the least busy application instance

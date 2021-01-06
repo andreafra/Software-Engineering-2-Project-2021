@@ -4,7 +4,7 @@
 % Explain how the requirements you have defined in the RASD
 % map to the design elements that you have defined in this document.
 
-In this section the requirements specified in the RASD are mapped to the components defined in this document. We'll only consider top-level components since they've already been explained.
+In this section the requirements specified in the RASD are mapped to the components defined in this document. We'll only consider top-level components since they've already been explained. Frontend components are omitted for clarity.
 
 \def\arraystretch{1.5}
 \begin{longtable}{p{.05\textwidth} p{.60\textwidth} p{.30\textwidth}}
@@ -12,30 +12,30 @@ In this section the requirements specified in the RASD are mapped to the compone
     \hline
     % Users
     R1 & Allow a User to sign up for an Account after providing a mobile phone number. & \textbf{Account Manager}\\
-    R2 & Allow a Registered User to find Stores nearby a specified location. & \textbf{Account Search}\\
-    R3 & Allow a Registered User to filter out stores based on available timeframes, days and distance. & \textbf{Account Search}\\
-    R4 & Allow a Registered User to get in the virtual line at a specified store. & \textbf{Queue Manager}\\
-    R5 & Allow a Totem User to get in the virtual line of the store where the totem is installed. & \textbf{Queue Manager}\\
-    R6 & Allow a Registered User to preview an estimate of the queue time. & \textbf{Queue Manager}\\
-    R7 & Allow a Registered User to book one visit to a specific store. & \textbf{Reservation Manager}\\
-    R8 & Allow a Registered User to cancel their reservation. & \textbf{Reservation Manager}\\
-    R9 & Allow a Registered User to leave the virtual queue. & \textbf{Queue Manager}\\
-    R10 & Allow a Registered User and a Totem User to retrieve a scannable QR Code/Barcode that they must present in order to be granted access to a store. & \textbf{Queue Manager}, \textbf{Reservation Manager}\\
+    R2 & Allow a Registered User to find Stores nearby a specified location. & \textbf{Store Search}, \textbf{Maps API}\\
+    R3 & Allow a Registered User to filter out stores based on available timeframes, days and distance. & \textbf{Store Search}\\
+    R4 & Allow a Registered User to get in the virtual line at a specified store. & \textbf{Ticket Manager}, \textbf{Queue Manager}\\
+    R5 & Allow a Totem User to get in the virtual line of the store where the totem is installed. & \textbf{Ticket Manager}, \textbf{Queue Manager}\\
+    R6 & Allow a Registered User to preview an estimate of the queue time. & \textbf{Ticket Manager}, \textbf{Queue Manager}\\
+    R7 & Allow a Registered User to book one visit to a specific store. & \textbf{Ticket Manager}, \textbf{Reservation Manager}\\
+    R8 & Allow a Registered User to cancel their reservation. & \textbf{Ticket Manager}, \textbf{Reservation Manager}\\
+    R9 & Allow a Registered User to leave the virtual queue. & \textbf{Ticket Manager},\textbf{Queue Manager}\\
+    R10 & Allow a Registered User and a Totem User to retrieve a scannable QR Code/Barcode that they must present in order to be granted access to a store. & \textbf{Ticket Manager}, \textbf{Queue Manager}, \textbf{Reservation Manager}\\
 
     % Store
     R11 & The System notifies the Users affected by delay. & \textbf{Queue Manager}, \textbf{Reservation Manager}, \textbf{Notification API}\\
     R12 & The System cancels User reservations in case of a major delay. & \textbf{Queue Manager}, \textbf{Reservation Manager}, \textbf{Notification API}\\
-    R13 & The System enforces the limits on the allowed number of concurrent Customers inside a store by restricting the access at the entry points (for example, automatic doors or turnstile). & \textbf{Ticket Validator}\\
-    R14 & The System grants a User with a reservation access only within a short time (set by the manager) after the User's time of reservation. & \textbf{Ticket Validator}\\
-    R15 & Allow System Managers to set the division of the maximum number of people allowed between the normal queue, the priority queue for people with special needs and the book a visit slot capacity. & \textbf{Admin Services}\\
-    R16 & The System calculates the average shopping time by recording every time a user enters and exits the store. & \textbf{Physical Store Manager (TODO)}\\
+    R13 & The System enforces the limits on the allowed number of concurrent Customers inside a store by restricting the access at the entry points (for example, automatic doors or turnstile). & \textbf{Ticket Manager}\\
+    R14 & The System grants a User with a reservation access only within a short time (set by the manager) after the User's time of reservation. & \textbf{Ticket Manager}\\
+    R15 & Allow System Managers to set the division of the maximum number of people allowed between the normal queue, the priority queue for people with special needs and the book a visit slot capacity. & \textbf{Admin Services}, \textbf{Reservation Manager}, \textbf{Queue Manager}\\
+    R16 & The System calculates the average shopping time by recording every time a user enters and exits the store. & \textbf{Store API Adaptor}, \textbf{Ticket Manager}\\
     
     % System Managers
     R17 & Allow System Managers to set a limit to the people allowed into the store at a time. & \textbf{Admin Services}\\
-    R18 & Allow System Managers to choose the frequency and size of the time slots. & \textbf{Admin Services}\\
+    R18 & Allow System Managers to choose the frequency and size of the time slots. & \textbf{Admin Services}, \textbf{Reservation Manager}\\
     R19 & Allow System Managers to know the average time spent in the store. &  \textbf{Admin Services}\\
     R20 & Allow System Managers to know the current and past number of people in the store. & \textbf{Admin Services}\\
-    R21 & Allow System Managers to check the current status of the queue and of the time slots. & \textbf{Admin Services}\\
+    R21 & Allow System Managers to check the current status of the queue and of the time slots. & \textbf{Admin Services}, \textbf{Reservation Manager}, \textbf{Queue Manager}\\
 
     \caption{Your caption here} % needs to go inside longtable environment
     \label{tab:myfirstlongtable}
