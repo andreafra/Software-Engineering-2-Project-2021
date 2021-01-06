@@ -228,10 +228,25 @@ In this section we will describe the interfaces exposed by the components seen i
         \item \textbf{cancelReservation(ticketID)}
         This method takes as input the identification number of the ticket. It removes the associated reservation. 
         A reply is then sent to the callee. 
-
     \end{itemize}
-    \item 
 
+    \item \textbf{QueueManager}
+    \begin{itemize}
+        \item \textbf{getQueuenData(storeID)}
+        This method takes as an input the store identification number and contacts the QueryManager to get the queue data on the specified store id. A reply is then sent to the callee.
+
+        \item \textbf{isTicketValid(ticketID,storeID)}
+        This method takes as input the identification number of the ticket and the store. It checks by contacting the QueryManager if the provided ticket is currently valid for the selected store. 
+        A reply is then sent to the callee. 
+
+        \item \textbf{joinQueue(storeID)}
+        This method takes as input the identification number of the store. The QueueManager will then contact the QueryManager to insert the user into the correct queue. The user identification number is provided within the context of the current session.  
+        A reply is then sent to the callee. 
+
+        \item \textbf{cancelQueueTicket(ticketID)}
+        This method takes as input the identification number of the ticket. It removes the associated reservation. 
+        A reply is then sent to the callee. 
+    \end{itemize}
 
 \end{itemize}
 
