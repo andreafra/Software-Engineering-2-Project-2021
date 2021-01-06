@@ -248,6 +248,26 @@ In this section we will describe the interfaces exposed by the components seen i
         A reply is then sent to the callee. 
     \end{itemize}
 
+    \item \textbf{StoreSearch}
+    \begin{itemize}
+        \item \textbf{provideStores(currentLocation, [filters])}
+        This method takes as input the current location of the user and a list of optional filters. By contacting the QueryManager it retrives the list of the store respecting the provided filters or a default maximum distance from the user location.
+        A reply is then sent to the callee. 
+    \end{itemize}
+
+    \item \textbf{AccountManager}
+    \begin{itemize}
+        \item \textbf{loginWithPhoneNumber(phoneNum)}
+        This method takes as input the phone number provided by the user. It contacts the SMS APIs to send a verification code to the user using SMS.
+
+        \item \textbf{verifyPhoneNumber(phoneNum, code)}
+        This method takes as input the phone number provided by the user and the verification code sent to the user by the SMS APIs. If the phoneNum was not registered it adds that number to the system by contacting the QueryManager.
+        A token is then generated to valided the session of the current user. A reply is then sent to the callee. 
+
+        \item \textbf{addThisNotification(notificationPref)}
+        This method takes as input the new notification preference of the user. The AccountManager then adds this new preference to the system by contacting the NotificationManager. A reply is then sent to the callee. 
+    \end{itemize}
+
 \end{itemize}
 
 \subsection{Selected Architectural Styles and Patterns}
