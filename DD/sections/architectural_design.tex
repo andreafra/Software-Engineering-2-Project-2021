@@ -283,6 +283,7 @@ The \texttt{authToken} should be cached both in the web and mobile application.
 \begin{itemize}
     \item \texttt{/api/auth/login}
     \begin{itemize}
+        \item Maps: \texttt{loginWithPhoneNumber}
         \item Type: POST
         \item URL Parameters:
         \item Parameters:
@@ -301,6 +302,7 @@ The \texttt{authToken} should be cached both in the web and mobile application.
     
     \item \texttt{/api/auth/code}
     \begin{itemize}
+        \item Maps: \texttt{verifyPhoneNumber}
         \item Type: POST
         \item URL Parameters:
         \item Parameters:
@@ -324,6 +326,7 @@ The \texttt{authToken} should be cached both in the web and mobile application.
 
     \item \texttt{/api/search/<latitude|longitude>}
     \begin{itemize}
+        \item Maps: \texttt{provideStores}
         \item Type: GET
         \item URL Parameters:
         \begin{itemize}
@@ -365,6 +368,7 @@ The \texttt{authToken} should be cached both in the web and mobile application.
 
     \item \texttt{/api/store/<storeId>/queue/join}
     \begin{itemize}
+        \item Maps: \texttt{joinQueue}
         \item Type: POST
         \item URL Parameters:
         \begin{itemize}
@@ -393,8 +397,9 @@ The \texttt{authToken} should be cached both in the web and mobile application.
     \end{itemize}
   
     \item \texttt{/api/store/<storeId>/queue/leave}
-    \item Type: POST
     \begin{itemize}
+        \item Maps: \texttt{cancelQueueTicket}
+        \item Type: POST
         \item URL Parameters:
         \begin{itemize}
             \item \texttt{<storeId>} - The Id of the selected store
@@ -415,8 +420,9 @@ The \texttt{authToken} should be cached both in the web and mobile application.
     \end{itemize}
 
     \item \texttt{/api/store/<storeId>/reservation/timeslots}
-    \item Type: GET
     \begin{itemize}
+        \item Maps: \texttt{getReservationData}
+        \item Type: GET
         \item URL Parameters:
         \begin{itemize}
             \item \texttt{<storeId>} - The Id of the selected store
@@ -449,6 +455,7 @@ The \texttt{authToken} should be cached both in the web and mobile application.
 
     \item \texttt{/api/store/<storeId>/reservation/book/<timeslotId>}
     \begin{itemize}
+        \item Maps: \texttt{makeReservation}
         \item Type: POST
         \item URL Parameters:
         \begin{itemize}
@@ -478,6 +485,7 @@ The \texttt{authToken} should be cached both in the web and mobile application.
 
     \item \texttt{/api/store/<storeId>/reservation/cancel}
     \begin{itemize}
+        \item Maps: \texttt{cancelReservation}
         \item Type: POST
         \item URL Parameters:
         \begin{itemize}
@@ -500,6 +508,7 @@ The \texttt{authToken} should be cached both in the web and mobile application.
 
     \item \texttt{/api/store/<storeId>/ticket/verify}
     \begin{itemize}
+        \item Maps: \texttt{checkTicket}
         \item Type: POST
         \item URL Parameters:
         \begin{itemize}
@@ -521,6 +530,31 @@ The \texttt{authToken} should be cached both in the web and mobile application.
     \end{itemize}
 
     %%% TODO: Notifications
+    \item \texttt{/api/notification/store/<storeId>/day/<dayId>/timeslot/<timeslotId>}
+    \begin{itemize}
+        \item Maps: \texttt{addThisNotification}
+        \item Type: Post
+        \item URL Parameters:
+        \begin{itemize}
+            \item \texttt{<storeId>} - The Id of the store of interest
+            \item \texttt{dayId} [number] - Day of interest
+            \item \texttt{timeslotId} [boolean] - Timeslot of interest
+            \item \texttt{range} [number] - Filter stores that are in a certain range
+            \item \texttt{freeTimeslots} [number] - Filter stores that have a certain number of free timeslots
+        \end{itemize}
+        \item Parameters:
+        \begin{itemize}
+            \item \texttt{authToken}
+        \end{itemize} 
+        \item Success:
+        \begin{itemize}
+            \item 200 - OK
+        \end{itemize}
+        \item Errors:
+        \begin{itemize}
+            \item 404 - No store+day+timeslot combination found
+        \end{itemize}
+    \end{itemize}
 \end{itemize}
 
 \subsection{Selected Architectural Styles and Patterns}
