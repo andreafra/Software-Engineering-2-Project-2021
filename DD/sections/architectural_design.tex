@@ -267,7 +267,260 @@ In this section we will describe the interfaces exposed by the components seen i
         \item \textbf{addThisNotification(notificationPref)}
         This method takes as input the new notification preference of the user. The AccountManager then adds this new preference to the system by contacting the NotificationManager. A reply is then sent to the callee. 
     \end{itemize}
+\end{itemize}
 
+\subsubsection{REST Endpoints}
+
+Here the REST endpoints are illustrated, so the URLs at which a client is able to interface with the application API.
+
+The client needs to obtain an \texttt{authToken} that should be passed in the request header in order to be able to authenticate with the server, and is needed to verify the client authenticity.
+Totems are assigned a token at deploy time, while customers need to login with their phone number.
+
+The \texttt{authToken} should be cached both in the web and mobile application.
+
+\renewcommand{\labelitemii}{}
+\renewcommand{\labelitemiii}{-}
+\begin{itemize}
+    \item \texttt{/api/auth/login}
+    \begin{itemize}
+        \item Type: POST
+        \item URL Parameters:
+        \item Parameters:
+        \begin{itemize}
+            \item \texttt{phoneNumber} [text] - The user's phone number
+        \end{itemize}
+        \item Success:
+        \begin{itemize}
+            \item 200 - OK
+        \end{itemize}
+        \item Errors:
+        \begin{itemize}
+            \item 400 - Format is invalid
+        \end{itemize}
+    \end{itemize}
+    
+    \item \texttt{/api/auth/code}
+    \begin{itemize}
+        \item Type: POST
+        \item URL Parameters:
+        \item Parameters:
+        \begin{itemize}
+            \item \texttt{SMSCode} [text] - The code the user received via SMS
+        \end{itemize}
+        \item Success:
+        \begin{itemize}
+            \item 200 - OK + Token
+            \begin{lstlisting}
+            {
+                "authToken": "<token>"
+            }
+            \end{lstlisting}
+        \end{itemize}
+        \item Errors:
+        \begin{itemize}
+            \item 400 - Bad code
+        \end{itemize}
+    \end{itemize}
+
+    \item \texttt{/api/search/<latitude|longitude>}
+    \begin{itemize}
+        \item Type: GET
+        \item URL Parameters:
+        \begin{itemize}
+            \item \texttt{<latitude|longitude>} - GPS Location, needed to find stores nearby a certain location.
+            \item \texttt{city} [string] - Filter stores by city
+            \item \texttt{open} [boolean] - Filter stores that are currently open
+            \item \texttt{range} [number] - Filter stores that are in a certain range
+            \item \texttt{freeTimeslots} [number] - Filter stores that have a certain number of free timeslots
+        \end{itemize}
+        \item Parameters:
+        \begin{itemize}
+            \item \texttt{authToken}
+        \end{itemize} 
+        \item Success:
+        \begin{itemize}
+            \item 200 - OK + List of stores
+            \begin{lstlisting}
+            {
+                "stores": [
+                    {
+                        "name": "<store name>",
+                        "address": "<address>",
+                        "open": <boolean>,
+                        "distance": <number>,
+                        "freeTimeslots": <number>,
+                        "queueLength": <number>,
+                        "queueWaitTime": <number>
+                    }
+                ]
+            }
+            \end{lstlisting}
+        \end{itemize}
+        \item Errors:
+        \begin{itemize}
+            \item 400 - Bad request
+            \item 404 - No store found
+        \end{itemize}
+    \end{itemize}
+
+    \item \texttt{/api/store/<storeId>/queue/join}
+    \begin{itemize}
+        \item Type: POST
+        \item URL Parameters:
+        \begin{itemize}
+            \item \texttt{<storeId>} - The Id of the selected store
+        \end{itemize}
+        \item Parameters:
+        \begin{itemize}
+            \item \texttt{authToken}
+        \end{itemize}
+        \item Success:
+        \begin{itemize}
+            \item 200 OK + Receipt
+            \begin{lstlisting}
+            {
+                "receiptId": "<receipt id>",
+                "time": "<date time>",
+                "encodedQR": "<string>"
+            }
+            \end{lstlisting}
+        \end{itemize}
+        \item Errors:
+        \begin{itemize}
+            \item 404 - No store found
+            \item 503 - Not possible to join the queue
+        \end{itemize}
+    \end{itemize}
+  
+    \item \texttt{/api/store/<storeId>/queue/leave}
+    \item Type: POST
+    \begin{itemize}
+        \item URL Parameters:
+        \begin{itemize}
+            \item \texttt{<storeId>} - The Id of the selected store
+        \end{itemize}
+        \item Parameters:
+        \begin{itemize}
+            \item \texttt{authToken}
+            \item \texttt{queueReceiptId}
+        \end{itemize}
+        \item Success:
+        \begin{itemize}
+            \item 200 - OK
+        \end{itemize}
+        \item Errors:
+        \begin{itemize}
+            \item 404 - No store/receipt found
+        \end{itemize}
+    \end{itemize}
+
+    \item \texttt{/api/store/<storeId>/reservation/timeslots}
+    \item Type: GET
+    \begin{itemize}
+        \item URL Parameters:
+        \begin{itemize}
+            \item \texttt{<storeId>} - The Id of the selected store
+        \end{itemize}
+        \item Parameters:
+        \begin{itemize}
+            \item \texttt{authToken}
+        \end{itemize}
+        \item Success:
+        \begin{itemize}
+            \item 200 - OK + List of timeslots
+            \begin{lstlisting}
+            {
+                timeslots: [
+                    {
+                        id: "<id>"
+                        day: "<day>",
+                        time: "<hh-mm>",
+                        crowdness: <number>
+                    }
+                ]
+            }
+            \end{lstlisting}
+        \end{itemize}
+        \item Errors:
+        \begin{itemize}
+            \item 404 - No store found
+        \end{itemize}
+    \end{itemize}
+
+    \item \texttt{/api/store/<storeId>/reservation/book/<timeslotId>}
+    \begin{itemize}
+        \item Type: POST
+        \item URL Parameters:
+        \begin{itemize}
+            \item \texttt{<storeId>} - The Id of the selected store
+            \item \texttt{<timeslotId>} - The Id of the selected timeslot
+        \end{itemize}
+        \item Parameters:
+        \begin{itemize}
+            \item \texttt{authToken}
+        \end{itemize}
+        \item Success:
+        \begin{itemize}
+            \item 200 - OK + Reservation Receipt
+            \begin{lstlisting}
+            {
+                "receiptId": "<receipt id>",
+                "time": "<date time>",
+                "encodedQR": "<string>"
+            }
+            \end{lstlisting}
+        \end{itemize}
+        \item Errors:
+        \begin{itemize}
+            \item 404 - No store found
+        \end{itemize}
+    \end{itemize}
+
+    \item \texttt{/api/store/<storeId>/reservation/cancel}
+    \begin{itemize}
+        \item Type: POST
+        \item URL Parameters:
+        \begin{itemize}
+            \item \texttt{<storeId>} - The Id of the selected store
+        \end{itemize}
+        \item Parameters:
+        \begin{itemize}
+            \item \texttt{authToken}
+            \item \texttt{reservationReceiptId}
+        \end{itemize}
+        \item Success:
+        \begin{itemize}
+            \item 200 - OK
+        \end{itemize}
+        \item Errors:
+        \begin{itemize}
+            \item 404 - No store/receipt found
+        \end{itemize}
+    \end{itemize}
+
+    \item \texttt{/api/store/<storeId>/ticket/verify}
+    \begin{itemize}
+        \item Type: POST
+        \item URL Parameters:
+        \begin{itemize}
+            \item \texttt{<storeId>} - The Id of the store at which the ticket is verified
+        \end{itemize}
+        \item Parameters:
+        \begin{itemize}
+            \item \texttt{authToken}
+            \item \texttt{receiptId} - receipt Id to be verified
+        \end{itemize}
+        \item Success:
+        \begin{itemize}
+            \item 200 - OK
+        \end{itemize}
+        \item Errors:
+        \begin{itemize}
+            \item 404 - No store/ticket found
+        \end{itemize}
+    \end{itemize}
+
+    %%% TODO: Notifications
 \end{itemize}
 
 \subsection{Selected Architectural Styles and Patterns}
