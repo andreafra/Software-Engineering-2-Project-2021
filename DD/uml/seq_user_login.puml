@@ -13,26 +13,23 @@ database DBMS as db
 a -> a : Input phone number
 a -> am : loginWithPhoneNumber(phoneNum)
 activate am
+am -> sms : sendVerificationCode (phoneNum,code)
+activate sms
+sms --> a : Send SMS with code
+deactivate sms
+a -> a : Input received SMS code
+a -> am : verifyPhoneNumber(phoneNum, code)
 am -> qm : checkIfPhoneNumberIsPresent (phoneNum)
 activate qm
 qm -> db : queryUser (phoneNum)
+
 alt user already registered
     db --> qm : user tuple
     qm --> am : user data
-    |||
+    ||| 
 else user not registered
     db --> qm : No match found!
     qm -> am : Phone number not taken!
-    deactivate qm
-end
-    am -> sms : sendVerificationCode (phoneNum,code)
-    activate sms
-    sms --> a : Send SMS with code
-    deactivate sms
-    a -> a : Input received SMS code
-    a -> am : verifyPhoneNumber(phoneNum, code)
-
-alt user not registered
     am -> qm : createUser(phoneNum)
     activate qm
     qm -> db : createUser(phoneNum)
@@ -40,7 +37,7 @@ alt user not registered
     qm --> am : <OK>
     deactivate qm
 end
-    am -> qm : createUserToken(phoneNum)+
+    am -> qm : createUserToken(phoneNum)
     activate qm
     qm -> db : createUserToken(phoneNum, token)
     db --> qm : <OK>
