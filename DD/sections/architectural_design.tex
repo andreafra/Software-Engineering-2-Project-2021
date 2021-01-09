@@ -18,7 +18,7 @@ The main components are the following:
 \begin{itemize}
     \item \textbf{Mobile Application} The application is installed on the user's device through its store platform service. The application allows the user to interact with the service and receive notifications from the server.
     \item \textbf{Web Application} The web application allows users to access the same services available on the mobile app through any device, but it's not guaranteed that it can receive notifications. In addition to that, store managers may access a dedicated panel to configure additional parameters.
-    \item \textbf{Static Web Server} It serves the client's browser a bundle that contains the web application code (compressed HTML and JS). It has no ties with the application server.
+    \item \textbf{Static Web Server} It serves the client's browser a bundle that contains the web application code (compressed HTML and JavaScript). It has no ties with the application server.
     \item \textbf{Application Server} It's the main backend component of the service, and contains the logic to process requests made against its API from the clients.
     \item \textbf{Database} It's the component that manages the connection to the database.
     \item \textbf{External Services} These services provides functionalities that the service can't provide by itself without additional infrastructure. They incluse a \emph{SMS Service} to send messages to users, a \emph{Maps API} to visualize the location of the store on the user's device, and a \emph{Notification API} to send push notifications to users.
@@ -31,19 +31,19 @@ The main components are the following:
     \label{fig:component}
 \end{figure}
 
-\subsubsection{App Components}
-The application component makes up the entire frontend logic of the system.
-The role of the application component is to interface the user with the application server API, rendering interfaces and requesting data upon requests. As the entire UI is encoded in the application component, only a minimum amount of data will be passed between frontend and backend, reducing useless and repetitive traffic.
-The application component is divided in three main subcomponents, each targeted at a different type of user:
+\subsubsection{Client Components}
+The client components make up the entire frontend logic of the system.
+The role of the client components is to interface the user with the application server API, rendering interfaces and requesting data upon requests. As the entire UI is encoded in the client components, only a minimum amount of data will be passed between frontend and backend, reducing useless and repetitive traffic.
+The client components are divided in three main subcomponents, each targeted at a different type of user:
 \begin{itemize}
     \item \textbf{Web and Mobile App} are targeted at the user. They contain all the logic required to request and display information about stores, reservation, and queues. They are united in a single component as they will share most of the code and will use the same API.
-    \item \textbf{Totem} will be deployed in the totems inside the store. They require a more limited set of functionalities compared to the user components (namely, the possibility of joining the queue). Additionally, it will send request to the Application Server in order to validate tickets. On the UX side, it will contain the functionality needed to print tickets and to display the current status of the queue.
-    \item \textbf{Admin Web App} is intended for internal use only. It is the platform through which the store managers will add, remove and manage the stores. It will connect to a different API than the other two components in order to separate the functionalities and the responsibilities as much as possible.
+    \item \textbf{Totem} will be deployed in the totems inside the store. They require a more limited set of functionalities compared to the user components (namely, the possibility of joining the queue). Additionally, it will send request to the Application Server in order to validate tickets, and provides hardware interfaces in order to interact with physical devices like doors or turnstiles. On the UX side, it will contain the functionality needed to print tickets and to display the current status of the queue.
+    \item \textbf{Admin Web App} is intended for internal use only. It is the platform through which the store managers will add, remove and manage the stores. It will connect to a different API in order to separate the functionalities and the responsibilities as much as possible.
 \end{itemize}
 
 
 \subsubsection{Application Server Components}
-The Application Server Components contain all the business logic needed to provide the functionalities of the application, communicating with the DBMS when needed and responding to queries sent by the App Components. Its structure is loosely coupled, with only few components relying on the services offered by other components.
+The Application Server Components contain all the business logic needed to provide the functionalities of the application, communicating with the DBMS when needed and responding to queries sent by the Client Components.
 The Application Server Components are:
 
 \paragraph{Query Manager} is a component that handles the interactions with the DBMS. It sends and retrieve data from the database.
@@ -53,7 +53,7 @@ The Application Server Components are:
 \paragraph{Store Search} allows users to search stores at specific locations and with the aid of filters. It doesn't require an external API.
 
 \paragraph{Store Handler} is a top-level component that includes four sub-compontent to better modularize the functionalities it provides.
-It's purpose is to manager the interactions between customers and the stores, by handling queues and reservations, verify customers' tickets before granting them access and interfacing with existing store devices (such as doors/turnstyles\dots).
+Its purpose is to manage the interactions between customers and the stores, by handling queues and reservations, verify customers' tickets before granting them access and interfacing with existing store devices (such as doors/turnstyles\dots).
 
 \begin{figure}[H]
     \centering
@@ -70,7 +70,7 @@ It's purpose is to manager the interactions between customers and the stores, by
 
 \subparagraph{Store API Adaptor} is a sub-component of Store Handler that allows the system to interface with the existing infrastructure of a store, such as doors, turnstyles or cash registers, for example. It's main purpose it's to enable the system to keep track of how many customers are allowed into a store and how many exit it.
 
-\paragraph{Notification Manager} is responsible for contacting an external notification API in order to send push notifications to client devices.
+\paragraph{Notification Manager} is responsible for contacting an external notification API in order to send push notifications to client devices. It also handles User notification preferences.
 
 \paragraph{Account Admin Services} is a collection (Fig. \ref{fig:admin_services}) of lower-level modules forming the features offered in the admin panel. It provides a statistical section, and a store control section, where store managers can add, edit and remove stores, their timeslots, enable or disable features such as the priority queue, or change the number of allowed customers into the store.
 
@@ -613,3 +613,6 @@ The store search screen in the client applications will show the stores on a map
 
 \paragraph{SMS}
 During the creation of an account the user will be asked to insert their mobile phone number into the system. Then, the user will receive a confirmation code through an SMS sent via an external service, in order to certify their identity. This step is needed in order to mitigate the problem of the creation of fake accounts and fake reservations, which could be used by hacker in order to clog up the system and damage both stores and users.
+
+\paragraph{Relational Database}
+Relational Data
