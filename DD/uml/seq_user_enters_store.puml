@@ -3,7 +3,7 @@ skinparam {
    dpi 300
 }
 
-actor User as a
+actor Totem as a
 participant TicketManager as tm
 participant StoreAPIAdaptor as api
 participant ReservationManger as rm
@@ -25,12 +25,8 @@ alt Reservation ticket
         'db->qm : <OK>
         qm->rm : <OK> reservation ticket valid
         rm->tm : <OK> ticket valid
-        tm -> api : letUserEnter()
-        activate api
-        api->api : openDoors()
-        api->tm : <OK> doors unlocked!
-        deactivate api
         tm->a : <OK> enter
+        a->a : openDoors()
         |||
         else ticket not valid!
         'db->qm : <ERROR>
@@ -52,12 +48,8 @@ else Queue ticket
         'db->qm : <OK>
         qm->queue : <OK> reservation ticket valid
         queue->tm : <OK> ticket valid
-        tm -> api : letUserEnter()
-        activate api
-        api->api : openDoors()
-        api->tm : <OK> doors unlocked!
-        deactivate api
         tm->a : <OK> enter
+        a->a : openDoors()
         |||
         else ticket not valid!
         'db->qm : <ERROR>
