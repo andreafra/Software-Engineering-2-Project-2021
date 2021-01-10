@@ -46,7 +46,7 @@ The client components are divided in three main subcomponents, each targeted at 
 The Application Server Components contain all the business logic needed to provide the functionalities of the application, communicating with the DBMS when needed and responding to queries sent by the Client Components.
 The Application Server Components are:
 
-\paragraph{Query Manager} is a component that handles the interactions with the DBMS. It sends and retrieve data from the database.
+\paragraph{Query Manager} is a component that handles the interactions with the DBMS, acting as a mediator between the business and data layer. It sends to and retrieves data from the database exposing a limited and higher level set of functionalities compared to a database query language.
 
 \paragraph{Account Manager} handles everything related to user accounts. In particular it will offer functionalities related to creating new accounts, logging in, and setting preferences and notifications. When creating an account it will communicate with an external \textbf{SMS API} in order to send confirmation codes.
 
@@ -70,7 +70,7 @@ Its purpose is to manage the interactions between customers and the stores, by h
 
 \subparagraph{Store API Adaptor} is a sub-component of Store Handler that allows the system to interface with the existing infrastructure of a store, such as doors, turnstyles or cash registers, for example. It's main purpose it's to enable the system to keep track of how many customers are allowed into a store and how many exit it.
 
-\paragraph{Notification Manager} is responsible for contacting an external notification API in order to send push notifications to client devices. It also handles User notification preferences.
+\paragraph{Notification Manager} is responsible for contacting an external notification API in order to send push notifications to client devices. It also receives User notification preference updates from the \textbf{Account Manager}. It receives state update from the \textbf{Store Handler} and dispatches notifications only to affected users.
 
 \paragraph{Account Admin Services} is a collection (Fig. \ref{fig:admin_services}) of lower-level modules forming the features offered in the admin panel. It provides a statistical section, and a store control section, where store managers can add, edit and remove stores, their timeslots, enable or disable features such as the priority queue, or change the number of allowed customers into the store.
 
@@ -80,6 +80,12 @@ Its purpose is to manage the interactions between customers and the stores, by h
     \caption{Admin Services internal view}
     \label{fig:admin_services}
 \end{figure}
+
+\subparagraph{Store Statistics} exposes a set of functionalities targeted at extracting meaningful data from the DBMS in order to get insight on the utilization of the store and of the functionalities offered by the system, like knowing the number of people in the store at a given time or the utilization statistics of a timeslot.
+
+\subparagraph{Physical Store Manager} is responsible for adding and removing stores. It also handles modification to store parameters such as the maximum number of people allowed, the size and the time of the timeslots, and the size of the priority queue.
+
+\subparagraph{Admin Account Manager} is used by admins to log in to the system, and to assign managers to different stores.
 
 \subsubsection{Data Components}
 The Data layer is composed of a relational database, and its associated DBMS will have the duty of processing and executing parallel requests.
@@ -632,4 +638,4 @@ The store search screen in the client applications will show the stores on a map
 During the creation of an account the user will be asked to insert their mobile phone number into the system. Then, the user will receive a confirmation code through an SMS sent via an external service, in order to certify their identity. This step is needed in order to mitigate the problem of the creation of fake accounts and fake reservations, which could be used by hacker in order to clog up the system and damage both stores and users.
 
 \paragraph{Relational Database}
-Relational Data
+Relational Databases are the go to choice for most systems thanks to their long track record and reliability. ACID properties enforce consistencies in the data, and a fixed schema helps in the modeling phase. Finally, the system lends itself well to the relational structure, with well defined entities and relationships between them that map well into tables. 
