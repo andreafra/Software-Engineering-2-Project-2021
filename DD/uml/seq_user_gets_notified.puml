@@ -29,19 +29,18 @@ sh->sh : triggerNotifications()
 alt Some notifications has to be triggered
    sh->nm : reservationRemoved(reservation)
    activate nm
-   nm -> nm : checkMatchingNotificationPref(reservation)
    alt Found matching notificaiton preference
       loop for each user found
          nm->napi : triggerNotification(userID, notificationType)
          activate napi
-         napi->a : <NOTIFICATION> notification type
-         napi -> nm : <OK>
+         napi-->a : <NOTIFICATION> notification type
+         napi --> nm : <OK>
          deactivate napi
          |||
       end
       |||
    end
-   nm->sh : <OK> notifications triggered
+   nm-->sh : <OK> notifications triggered
  deactivate nm
  deactivate sh
  |||
