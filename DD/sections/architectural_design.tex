@@ -329,20 +329,30 @@ In this section we will describe the most relevant interfaces exposed by the com
         \item \textbf{enablePriorityQueue(storeID, maxPeople)}
         This method takes as input the store identification number and the maximum number of people inside of the priorityQueue. Once called it enables the functionality of the priority queue in the specified store. A reply is then sent to the caller.
         \item \textbf{addStore(location, adminID)}
-        This method takes the location of the new store and the admin identification number. The specified admin will be responsible of handling the settings for the new store. 
+        This method takes as input the location of the new store and the admin identification number. The specified admin will be responsible of handling the settings for the new store. 
         A reply is then sent to the caller. 
     \end{itemize}
 
     \item \textbf{AdminAccountManager}
     \begin{itemize}
-        \item \textbf{(storeID, maxPeople)}
-        This method takes as input the store identification number and the maximum number of people allowed to be in the queue at any time. It contacts the QueueManager and sets those values accordingly. A reply is then sent to the caller. 
-       
+        \item \textbf{assignAdminToStore(adminID, storeID)}
+        This method takes as input the identification number of the admin and of the store. It contacts the QueryManger to assign the specified admin to the selected store. A reply is then sent to the caller. 
     \end{itemize}
     
     \item \textbf{TicketManager}
+    \begin{itemize}
+        \item \textbf{checkTicket(ticketID)}
+        This method takes as input the identification number of the ticket. It contacts the correspoding componet (ReservationManager or QueueManager) to get the information regarding the validity of the presented ticket. A reply is then sent to the caller.
+    \end{itemize}
 
     \item \textbf{NotificationManager}
+    \item \begin{itemize}
+        \item \textbf{setNotification(notificationPref, userID)}
+        This method takes as input the notification preference to be set and the user identification number. It sets the specified preference (for example, notify the user when a store has a free space monday at 10 a.m.) to the given user. It contact the QueryManager to store those information. A reply is then sent to the caller. 
+        \item \textbf{reservationRemoved(reservation)}
+        This method takes as input the reservation object. It checks internally if some notificaion preferences has been added by some user that matches the day an the hour of the reservation. 
+        If some are found a notificaion is triggered and the user is notified. A reply is the sent to the caller.
+    \end{itemize}
 \end{itemize}
 
 \subsubsection{REST Endpoints}
