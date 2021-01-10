@@ -10,6 +10,7 @@ together {
         **id**
         status
         creation_date
+        usage_timestamp
     }
 
     entity queue_ticket {

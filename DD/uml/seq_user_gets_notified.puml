@@ -10,7 +10,7 @@ participant NotificationManager as nm
 participant StoreHandler as sh
 
 == NOTIFICATION PREFERENCE ADDED ==
-a->am : addThisNotification(notificationPref)
+a->am : addNotification(notificationPref)
 activate am
 am->nm : setNotification(notificationPref, userID)
 activate nm
