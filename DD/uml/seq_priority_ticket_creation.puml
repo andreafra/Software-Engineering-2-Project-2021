@@ -1,0 +1,25 @@
+@startuml seq_priority_ticket_creation
+
+skinparam {
+   dpi 300
+}
+
+actor Totem as t
+participant QueueManager as queue
+participant QueryManager as qm
+database DBMS as db
+
+t->t : scanBadge()
+t-> queue :addPriorityTicket(storeID)
+activate queue
+queue -> qm : addPriorityUserToQueue(storeID,recipitID)
+activate qm 
+qm -> db : addPriorityUserToQueue(storeID, recipitID)
+db --> qm : <OK>
+qm --> queue : <OK>
+deactivate qm
+queue --> t : <OK> priority ticket created
+deactivate queue 
+
+
+@enduml

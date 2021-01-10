@@ -7,7 +7,7 @@ participant QueueManager as queue
 participant QueryManager as qm
 database DBMS as db
 
-a -> ss : provideStores (currentLocation, [filters])
+a -> ss : getStores (currentLocation, [filters])
 activate ss 
 ss -> qm : getStoreIds (location, [filters])
 activate qm

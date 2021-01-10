@@ -12,18 +12,21 @@ together {
         creation_date
     }
 
-    entity queue_ticket { 
-
+    entity queue_ticket {
     }
 
     entity reservation_ticket{
             date_of_reservation
+    }
+
+    entity priority_ticket{
     }
 }
 
 together {
     entity user{
         **id**
+        is_totem
         phone_number
     }
     entity free_timeslot_notification{
@@ -73,6 +76,7 @@ user }o--|| free_timeslot_notification : sets
 
 ticket <|-- queue_ticket
 ticket <|-- reservation_ticket
+ticket <|-- priority_ticket
 
 reservation_ticket ||--o{ timeslot : associated_with
 
