@@ -68,12 +68,13 @@ entity admin{
 '.... RELATIONS START....'
 store }|--|{ admin : manages
 store }o--|| queue_ticket : has_queue
+store }o--|| priority_ticket : has_priority_queue
 store }o--|| timeslot : has_timeslot
 store }o--o{ user : fav_stores
 
 
-user }o--|| ticket : associated_with
 user }o--|| free_timeslot_notification : sets
+user }o--|| ticket : associated_with
 
 ticket <|-- queue_ticket
 ticket <|-- reservation_ticket
