@@ -37,6 +37,7 @@
 	"homepage": "https://github.com/ian-ofgod/DiDioLavoreFuscoFranchini-CLup",
 	"dependencies": {
 		"express": "^4.17.1",
+		"mysql": "^2.18.1",
 		"react": "^17.0.1",
 		"react-dom": "^17.0.1"
 	},
@@ -51,7 +52,8 @@
 		"server-dev": "nodemon ./src/server/main.js localhost",
 		"client-dev": "parcel serve --port 8080 ./src/client/index.html",
 		"client-build": "parcel build ./src/client/index.html",
-		"test": "jest"
+		"test": "jest",
+		"reset-db": "node ./database/reset.js"
 	},
 	"prettier": {
 		"semi": false
