@@ -1,0 +1,57 @@
+{
+	"name": "itd-clup-didiolavore-fusco-franchini",
+	"description": "A system to manager queue and reservation for physical stores",
+	"version": "1.0.0",
+	"maintainers": [
+		{
+			"name": "Andrea Franchini",
+			"email": "andrea3.franchini@mail.polimi.it",
+			"web": "https://andreafranchini.com"
+		},
+		{
+			"name": "Ian Di Dio Lavore",
+			"email": "ian.didio@mail.polimi.it",
+			"web": ""
+		},
+		{
+			"name": "Luigi Fusco",
+			"email": "luigi1.fusco@mail.polimi.it",
+			"web": ""
+		}
+	],
+	"demos": [
+		"https://github.com/ian-ofgod/DiDioLavoreFuscoFranchini-CLup/tree/main/ITD"
+	],
+	"repositories": [
+		{
+			"type": "git",
+			"url": "https://github.com/ian-ofgod/DiDioLavoreFuscoFranchini-CLup.git"
+		}
+	],
+	"licenses": [
+		{
+			"name": "MIT",
+			"url": "https://mit-license.org/"
+		}
+	],
+	"homepage": "https://github.com/ian-ofgod/DiDioLavoreFuscoFranchini-CLup",
+	"dependencies": {
+		"express": "^4.17.1",
+		"react": "^17.0.1",
+		"react-dom": "^17.0.1"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.12.10",
+		"@babel/preset-react": "^7.12.10",
+		"jest": "^26.6.3",
+		"nodemon": "^2.0.7",
+		"parcel": "next"
+	},
+	"scripts": {
+		"server-dev": "nodemon ./src/server/main.js localhost",
+		"client-dev": "parcel serve --port 8080 ./src/client/index.html"
+	},
+	"prettier": {
+		"semi": false
+	}
+}
