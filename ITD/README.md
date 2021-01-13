@@ -43,6 +43,12 @@ DB_PASSWORD="clup"
 DB_NAME="db_clup"
 ```
 
+The user should be created with the following commands:
+```SQL
+create user clup_admin@localhost identified with mysql_native_password by 'clup';
+grant all privileges on * . * to clup_admin@localhost;
+```
+
 ### Verify the installation
 
 Everything should be installed correctly now. Try running one of the following commands

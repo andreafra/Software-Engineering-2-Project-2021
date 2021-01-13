@@ -8,6 +8,7 @@ delete from free_timeslot_notification;
 delete from favorites;
 delete from admin;
 delete from managed_store;
+delete from token;
 
 insert into admin values (1, "admin", "password");
 insert into store values (1, "Store 1", "Piazza Leonardo 32, Milano", 100);
