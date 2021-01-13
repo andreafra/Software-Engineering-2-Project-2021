@@ -1,0 +1,28 @@
+# Use root/example as user/password credentials
+version: "3"
+
+services:
+  db:
+    image: mysql
+    container_name: clup_db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+  adminer:
+    image: adminer
+    container_name: clup_adminer
+    restart: always
+    ports:
+      - 8081:8080
+
+volumes:
+  db_data:
+    name: db_data

@@ -4597,6 +4597,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:^8.2.0":
+  version: 8.2.0
+  resolution: "dotenv@npm:8.2.0"
+  checksum: 16cb89cbd7b98b053899b8aba8c5044c8fb61a2db8a81fe70360b75035fce5fed53bd7a34d772be717d0880c0321122a4c09423f518025e1b52d96791521b1a7
+  languageName: node
+  linkType: hard
+
 "duplexer3@npm:^0.1.4":
   version: 0.1.4
   resolution: "duplexer3@npm:0.1.4"
@@ -6465,6 +6472,7 @@ __metadata:
   dependencies:
     "@babel/core": ^7.12.10
     "@babel/preset-react": ^7.12.10
+    dotenv: ^8.2.0
     express: ^4.17.1
     jest: ^26.6.3
     mysql: ^2.18.1
