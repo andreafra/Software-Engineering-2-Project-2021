@@ -16,40 +16,51 @@ const mysqlConection = mysql.createConnection({
 mysqlConection.connect(function (err) {
     if (err) throw err
 })
-    
 
-export function checkIfPhoneNumberIsPresent(phoneNum) {
+exports.close = () => mysqlConection.end((err) => { if (err) throw err })
+  
+exports.executeAndRollback = (callback) => {
+    mysqlConection.beginTransaction((err) => {
+        if (err) throw err
+
+        callback()
+
+        mysqlConnection.rollback();
+    })
+}
+
+exports.checkIfPhoneNumberIsPresent = (phoneNum) => {
     var isPresent
 
     mysqlConection.query("select count(*) from user where id = ?", phoneNum, (err, result) => {
         if (err) throw err
-        isPresent = result > 0
+        isPresent = result
     })
 
     return isPresent
 }
 
-export function createUser(phoneNum, name, surname) {
-    mysqlConection.query("insert into user (id, name, surname) values (?,?,?)", phoneNum, name, surname, (err) => {
+exports.createUser = (phoneNum, name, surname) => {
+    mysqlConection.query("insert into user (id, name, surname) values (?,?,?)", [phoneNum, name, surname], (err) => {
         if (err) throw err
     })
 }
 
-export function createUserToken(phoneNum) {
+exports.createUserToken = (phoneNum) => {
     mysqlConection.query("remove from token where user_id = ?", phoneNum, (err) => {
         if (err) throw err
     })
 
     const userToken = uuid.v4()
 
-    mysqlConection.query("insert into token (user_id, token, timestamp) values (?, ?, 2038-01-19 03:14:07)", phoneNum, userToken, (err) => {
+    mysqlConection.query("insert into token (user_id, token, timestamp) values (?, ?, 2038-01-19 03:14:07)", [phoneNum, userToken], (err) => {
         if (err) throw err
     })
 
     return userToken
 }
 
-export function validateToken(token) {
+exports.validateToken = (token) => {
     var userId
 
     mysqlConection.query("select id from token where token = ?", token, (err, result) => {

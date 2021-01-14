@@ -40,7 +40,8 @@
 		"express": "^4.17.1",
 		"mysql": "^2.18.1",
 		"react": "^17.0.1",
-		"react-dom": "^17.0.1"
+		"react-dom": "^17.0.1",
+		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.10",
