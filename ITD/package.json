@@ -62,7 +62,8 @@
 		"client-dev": "parcel serve --port 8080 ./src/client/index.html",
 		"client-build": "parcel build ./src/client/index.html",
 		"test": "jest",
-		"reset-db": "node ./database/reset.js"
+		"reset-db": "node ./database/db_prep.js reset",
+		"clear-db": "node ./database/db_prep.js clear"
 	},
 	"prettier": {
 		"semi": false
