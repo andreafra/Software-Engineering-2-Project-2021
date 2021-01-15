@@ -1,0 +1,22 @@
+{
+  "folders": [
+    {
+      "path": "../Assignments"
+    },
+    {
+      "path": "../DD"
+    },
+    {
+      "path": "../DeliveryFolder"
+    },
+    {
+      "path": "../RASD"
+    }
+  ],
+  "settings": {},
+  "extensions": {
+    "recommendations": [
+      "jebbs.plantuml"
+    ]
+  }
+}

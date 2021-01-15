@@ -1,0 +1,21 @@
+{
+  "folders": [
+    {
+      "path": "../ITD"
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    // "jest.pathToJest": "yarn test --",
+    // Prevents jest extension from complaining that
+    // a global jest isn't found
+    // "jest.rootPath": "../ITD"
+  },
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    // "orta.vscode-jest",
+    "visualstudioexptteam.vscodeintellicode"
+  ]
+}
