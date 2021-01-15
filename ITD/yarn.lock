@@ -2529,6 +2529,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/bluebird@npm:^3.5.26":
+  version: 3.5.33
+  resolution: "@types/bluebird@npm:3.5.33"
+  checksum: 45f7adeec6e656501f5b2127d5cc1538d3ae497d06bfa00d8d7f51eb2aa482267b3b4868ac1c75fc84acfad86d2c0d4de8af535cf725156f222d679df9694aff
+  languageName: node
+  linkType: hard
+
 "@types/graceful-fs@npm:^4.1.2":
   version: 4.1.4
   resolution: "@types/graceful-fs@npm:4.1.4"
@@ -2569,6 +2576,15 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 3aaf557d5b82e733d5a17b7f55af5d6be953363c3a594f006d64265790fe87c301c6e1400c0b6b1cf72add50a0ceddc25afb8231ab8302a2e5b6ebfbfac30e5d
+  languageName: node
+  linkType: hard
+
+"@types/mysql@npm:^2.15.2":
+  version: 2.15.17
+  resolution: "@types/mysql@npm:2.15.17"
+  dependencies:
+    "@types/node": "*"
+  checksum: a71453384fa034af63e31a047855191d6f7ed5201fb61231391a40d6df8ed5141713ec7696c79fbe8f8d70fa7e6bf294ba2345aa10c882cb954611e10e7c5525
   languageName: node
   linkType: hard
 
@@ -3144,6 +3160,13 @@ __metadata:
   version: 2.2.0
   resolution: "binary-extensions@npm:2.2.0"
   checksum: 0f5f5685f344b035c4f98d06fa288962d262294a1441c1481ac99e895037bde971ebe6e09a4bd8aa18ab2525bfc00b1ad4af71dbf9e933a72e0df6919706a728
+  languageName: node
+  linkType: hard
+
+"bluebird@npm:^3.5.1":
+  version: 3.7.2
+  resolution: "bluebird@npm:3.7.2"
+  checksum: 4f2288662f3d4eadbb82d4daa4a7d7976a28fa3c7eb4102c9b4033b03e5be4574ba123ac52a7c103cde4cb7b2d2afc1dbe41817ca15a29ff21ecd258d0286047
   languageName: node
   linkType: hard
 
@@ -6478,6 +6501,7 @@ __metadata:
     mysql: ^2.18.1
     nodemon: ^2.0.7
     parcel: next
+    promise-mysql: ^5.0.2
     react: ^17.0.1
     react-dom: ^17.0.1
     uuid: ^8.3.2
@@ -8859,6 +8883,18 @@ __metadata:
   version: 0.11.10
   resolution: "process@npm:0.11.10"
   checksum: ed93a85e9185b40fb01788c588a87c1a9da0eb925ef7cebebbe1b8bbf0eba1802130366603a29e3b689c116969d4fe018de6aed3474bbeb5aefb3716b85d6449
+  languageName: node
+  linkType: hard
+
+"promise-mysql@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "promise-mysql@npm:5.0.2"
+  dependencies:
+    "@types/bluebird": ^3.5.26
+    "@types/mysql": ^2.15.2
+    bluebird: ^3.5.1
+    mysql: ^2.18.1
+  checksum: 9c86881777ddd6647708ff55cb06e94617fac4a1e938cee3449ef3058724b3059bb3123287037a9308fd077e9168bbbbe81c9adfed889486a7b488a5e159bd41
   languageName: node
   linkType: hard
 
