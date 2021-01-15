@@ -39,6 +39,7 @@
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
 		"mysql": "^2.18.1",
+		"promise-mysql": "^5.0.2",
 		"react": "^17.0.1",
 		"react-dom": "^17.0.1",
 		"uuid": "^8.3.2"
@@ -46,7 +47,6 @@
 	"devDependencies": {
 		"@babel/core": "^7.12.10",
 		"@babel/preset-react": "^7.12.10",
-		"@types/dotenv": "^8.2.0",
 		"@types/express": "^4.17.11",
 		"@types/jest": "^26.0.20",
 		"@types/mysql": "^2.15.17",

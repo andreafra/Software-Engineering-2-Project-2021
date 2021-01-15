@@ -1,11 +1,20 @@
 const queryManager = require(".");
 
-test('check if user is created', () => {
-    queryManager.executeAndRollback(() => {
-        queryManager.createUser("0000", "Luigi", "Fusco");
-        expect(queryManager.checkIfPhoneNumberIsPresent("0000")).toBe(true)
-        expect(queryManager.checkIfPhoneNumberIsPresent("1111")).toBe(false)
+test('check if user is created', async () => {
+    const queryInterface = await queryManager.getQueryInterface()
+    await queryInterface.executeAndRollback(async () => {
+        await queryInterface.createUser("0000", "Luigi", "Fusco")
+    
+        var isPresent
+    
+        isPresent = await queryInterface.checkIfPhoneNumberIsPresent("0000")
+        expect(isPresent).toBe(true)
+    
+        isPresent = await queryInterface.checkIfPhoneNumberIsPresent("1111")
+        expect(isPresent).toBe(false)
     })
+
+    await queryInterface.globalEnd();
 })
 
 
