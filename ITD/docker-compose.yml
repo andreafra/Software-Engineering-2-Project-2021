@@ -16,6 +16,8 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
+      - ./database/init/:/docker-entrypoint-initdb.d #this will execute only if db_data is empty
+
   adminer:
     image: adminer
     container_name: clup_adminer
@@ -26,3 +28,4 @@ services:
 volumes:
   db_data:
     name: db_data
+

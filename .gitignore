@@ -8,3 +8,4 @@
 *.tdo
 *.out
 .vscode/settings.json
+ITD/.env
