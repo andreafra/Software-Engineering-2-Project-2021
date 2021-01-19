@@ -36,12 +36,19 @@
 	],
 	"homepage": "https://github.com/ian-ofgod/DiDioLavoreFuscoFranchini-CLup",
 	"dependencies": {
+		"@types/cors": "^2.8.9",
+		"@types/react-cookies": "^0.1.0",
+		"@types/react-router-dom": "^5.1.7",
+		"bulma": "^0.9.1",
+		"cors": "^2.8.5",
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
 		"mysql": "^2.18.1",
 		"promise-mysql": "^5.0.2",
 		"react": "^17.0.1",
+		"react-cookies": "^0.1.1",
 		"react-dom": "^17.0.1",
+		"react-router-dom": "^5.2.0",
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
@@ -67,5 +74,11 @@
 	},
 	"prettier": {
 		"semi": false
+	},
+	"nodemonConfig": {
+		"ignore": [
+			"__test__/*",
+			"src/client/*"
+		]
 	}
 }
