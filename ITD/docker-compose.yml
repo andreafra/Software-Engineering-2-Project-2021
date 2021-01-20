@@ -10,13 +10,16 @@ services:
     ports:
       - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD: root
+      - MYSQL_ROOT_HOST: %
+      - MYSQL_DATABASE: ${DB_NAME}
+      - MYSQL_USER: ${DB_USERNAME}
+      - MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
       - ./database/init/:/docker-entrypoint-initdb.d #this will execute only if db_data is empty
+    cap_add:
+      - SYS_NICE # CAP_SYS_NICE
 
   adminer:
     image: adminer
@@ -28,4 +31,3 @@ services:
 volumes:
   db_data:
     name: db_data
-
