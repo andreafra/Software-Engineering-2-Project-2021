@@ -2592,6 +2592,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/google-maps-react@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "@types/google-maps-react@npm:2.0.5"
+  dependencies:
+    google-maps-react: "*"
+  checksum: abc4296dd3de2b9a8a8c4a2640676ebfa1c8a2f852c4847183536d5b488571d4a4ed6d77054e8828c01a2404a1480ce082bca28d0050717926824326299322af
+  languageName: node
+  linkType: hard
+
 "@types/graceful-fs@npm:^4.1.2":
   version: 4.1.4
   resolution: "@types/graceful-fs@npm:4.1.4"
@@ -5655,6 +5664,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"google-maps-react@npm:*, google-maps-react@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "google-maps-react@npm:2.0.6"
+  peerDependencies:
+    react: ~0.14.8 || ^15.0.0 || ^16.0.0
+    react-dom: ~0.14.8 || ^15.0.0 || ^16.0.0
+  checksum: b8e38db625f97b2f4ed44157503afb6008242edd8c33f661436e989c42cd116a0370ad1815c5568c5c39b867c8f2f927f8bbeb2a29be2605e98982df29bd31b3
+  languageName: node
+  linkType: hard
+
 "got@npm:^9.6.0":
   version: 9.6.0
   resolution: "got@npm:9.6.0"
@@ -6726,6 +6745,7 @@ __metadata:
     "@babel/preset-react": ^7.12.10
     "@types/cors": ^2.8.9
     "@types/express": ^4.17.11
+    "@types/google-maps-react": ^2.0.5
     "@types/jest": ^26.0.20
     "@types/mysql": ^2.15.17
     "@types/react": ^17.0.0
@@ -6737,11 +6757,13 @@ __metadata:
     cors: ^2.8.5
     dotenv: ^8.2.0
     express: ^4.17.1
+    google-maps-react: ^2.0.6
     jest: ^26.6.3
     mysql: ^2.18.1
     nodemon: ^2.0.7
     parcel: next
     promise-mysql: ^5.0.2
+    prop-types: ^15.7.2
     react: ^17.0.1
     react-cookies: ^0.1.1
     react-dom: ^17.0.1
@@ -9172,7 +9194,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.2":
+"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
   dependencies:

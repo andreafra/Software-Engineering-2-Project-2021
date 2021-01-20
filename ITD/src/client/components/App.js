@@ -10,7 +10,7 @@ import PrivateRoute from "./PrivateRoute"
 
 export default function App() {
 	return (
-		<div className="columns" style={appStyle}>
+		<div className="container">
 			<Switch>
 				<Route path="/welcome">
 					<WelcomeView />
@@ -18,11 +18,11 @@ export default function App() {
 				<Route path="/login">
 					<LoginView />
 				</Route>
-				<PrivateRoute path="/stores">
-					<StoreListView />
-				</PrivateRoute>
 				<PrivateRoute path="/stores/:id">
 					<StoreDetailView />
+				</PrivateRoute>
+				<PrivateRoute path="/stores">
+					<StoreListView />
 				</PrivateRoute>
 				<PrivateRoute path="/reservations">
 					<TicketListView />
@@ -36,8 +36,4 @@ export default function App() {
 			</Switch>
 		</div>
 	)
-}
-
-const appStyle = {
-	minHeight: "100vh",
 }
