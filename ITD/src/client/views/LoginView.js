@@ -9,60 +9,70 @@ export default function LoginView() {
 	const [loginStep, setLoginStep] = useState(0)
 	const [phoneNum, setPhoneNum] = useState(null)
 	const [authCode, setAuthCode] = useState(null)
-
+	const [errorMsg, setErrorMsg] = useState("")
 	const _handleLoginBack = () => {
 		if (loginStep > 0) setLoginStep(loginStep - 1)
 	}
 
 	const _handleLoginNext = async () => {
-		if (loginStep === 0) {
-			// Send phone number to API
-			const res = await fetch(API_BASE_URL + "auth/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					phoneNumber: phoneNum,
-				}),
-			})
-			if (res.status === 200) {
-				// If sent with success, proceed to next step
-				console.log(res.statusText)
-				if (loginStep < 2) setLoginStep(loginStep + 1)
-			} else console.error(res.statusText)
-		}
-		if (loginStep === 1) {
-			// Verify auth code with API
-			const res = await fetch(API_BASE_URL + "auth/code", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					phoneNumber: phoneNum,
-					SMSCode: authCode,
-				}),
-			})
-			if (res.status === 200) {
-				// If SMSCode is validated with success
-				console.log(res.statusText)
-				// Save authToken in cookies
-				let json = await res.json()
-				cookie.save("authToken", json.authToken, { path: "/" })
-				// Proceed to next step
-				if (loginStep < 2) setLoginStep(loginStep + 1)
-			} else console.error(res.status, res.statusText)
+		try {
+			if (loginStep === 0) {
+				// Send phone number to API
+				const res = await fetch(API_BASE_URL + "auth/login", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						phoneNumber: phoneNum,
+					}),
+				})
+				if (res.status === 200) {
+					// If sent with success, proceed to next step
+					console.log(res.statusText)
+					if (loginStep < 2) setLoginStep(loginStep + 1)
+				} else {
+					console.error(res.statusText)
+				}
+			}
+			if (loginStep === 1) {
+				// Verify auth code with API
+				const res = await fetch(API_BASE_URL + "auth/code", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						phoneNumber: phoneNum,
+						SMSCode: authCode,
+					}),
+				})
+				if (res.status === 200) {
+					// If SMSCode is validated with success
+					console.log(res.statusText)
+					// Save authToken in cookies
+					let json = await res.json()
+					cookie.save("authToken", json.authToken, { path: "/" })
+					// Proceed to next step
+					if (loginStep < 2) setLoginStep(loginStep + 1)
+				} else console.error(res.status, res.statusText)
+			}
+		} catch (error) {
+			console.log(error.message)
+			setErrorMsg(error.message)
 		}
 	}
-
-	console.log(loginStep)
 
 	return (
 		<div className="columns">
 			<div className="column is-half is-offset-one-quarter">
 				<div className="section">
 					<h1 className="title">Login</h1>
+					{errorMsg !== "" ? (
+						<p className="message is-danger">
+							<div className="message-body">{errorMsg}</div>
+						</p>
+					) : null}
 					<div>
 						<PhoneField
 							id="phone"
