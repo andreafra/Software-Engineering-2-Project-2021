@@ -7,6 +7,7 @@ services:
     container_name: clup_db
     command: --default-authentication-plugin=mysql_native_password
     restart: always
+    privileged: true
     ports:
       - 3306:3306
     environment:
