@@ -11,12 +11,15 @@ import { Redirect, Route } from "react-router-dom"
  */
 export default function PrivateRoute(props) {
 	return (
-		<Route path={props.path}>
-			{cookie.load("authToken") ? (
-				props.children
-			) : (
-				<Redirect to="/welcome" />
-			)}
-		</Route>
+		<Route
+			path={props.path}
+			children={
+				cookie.load("authToken") ? (
+					props.children || props.component
+				) : (
+					<Redirect to="/welcome" />
+				)
+			}
+		/>
 	)
 }
