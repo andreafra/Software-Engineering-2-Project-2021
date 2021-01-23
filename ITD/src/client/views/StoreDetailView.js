@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useParams, Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 const FAKE_STORE = {
 	id: "store-1",

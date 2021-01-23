@@ -1,6 +1,7 @@
 import React, { useState } from "react"
-import StoreMap from "../components/StoreMap"
 import { Link } from "react-router-dom"
+import StoreMap from "../components/StoreMap"
+
 // DEBUG
 const FAKE_STORES = [
 	{
@@ -41,7 +42,7 @@ export default function StoreListView() {
 	const _listStores = () => {
 		return stores.map((store) => (
 			<li className="card mb-5" key={store.id}>
-				<div className="card-header has-background-primary">
+				<div className="card-header has-background-primary-light">
 					<h3 className="card-header-title is-centered">
 						{store.name}
 					</h3>
@@ -75,14 +76,35 @@ export default function StoreListView() {
 	}
 
 	return (
-		<div className="columns is-gapless">
-			<div className="column is-one-third store-list">
-				<div className="p-5">
-					<ul>{_listStores()}</ul>
+		<div>
+			<div className="columns is-gapless store-view">
+				<div className="column is-one-third store-list">
+					<div className="p-5">
+						<ul>{_listStores()}</ul>
+					</div>
+				</div>
+				<div className="column is-two-thirds store-map">
+					<StoreMap />
 				</div>
 			</div>
-			<div className="column is-two-thirds">
-				<StoreMap />
+			<div className="navbar is-fixed-bottom">
+				<div className="navbar-item">
+					<div className="columns is-mobile">
+						<div className="column is-half">
+							<Link
+								className="button is-primary is-fullwidth is-rounded"
+								to="/tickets"
+							>
+								See tickets
+							</Link>
+						</div>
+						<div className="column is-half">
+							<Link className="button is-rounded is-fullwidth" to="/settings">
+								Settings
+							</Link>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	)

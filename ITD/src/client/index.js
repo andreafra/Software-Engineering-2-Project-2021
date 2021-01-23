@@ -8,19 +8,7 @@ import "bulma/css/bulma.css"
 const root = document.getElementById("app")
 ReactDOM.render(
 	<BrowserRouter>
-		<div>
-			<App />
-		</div>
-		{/* DEBUG */}
-		<footer className="footer">
-			<div className="content has-text-centered">
-				<p>
-					<a onClick={() => cookie.remove("authToken")} href="">
-						Clear cookies
-					</a>
-				</p>
-			</div>
-		</footer>
+		<App />
 	</BrowserRouter>,
 	root
 )

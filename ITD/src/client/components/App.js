@@ -25,7 +25,7 @@ export default function App() {
 				/>
 				<PrivateRoute path="/stores" children={<StoreListView />} />
 				<PrivateRoute
-					path="/reservations"
+					path="/tickets"
 					children={<TicketListView />}
 				/>
 				<PrivateRoute path="/settings" children={<SettingsView />} />

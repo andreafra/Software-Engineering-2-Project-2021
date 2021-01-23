@@ -1,5 +1,19 @@
+.store-view {
+  /* allocate space for navbar on the bottom */
+  height: calc(100vh - 3.25rem);
+  overflow-y: auto;
+}
+
 .store-list {
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
   scroll-behavior: smooth;
+}
+
+.store-map {
+  height: 100%;
+}
+
+.store-map > div {
+  height: 100%;
 }

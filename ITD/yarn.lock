@@ -2454,6 +2454,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/art@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@react-native-community/art@npm:1.2.0"
+  dependencies:
+    art: ^0.10.3
+    invariant: ^2.2.4
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 5583341e971d1e507ddaa6077308b828d78dd4706d3efe9f5d45e430a92f8088b921e1a537d3ad5283bc43382d302af7c6b2a3d21c04f04bd2e49adf6f7c05b3
+  languageName: node
+  linkType: hard
+
 "@sindresorhus/is@npm:^0.14.0":
   version: 0.14.0
   resolution: "@sindresorhus/is@npm:0.14.0"
@@ -3099,6 +3113,13 @@ __metadata:
   version: 0.3.2
   resolution: "array-unique@npm:0.3.2"
   checksum: 7139dbbcaf48325224593f2f7a400b123b310c53365b4a1d49916928082ad862117a1e6d411c926ec540e9408786bbd1cf90805609040568059156d1d09feb70
+  languageName: node
+  linkType: hard
+
+"art@npm:^0.10.3":
+  version: 0.10.3
+  resolution: "art@npm:0.10.3"
+  checksum: d8e20b60af49a2e3921642cd690830ec7c3ea9e566beae35b58e9ccd01898d254d090a29046f219c94acb16548dccc852fda4316e116094f070301897d9d95dc
   languageName: node
   linkType: hard
 
@@ -6183,6 +6204,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"invariant@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "invariant@npm:2.2.4"
+  dependencies:
+    loose-envify: ^1.0.0
+  checksum: 96d8a2a4f0ad21020c5847546fc36bec5c0870d99f071aaa93df00c1036439d48211a1823ab6128f78a15ccc4c4f62baf6a65f6c0ed489270dd44d0a04f443a1
+  languageName: node
+  linkType: hard
+
 "ip-regex@npm:^2.1.0":
   version: 2.1.0
   resolution: "ip-regex@npm:2.1.0"
@@ -6767,6 +6797,7 @@ __metadata:
     react: ^17.0.1
     react-cookies: ^0.1.1
     react-dom: ^17.0.1
+    react-qr-code: ^1.0.5
     react-router-dom: ^5.2.0
     uuid: ^8.3.2
   languageName: unknown
@@ -7560,7 +7591,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.1.0, loose-envify@npm:^1.2.0, loose-envify@npm:^1.3.1, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.2.0, loose-envify@npm:^1.3.1, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -9304,6 +9335,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"qr.js@npm:0.0.0":
+  version: 0.0.0
+  resolution: "qr.js@npm:0.0.0"
+  checksum: 83e1d6140ec8781d0def39a70d7ef9e7a7ff455697d8e078b86aeeb773dd33fd5235d4f94710b871fc3cfdefb806165503b8241cd4cd9b18a4b9b4160f48db43
+  languageName: node
+  linkType: hard
+
 "qs@npm:6.7.0":
   version: 6.7.0
   resolution: "qs@npm:6.7.0"
@@ -9418,6 +9456,19 @@ __metadata:
   version: 17.0.1
   resolution: "react-is@npm:17.0.1"
   checksum: 5a83dfc78e7adcb93d632bf367b0733db650e3abd2e9c57c33b87e50d201212c1884b0d7bcf13e692f1556189fa1b87f9f3e0ba10fe858fd6aebe83ed4fcd1ea
+  languageName: node
+  linkType: hard
+
+"react-qr-code@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "react-qr-code@npm:1.0.5"
+  dependencies:
+    "@react-native-community/art": ^1.2.0
+    prop-types: ^15.7.2
+    qr.js: 0.0.0
+  peerDependencies:
+    react: ^16.11.0
+  checksum: e1d70b841825a1c27054fd79e5c8ebda1f0821574d4aee0e305c0cbe429847e6be3e5c6ba471e9de402ed45c2e644886c2bdaee7134f0ccb8dd21a227dfdf902
   languageName: node
   linkType: hard
 

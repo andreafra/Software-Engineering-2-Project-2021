@@ -1,9 +1,9 @@
 import React, { useState } from "react"
-import Button from "../components/Button"
-import { PhoneField, TextField, BoolField } from "../components/Field"
 import cookie from "react-cookies"
-import { MAX_CODE_LENGTH, MAX_PHONE_LENGTH, API_BASE_URL } from "../defaults"
 import { Redirect } from "react-router-dom"
+import Button from "../components/Button"
+import { PhoneField, TextField } from "../components/Field"
+import { API_BASE_URL, MAX_CODE_LENGTH, MAX_PHONE_LENGTH } from "../defaults"
 export default function LoginView() {
 	// Declare state
 	const [loginStep, setLoginStep] = useState(0)
