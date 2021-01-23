@@ -1,5 +1,6 @@
 const express = require("express")
 const app = express()
+const cors = require("cors")
 const port = 3000
 
 app.get("/", (req, res) => {
@@ -20,15 +21,18 @@ app.listen(port, () => {
 
 // Requires clients to use the following header
 // "Content-Type": "application/x-www-form-urlencoded",
-app.use(express.urlencoded({ extended: true }))
+// app.use(express.urlencoded({ extended: true }))
+
 app.use(express.json())
+app.use(cors())
 
 /* REST ENDPOINTS */
 app.post("/api/auth/login", (req, res) => {
 	let phoneNum = req.body.phoneNumber
 	try {
+		console.log(`/api/auth/login <-- phoneNum=${phoneNum}`)
 		// AccountManager.loginWithPhoneNumber(phoneNum)
-		res.status(200).send("OK")
+		res.status(200).send("OK - phoneNumber received")
 	} catch (err) {
 		res.status(400).send("Format is invalid")
 	}
@@ -36,13 +40,15 @@ app.post("/api/auth/login", (req, res) => {
 
 app.post("/api/auth/code", (req, res) => {
 	let phoneNum = req.body.phoneNumber
-	let SMSCode = req.body.phoneNumber
+	let SMSCode = req.body.SMSCode
 	try {
+		console.log(
+			`/api/auth/code <-- phoneNum=${phoneNum}; SMSCode=${SMSCode}`
+		)
 		let authToken = null
 		// authToken = AccountManager.verifyPhoneNumber(phoneNum, code)
 		res.status(200).send({
-			message: "OK",
-			token: authToken,
+			authToken: authToken,
 		})
 	} catch (err) {
 		res.status(400).send("Bad code")
