@@ -68,14 +68,14 @@ exports.getQueryInterface = async () => {
 			return await mysqlConnection.query(
 				"select id from token where token = ?",
 				token
-			)
+			)[0].id
 		},
 
 		getQueueData: async (storeID) => {
 			return await mysqlConnection.query(
 				"select count(*) as count from ticket where type = 'queue' and status = 'valid' and store_id = ?",
 				storeID
-			)
+			)[0].count
 		},
 
 		addUserToQueue: async (userID, storeID) => {
@@ -96,19 +96,20 @@ exports.getQueryInterface = async () => {
 			)[1][0].id
 		},
 
-		addSMSCode: async (phoneNum, code) => {
+		addVerificationCode: async (phoneNum, code) => {
 			await mysqlConnection.query(
 				"insert into verification_code values (?, ?)",
 				[phoneNum, code]
 			)
 		},
 
-		checkSMSCode: async (phoneNum, code) => {
-			let res =
-				(await mysqlConnection.query(
-					"select count(*) from verification_code where number = ? and code = ?",
-					[phoneNum, code]
-				)) > 0
+		checkVerificationCode: async (phoneNum, code) => {
+			let res = await mysqlConnection.query(
+				"select count(*) as count from verification_code where number = ? and code = ?",
+				[phoneNum, code]
+			)
+
+			res = res[0].count > 0
 
 			if (res) {
 				await mysqlConnection.query(
