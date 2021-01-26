@@ -9,5 +9,6 @@ delete from favorites;
 delete from admin;
 delete from managed_store;
 delete from token;
+delete from verification_code;
 
 set FOREIGN_KEY_CHECKS = 1;

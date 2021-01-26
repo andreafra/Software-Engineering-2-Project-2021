@@ -9,6 +9,7 @@ delete from favorites;
 delete from admin;
 delete from managed_store;
 delete from token;
+delete from verification_code;
 
 insert into admin values (1, "admin", "password");
 insert into store values (1, "Store 1", "Piazza Leonardo 32, Milano", 100);

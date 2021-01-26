@@ -20,13 +20,13 @@ exports.getQueryInterface = async () => {
 
 	return {
 		executeAndRollback: async (callback) => {
-            await mysqlConnection.beginTransaction()
-            try {
-                await callback()
-            } catch (err) {
-			    await mysqlConnection.rollback()
-                throw err
-            }
+			await mysqlConnection.beginTransaction()
+			try {
+				await callback()
+			} catch (err) {
+				await mysqlConnection.rollback()
+				throw err
+			}
 			await mysqlConnection.rollback()
 		},
 
@@ -69,31 +69,61 @@ exports.getQueryInterface = async () => {
 				"select id from token where token = ?",
 				token
 			)
-        },
-        
-        getQueueData: async (storeID) => {
-            return await mysqlConnection.query(
-                "select count(*) as count from ticket where type = 'queue' and status = 'valid' and store_id = ?",
-                storeID
-            )
-        },
+		},
 
-        addUserToQueue: async (userID, storeID) => {
-            return (await mysqlConnection.query(
-                "insert into ticket (type, status, creation_date, store_id, user_id) values ('queue', 'valid', CURDATE(), ?, ?); select last_insert_id() as id;",
-                [storeID, userID]
-            ))[1][0].id
-        },
+		getQueueData: async (storeID) => {
+			return await mysqlConnection.query(
+				"select count(*) as count from ticket where type = 'queue' and status = 'valid' and store_id = ?",
+				storeID
+			)
+		},
 
-        createStore: async (name, address, capacity) => {
-            return (await mysqlConnection.query(
-                "insert into store (name, address, max_capacity) values (?, ?, ?); select last_insert_id() as id;",
-                [name, address, capacity]
-            ))[1][0].id
-        },
+		addUserToQueue: async (userID, storeID) => {
+			return (
+				await mysqlConnection.query(
+					"insert into ticket (type, status, creation_date, store_id, user_id) values ('queue', 'valid', CURDATE(), ?, ?); select last_insert_id() as id;",
+					[storeID, userID]
+				)
+			)[1][0].id
+		},
+
+		createStore: async (name, address, capacity) => {
+			return (
+				await mysqlConnection.query(
+					"insert into store (name, address, max_capacity) values (?, ?, ?); select last_insert_id() as id;",
+					[name, address, capacity]
+				)
+			)[1][0].id
+		},
+
+		addSMSCode: async (phoneNum, code) => {
+			await mysqlConnection.query(
+				"insert into verification_code values (?, ?)",
+				[phoneNum, code]
+			)
+		},
+
+		checkSMSCode: async (phoneNum, code) => {
+			let res =
+				(await mysqlConnection.query(
+					"select count(*) from verification_code where number = ? and code = ?",
+					[phoneNum, code]
+				)) > 0
+
+			if (res) {
+				await mysqlConnection.query(
+					"delete from verification_code where number = ? and code = ?",
+					[phoneNum, code]
+				)
+			}
+
+			return res
+		},
 
 		globalEnd: async () => {
-			await mysqlConnection.end()
+			const toEnd = mysqlConnection
+			mysqlConnection = null
+			await toEnd.end()
 		},
 	}
 }
