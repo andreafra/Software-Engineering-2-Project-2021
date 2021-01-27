@@ -1,4 +1,5 @@
 const StoreSearch = require("./components/StoreSearch")
+const AccountManager = require("./components/AccountManager")
 
 const express = require("express")
 const app = express()
@@ -31,28 +32,31 @@ app.use(cors())
 /* REST ENDPOINTS */
 app.post("/api/auth/login", (req, res) => {
 	let phoneNum = req.body.phoneNumber
+	console.log(phoneNum)
 	try {
 		console.log(`/api/auth/login <-- phoneNum=${phoneNum}`)
-		// AccountManager.loginWithPhoneNumber(phoneNum)
+		AccountManager.loginWithPhoneNumber(phoneNum)
 		res.status(200).send("OK - phoneNumber received")
 	} catch (err) {
+		console.error(err)
 		res.status(400).send("Format is invalid")
 	}
 })
 
-app.post("/api/auth/code", (req, res) => {
+app.post("/api/auth/code", async (req, res) => {
 	let phoneNum = req.body.phoneNumber
 	let SMSCode = req.body.SMSCode
 	try {
 		console.log(
 			`/api/auth/code <-- phoneNum=${phoneNum}; SMSCode=${SMSCode}`
 		)
-		let authToken = null
-		// authToken = AccountManager.verifyPhoneNumber(phoneNum, code)
+		await AccountManager.verifyPhoneNumber(phoneNum, SMSCode)
+		const authToken = await AccountManager.getAccountToken(phoneNum)
 		res.status(200).send({
 			authToken: authToken,
 		})
 	} catch (err) {
+		console.error(err)
 		res.status(400).send("Bad code")
 	}
 })

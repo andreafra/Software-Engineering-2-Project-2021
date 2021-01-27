@@ -18,6 +18,14 @@ exports.loginWithPhoneNumber = async (phoneNum) => {
 exports.verifyPhoneNumber = async (phoneNum, code) => {
 	const queryInterface = await queryManager.getQueryInterface()
 	let res = await queryInterface.checkVerificationCode(phoneNum, code)
+	if (!res) {
+		throw "Bad code"
+	}
 
 	return res
+}
+
+exports.getAccountToken = async (phoneNum) => {
+	const queryInterface = await queryManager.getQueryInterface()
+	return queryInterface.createUserToken(phoneNum)
 }

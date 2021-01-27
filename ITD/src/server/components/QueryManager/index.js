@@ -50,14 +50,14 @@ exports.getQueryInterface = async () => {
 
 		createUserToken: async (phoneNum) => {
 			await mysqlConnection.query(
-				"remove from token where user_id = ?",
+				"delete from token where user_id = ?",
 				phoneNum
 			)
 
 			const userToken = uuid.v4()
 
 			await mysqlConnection.query(
-				"insert into token (user_id, token, timestamp) values (?, ?, 2038-01-19 03:14:07)",
+				"insert into token (user_id, token, end_timestamp) values (?, ?, TIMESTAMP('2025-01-01'))",
 				[phoneNum, userToken]
 			)
 
