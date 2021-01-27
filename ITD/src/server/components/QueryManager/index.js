@@ -121,6 +121,13 @@ exports.getQueryInterface = async () => {
 			return res
 		},
 
+		getStoreIds: async (lat, long, range) => {
+			return await mysqlConnection.query(
+				"select * from store where latitude between ? and ? and longitude between ? and ?",
+				[lat - range, lat + range, long - range, long + range]
+			)
+		},
+
 		globalEnd: async () => {
 			const toEnd = mysqlConnection
 			mysqlConnection = null

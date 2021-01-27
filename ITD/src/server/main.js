@@ -1,3 +1,5 @@
+const StoreSearch = require("./components/StoreSearch")
+
 const express = require("express")
 const app = express()
 const cors = require("cors")
@@ -55,16 +57,22 @@ app.post("/api/auth/code", (req, res) => {
 	}
 })
 
-app.get("/api/search/:coordinates", (req, res) => {
+app.get("/api/search/:coordinates", async (req, res) => {
 	let rawCoordinates = req.params.coordinates
-	let [x, y] = rawCoordinates.split("|")
+	let [lat, long] = rawCoordinates.split("|")
+	if (lat === undefined || long === undefined) {
+		res.status(400).send("Bad request")
+		return
+	}
+
+	lat = parseFloat(lat)
+	long = parseFloat(long)
+
 	try {
-		let stores = {}
-		// stores = StoreSearch.getStores({x: x, y: y}) // no filters
+		let stores = await StoreSearch.getStores(lat, long)
 		res.status(200).send(stores)
 	} catch (err) {
-		res.status(400).send("Bad request")
-		// res.status(404).send("Store not found")
+		res.status(404).send("Store not found")
 	}
 })
 
