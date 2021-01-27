@@ -12,7 +12,7 @@ delete from token;
 delete from verification_code;
 
 insert into admin values (1, "admin", "password");
-insert into store values (1, "Store 1", "Piazza Leonardo 32, Milano", 100, 0, 0);
+insert into store values (1, "Store 1", "Piazza Leonardo 32, Milano", 100, 0, 0, 0);
 insert into managed_store values (1, 1);
 
 insert into reservation values (1, "mon", 16, 0, 10, TRUE, 1);

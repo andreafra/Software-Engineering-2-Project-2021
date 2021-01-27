@@ -1,5 +1,6 @@
 const StoreSearch = require("./components/StoreSearch")
 const AccountManager = require("./components/AccountManager")
+const QueueManager = require("./components/QueueManager")
 
 const express = require("express")
 const app = express()
@@ -80,13 +81,20 @@ app.get("/api/search/:coordinates", async (req, res) => {
 	}
 })
 
-app.post("/api/store/:storeId/queue/join", (req, res) => {
+app.post("/api/store/:storeId/queue/join", async (req, res) => {
 	let storeId = req.params.storeId
 	let authToken = req.body.authToken
 
+	let userId
 	try {
-		let receipt = {}
-		// receipt = QueueManager. joinQueue(storeID)
+		userId = AccountManager.validateToken(authToken)
+	} catch (e) {
+		res.status(401).send("Invalid auth token")
+		return
+	}
+
+	try {
+		let receipt = QueueManager.joinQueue(storeID, userId)
 		res.status(200).send(receipt)
 	} catch (err) {
 		res.status(404).send("Store not found")

@@ -65,10 +65,16 @@ exports.getQueryInterface = async () => {
 		},
 
 		validateToken: async (token) => {
-			return await mysqlConnection.query(
+			const res = await mysqlConnection.query(
 				"select id from token where token = ?",
 				token
-			)[0].id
+			)
+
+			if (res.length === 0) {
+				throw "Token not found"
+			}
+
+			return res[0].id
 		},
 
 		getQueueData: async (storeID) => {
@@ -76,6 +82,25 @@ exports.getQueryInterface = async () => {
 				"select count(*) as count from ticket where type = 'queue' and status = 'valid' and store_id = ?",
 				storeID
 			)[0].count
+		},
+
+		getStoreFillLevel: async (storeID) => {
+			return await mysqlConnection.query(
+				"select max_capacity, curr_number from store where id = ?",
+				storeID
+			)[0]
+		},
+
+		getStoreNextReservations: async (storeID) => {
+			const d = new Date()
+			return await mysqlConnection.query(
+				"select sum(max_people_allowed) as sum from reservation where store_id = ? and weekday = ? and start_time >= getdate() and start_time <= dateadd(HOUR, 2, getdate())",
+				[storeID, d.getDay()]
+			)[0].sum
+		},
+
+		getReservationData: async (storeID) => {
+			return await mysqlConnection.query("")
 		},
 
 		addUserToQueue: async (userID, storeID) => {
@@ -126,6 +151,18 @@ exports.getQueryInterface = async () => {
 				"select * from store where latitude between ? and ? and longitude between ? and ?",
 				[lat - range, lat + range, long - range, long + range]
 			)
+		},
+
+		joinQueue: async (storeID, customerID) => {
+			return await mysqlConnection.query(
+				"insert into ticket (type, status, creation_date, store_id, user_id) values (queue, valid, CURDATE(), ?, ?); select last_insert_id() as id;",
+				[storeID, customerID]
+			)[1][0].id
+		},
+
+		getFirstQueueTicket: async (storeID) => {
+			"select count(*) as count from ticket as t where t.type = 'queue' and t.store_id = ? and t.status = 'valid' order by creation_date asc limit 1",
+				[storeID]
 		},
 
 		globalEnd: async () => {
