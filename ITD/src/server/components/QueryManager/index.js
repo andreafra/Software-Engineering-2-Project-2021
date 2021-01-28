@@ -161,8 +161,24 @@ exports.getQueryInterface = async () => {
 		},
 
 		getFirstQueueTicket: async (storeID) => {
-			"select count(*) as count from ticket as t where t.type = 'queue' and t.store_id = ? and t.status = 'valid' order by creation_date asc limit 1",
+			return await mysqlConnection.query(
+				"select count(*) as count from ticket as t where t.type = 'queue' and t.store_id = ? and t.status = 'valid' order by creation_date asc limit 1",
 				[storeID]
+			)
+		},
+
+		cancelTicket: async (storeID, ticketID, userID) => {
+			return await mysqlConnection.query(
+				"alter table ticket set status = 'cancelled' where status = 'valid' and id = ? and store_id = ? and user_id = ?",
+				[ticketID, storeID, userID]
+			)
+		},
+
+		createUserReservation: async (storeId, reservationId, userId) => {
+			return await mysqlConnection.query(
+				"insert into ticket (type, status, creation_date, store_id, user_id, reservation_id) values (reservation, valid, CURDATE(), ?, ?, ?); select last_insert_id() as id;",
+				[storeId, userId, reservationId]
+			)[1][0].id
 		},
 
 		globalEnd: async () => {

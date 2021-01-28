@@ -23,3 +23,9 @@ exports.isTicketValid = async (storeId, ticketId) => {
 
 	return false
 }
+
+exports.cancelQueueTicket = async (storeId, ticketId, userId) => {
+	const queryInterface = await QueryManager.getQueryInterface()
+
+	queryInterface.cancelTicket(storeId, ticketId, userId)
+}

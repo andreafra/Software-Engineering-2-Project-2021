@@ -1,6 +1,7 @@
 const StoreSearch = require("./components/StoreSearch")
 const AccountManager = require("./components/AccountManager")
 const QueueManager = require("./components/QueueManager")
+const ReservationManager = require("./components/ReservationManager")
 
 const express = require("express")
 const app = express()
@@ -107,8 +108,16 @@ app.post("/api/store/:storeId/queue/leave", (req, res) => {
 	let authToken = req.body.authToken
 	let ticketId = req.body.queueReceiptId
 
+	let userId
 	try {
-		// QueueManager.cancelQueueTicket(storeId, ticketID)
+		userId = AccountManager.validateToken(authToken)
+	} catch (e) {
+		res.status(401).send("Invalid auth token")
+		return
+	}
+
+	try {
+		QueueManager.cancelQueueTicket(storeId, ticketId, userId)
 		res.status(200).send("OK")
 	} catch (err) {
 		res.status(404).send("Receipt not found")
@@ -118,6 +127,14 @@ app.post("/api/store/:storeId/queue/leave", (req, res) => {
 app.get("/api/store/:storeId/reservation/timeslots", (req, res) => {
 	let storeId = req.params.storeId
 	let authToken = req.body.authToken
+
+	let userId
+	try {
+		userId = AccountManager.validateToken(authToken)
+	} catch (e) {
+		res.status(401).send("Invalid auth token")
+		return
+	}
 
 	try {
 		let reservations = {}
@@ -133,9 +150,17 @@ app.post("/api/store/:storeId/reservation/book/:timeslotId", (req, res) => {
 	let timeslotId = req.params.timeslotId
 	let authToken = req.body.authToken
 
+	let userId
+	try {
+		userId = AccountManager.validateToken(authToken)
+	} catch (e) {
+		res.status(401).send("Invalid auth token")
+		return
+	}
+
 	try {
 		let receipt = {}
-		// receipt = ReservationManager.makeReservation(storeId, timeslotId)
+		receipt = ReservationManager.makeReservation(storeId, timeslotId, userId)
 		res.status(200).send(receipt)
 	} catch (err) {
 		res.status(404).send("Store not found")
@@ -146,6 +171,14 @@ app.post("/api/store/:storeId/reservation/cancel", (req, res) => {
 	let storeId = req.params.storeId
 	let authToken = req.body.authToken
 	let ticketId = req.body.reservationReceiptId
+
+	let userId
+	try {
+		userId = AccountManager.validateToken(authToken)
+	} catch (e) {
+		res.status(401).send("Invalid auth token")
+		return
+	}
 
 	try {
 		// ReservationManager.cancelReservation(ticketId)
@@ -159,6 +192,14 @@ app.post("/api/store/<storeId>/ticket/verify", (req, res) => {
 	let storeId = req.params.storeId
 	let authToken = req.body.authToken
 	let ticketId = req.body.receiptId
+
+	let userId
+	try {
+		userId = AccountManager.validateToken(authToken)
+	} catch (e) {
+		res.status(401).send("Invalid auth token")
+		return
+	}
 
 	try {
 		let isValid = false
