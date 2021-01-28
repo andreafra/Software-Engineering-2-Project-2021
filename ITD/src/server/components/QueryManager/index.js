@@ -155,7 +155,7 @@ exports.getQueryInterface = async () => {
 
 		joinQueue: async (storeID, customerID) => {
 			return await mysqlConnection.query(
-				"insert into ticket (type, status, creation_date, store_id, user_id) values (queue, valid, CURDATE(), ?, ?); select last_insert_id() as id;",
+				"insert into ticket (type, status, creation_date, store_id, user_id) values ('queue', 'valid', CURDATE(), ?, ?); select last_insert_id() as id;",
 				[storeID, customerID]
 			)[1][0].id
 		},

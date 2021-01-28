@@ -2,7 +2,11 @@ const QueryManager = require("./../QueryManager/index")
 
 exports.joinQueue = async (storeId, userId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
-	return queryInterface.joinQueue(storeId, userId)
+	// "Q" added to distinguish between Queue tickets and Reservation tickets
+	let code = "Q" + (await queryInterface.joinQueue(storeId, userId))
+	console.log("QueueManager: added " + code)
+
+	return code
 }
 
 exports.isTicketValid = async (storeId, ticketId) => {
