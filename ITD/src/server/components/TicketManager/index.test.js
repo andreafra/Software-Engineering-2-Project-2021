@@ -5,14 +5,26 @@ const queryManager = require("../QueryManager")
 test("Check queue ticket", async () => {
 	const queryInterface = await queryManager.getQueryInterface()
 	await queryInterface.executeAndRollback(async () => {
-		await queryInterface.createUser("420", "Piano", "Forte")
-		let ticketID = await queueManager.joinQueue(1, 420)
-		console.log("Generated ticket: " + ticketID)
+		// create store
+		const storeID = await queryInterface.createStore(
+			"Polimi",
+			"Piazza Leonardo 32",
+			100,
+			45.47862499832581,
+			9.228432011185033
+		)
 
-		let isValid = await ticketManager.checkTicket(1, ticketID)
+		// create user
+		await queryInterface.createUser("420", "Piano", "Forte")
+		// add user to store queue
+		let ticketID = await queueManager.joinQueue(storeID, 420)
+
+		// check user is in queue
+		let isValid = await ticketManager.checkTicket(storeID, ticketID)
 		expect(isValid).toBe(true)
 
-		let notValid = await ticketManager.checkTicket(1, "Q9876")
+		// check non-existing user not to be in queue
+		let notValid = await ticketManager.checkTicket(storeID, "Q9876")
 		expect(notValid).toBe(false)
 	})
 })

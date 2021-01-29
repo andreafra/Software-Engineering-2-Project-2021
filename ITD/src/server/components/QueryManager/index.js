@@ -76,10 +76,9 @@ exports.getQueryInterface = async () => {
 		 * @param {string} phoneNum the user's phone number
 		 * @param {string} name the user's name
 		 * @param {string} surname the user's surname
-		 * @returns the result of the query
 		 */
 		createUser: async (phoneNum, name, surname) => {
-			return await mysqlConnection.query(
+			await mysqlConnection.query(
 				"insert into user (id, name, surname) values (?,?,?)",
 				[phoneNum, name, surname]
 			)
@@ -140,9 +139,11 @@ exports.getQueryInterface = async () => {
 		 * @returns the number of customers present in the queue
 		 */
 		getQueueData: async (storeID) => {
-			return await mysqlConnection.query(
-				"select count(*) as count from ticket where type = 'queue' and status = 'valid' and store_id = ?",
-				storeID
+			return (
+				await mysqlConnection.query(
+					"select count(*) as count from ticket where type = 'queue' and status = 'valid' and store_id = ?",
+					storeID
+				)
 			)[0].count
 		},
 
@@ -154,9 +155,11 @@ exports.getQueryInterface = async () => {
 		 * @returns max_capacity, curr_number
 		 */
 		getStoreFillLevel: async (storeID) => {
-			return await mysqlConnection.query(
-				"select max_capacity, curr_number from store where id = ?",
-				storeID
+			return (
+				await mysqlConnection.query(
+					"select max_capacity, curr_number from store where id = ?",
+					storeID
+				)
 			)[0]
 		},
 
@@ -171,11 +174,13 @@ exports.getQueryInterface = async () => {
 		 * @param {number} hours the time span
 		 * @returns the number of
 		 */
-		getStoreNextReservations: async (storeID) => {
+		getStoreNextReservations: async (storeID, hours) => {
 			const currentDate = new Date()
-			return await mysqlConnection.query(
-				"select sum(max_people_allowed) as sum from reservation where store_id = ? and weekday = ? and start_time >= getdate() and start_time <= dateadd(HOUR, ?, getdate())",
-				[storeID, currentDate.getDay(), hours]
+			return (
+				await mysqlConnection.query(
+					"select sum(max_people_allowed) as sum from reservation where store_id = ? and weekday = ? and start_time >= CURDATE() and start_time <= DATE_ADD(CURDATE(), INTERVAL ? HOUR)",
+					[storeID, currentDate.getDay(), hours]
+				)
 			)[0].sum
 		},
 
@@ -221,10 +226,10 @@ exports.getQueryInterface = async () => {
 		 *
 		 * @returns the id of the store
 		 */
-		createStore: async (name, address, capacity) => {
+		createStore: async (name, address, capacity, latitude, longitude) => {
 			return (
 				await mysqlConnection.query(
-					"insert into store (name, address, max_capacity, latitude, longitude) values (?, ?, ?, ?, ?); select last_insert_id() as id;",
+					"insert into store (name, address, max_capacity, latitude, longitude, curr_number) values (?, ?, ?, ?, ?, 0); select last_insert_id() as id;",
 					[name, address, capacity, latitude, longitude]
 				)
 			)[1][0].id
@@ -290,13 +295,15 @@ exports.getQueryInterface = async () => {
 		 * given store.
 		 *
 		 * @param {string} storeID
-		 * @returns
+		 * @returns the first ticket
 		 */
 		getFirstQueueTicket: async (storeID) => {
-			return await mysqlConnection.query(
-				"select count(*) as count from ticket as t where t.type = 'queue' and t.store_id = ? and t.status = 'valid' order by creation_date asc limit 1",
-				[storeID]
-			)
+			return (
+				await mysqlConnection.query(
+					"select * from ticket as t where t.type = 'queue' and t.store_id = ? and t.status = 'valid' order by creation_date asc limit 1",
+					[storeID]
+				)
+			)[0]
 		},
 
 		/**
@@ -308,7 +315,7 @@ exports.getQueryInterface = async () => {
 		 * @returns
 		 */
 		cancelTicket: async (storeID, ticketID, userID) => {
-			return await mysqlConnection.query(
+			await mysqlConnection.query(
 				"alter table ticket set status = 'cancelled' where status = 'valid' and id = ? and store_id = ? and user_id = ?",
 				[ticketID, storeID, userID]
 			)
@@ -325,10 +332,12 @@ exports.getQueryInterface = async () => {
 		 * @returns the `receiptId`
 		 */
 		createUserReservation: async (storeId, reservationId, userId) => {
-			return await mysqlConnection.query(
-				"insert into ticket (type, status, creation_date, store_id, user_id, reservation_id) values (reservation, valid, CURDATE(), ?, ?, ?); select last_insert_id() as id;",
-				[storeId, userId, reservationId]
-			)[1][0].id
+			return (
+				await mysqlConnection.query(
+					"insert into ticket (type, status, creation_date, store_id, user_id, reservation_id) values (reservation, valid, CURDATE(), ?, ?, ?); select last_insert_id() as id;",
+					[storeId, userId, reservationId]
+				)
+			)[0].id
 		},
 
 		/**

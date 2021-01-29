@@ -29,7 +29,9 @@ test("add ticket", async () => {
 		var storeID = await queryInterface.createStore(
 			"Polimi",
 			"Piazza Leonardo 32",
-			100
+			100,
+			45.47862499832581,
+			9.228432011185033
 		)
 
 		var ticketID

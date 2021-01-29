@@ -12,8 +12,8 @@ const QueryManager = require("./../QueryManager/index")
 exports.joinQueue = async (storeId, userId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 	// "Q" added to distinguish between Queue tickets and Reservation tickets
-	let code = "Q" + (await queryInterface.joinQueue(storeId, userId))
-	console.log("QueueManager: added " + code)
+	let code = "Q" + (await queryInterface.addUserToQueue(userId, storeId))
+	// console.log("QueueManager: added " + code)
 
 	return code
 }
@@ -21,7 +21,7 @@ exports.joinQueue = async (storeId, userId) => {
 /**
  * This method takes as input the identification number of the ticket and
  * the store. It checks by contacting the QueryManager if the provided
- * ticket is currently valid forthe selected store.
+ * ticket is currently valid for the selected store.
  *
  * @param {string} storeId
  * @param {string} ticketId
@@ -30,12 +30,13 @@ exports.joinQueue = async (storeId, userId) => {
 exports.isTicketValid = async (storeId, ticketId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
-	const firstTicket = await queueInterface.getFirstQueueTicket(storeId)
+	const firstTicket = await queryInterface.getFirstQueueTicket(storeId)
 
-	if (firstTicket == ticketId) {
+	if (firstTicket.id == ticketId) {
 		const storeData = await queryInterface.getStoreFillLevel(storeId)
 		const reservations = await queryInterface.getStoreNextReservations(
-			storeId
+			storeId,
+			2
 		)
 
 		if (storeData.curr_number + reservations < storeData.max_capacity) {
