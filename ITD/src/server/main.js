@@ -2,6 +2,7 @@ const StoreSearch = require("./components/StoreSearch")
 const AccountManager = require("./components/AccountManager")
 const QueueManager = require("./components/QueueManager")
 const ReservationManager = require("./components/ReservationManager")
+const TicketManager = require("./components/TicketManager")
 
 const express = require("express")
 const app = express()
@@ -9,24 +10,12 @@ const cors = require("cors")
 const port = 3000
 
 app.get("/", (req, res) => {
-	res.send("Hello World!")
-})
-
-// Example of REST API endpoint
-app.get("/api/data", (req, res) => {
-	// Send to the client a JSON object containing a message
-	res.send({
-		message: "Hello World!",
-	})
+	res.send("CLup API")
 })
 
 app.listen(port, () => {
 	console.log(`CLup listening at http://localhost:${port}`)
 })
-
-// Requires clients to use the following header
-// "Content-Type": "application/x-www-form-urlencoded",
-// app.use(express.urlencoded({ extended: true }))
 
 app.use(express.json())
 app.use(cors())
@@ -124,13 +113,12 @@ app.post("/api/store/:storeId/queue/leave", (req, res) => {
 	}
 })
 
-app.get("/api/store/:storeId/reservation/timeslots", (req, res) => {
+app.get("/api/store/:storeId/reservation/timeslots", async (req, res) => {
 	let storeId = req.params.storeId
 	let authToken = req.body.authToken
 
-	let userId
 	try {
-		userId = AccountManager.validateToken(authToken)
+		AccountManager.validateToken(authToken)
 	} catch (e) {
 		res.status(401).send("Invalid auth token")
 		return
@@ -138,7 +126,7 @@ app.get("/api/store/:storeId/reservation/timeslots", (req, res) => {
 
 	try {
 		let reservations = {}
-		// reservations = ReservationManager.getReservationData(storeId)
+		reservations = await ReservationManager.getReservationData(storeId)
 		res.status(200).send(reservations)
 	} catch (err) {
 		res.status(404).send("Store not found")
@@ -160,7 +148,11 @@ app.post("/api/store/:storeId/reservation/book/:timeslotId", (req, res) => {
 
 	try {
 		let receipt = {}
-		receipt = ReservationManager.makeReservation(storeId, timeslotId, userId)
+		receipt = ReservationManager.makeReservation(
+			storeId,
+			timeslotId,
+			userId
+		)
 		res.status(200).send(receipt)
 	} catch (err) {
 		res.status(404).send("Store not found")
@@ -181,21 +173,20 @@ app.post("/api/store/:storeId/reservation/cancel", (req, res) => {
 	}
 
 	try {
-		// ReservationManager.cancelReservation(ticketId)
+		ReservationManager.cancelReservation(storeId, ticketId, userId)
 		res.status(200).send(receipt)
 	} catch (err) {
 		res.status(404).send("Store/receipt not found")
 	}
 })
 
-app.post("/api/store/<storeId>/ticket/verify", (req, res) => {
+app.post("/api/store/<storeId>/ticket/verify", async (req, res) => {
 	let storeId = req.params.storeId
 	let authToken = req.body.authToken
 	let ticketId = req.body.receiptId
 
-	let userId
 	try {
-		userId = AccountManager.validateToken(authToken)
+		AccountManager.validateToken(authToken)
 	} catch (e) {
 		res.status(401).send("Invalid auth token")
 		return
@@ -203,7 +194,7 @@ app.post("/api/store/<storeId>/ticket/verify", (req, res) => {
 
 	try {
 		let isValid = false
-		// isValid = TicketManager.cancelReservation(ticketId)
+		isValid = await TicketManager.checkTicket(storeId, ticketId)
 		res.status(200).send({
 			isTicketValid: isValid,
 		})

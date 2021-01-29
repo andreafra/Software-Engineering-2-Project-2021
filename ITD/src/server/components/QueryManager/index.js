@@ -113,10 +113,10 @@ exports.getQueryInterface = async () => {
 		/**
 		 * This method takes as an input the token passed by the user in every
 		 * request and checks if it is valid and corresponds to an active
-		 * session.
+		 * session, if it's successful, return the userId if found.
 		 *
 		 * @param {string} token the user's authentication token
-		 * @returns whether the token is valid
+		 * @returns the userId if found
 		 */
 		validateToken: async (token) => {
 			const res = await mysqlConnection.query(
