@@ -48,5 +48,18 @@ exports.isTicketValid = async (storeId, ticketId) => {
 exports.cancelReservation = async (storeId, ticketId, userId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
-	queryInterface.cancelTicket(storeId, ticketId, userId)
+	return await queryInterface.cancelTicket(storeId, ticketId, userId)
+}
+
+/**
+ * This method takes as an input the store identification number and
+ * contacts the QueryManager to get the reservation data on the specified
+ * store id.
+ * @param {string} storeId
+ * @returns reservation data
+ */
+exports.getReservationData = async (storeId) => {
+	const queryInterface = await QueryManager.getQueryInterface()
+
+	return await queryInterface.getReservationData(storeId)
 }

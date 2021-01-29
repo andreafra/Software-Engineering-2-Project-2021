@@ -59,3 +59,15 @@ exports.cancelQueueTicket = async (storeId, ticketId, userId) => {
 
 	queryInterface.cancelTicket(storeId, ticketId, userId)
 }
+
+/**
+ * This method takes as an input the store identification number and contacts
+ * the QueryManager to get the queue data on the specified store id.
+ * @param {string} storeId
+ * @returns queue data
+ */
+exports.getQueueData = async (storeId) => {
+	const queryInterface = await QueryManager.getQueryInterface()
+
+	return await queryInterface.getQueueData(storeId)
+}
