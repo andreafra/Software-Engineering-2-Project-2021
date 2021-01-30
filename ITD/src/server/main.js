@@ -9,18 +9,20 @@ const app = express()
 const cors = require("cors")
 const port = 3000
 
-app.get("/", (req, res) => {
-	res.send("CLup API")
-})
-
+// Start the server
 app.listen(port, () => {
 	console.log(`CLup listening at http://localhost:${port}`)
 })
 
+// Middleware
 app.use(express.json())
 app.use(cors())
 
 /* REST ENDPOINTS */
+app.get("/", (req, res) => {
+	res.status(200).send("CLup API")
+})
+
 app.post("/api/auth/login", (req, res) => {
 	let phoneNum = req.body.phoneNumber
 	console.log(phoneNum)
@@ -202,3 +204,7 @@ app.post("/api/store/<storeId>/ticket/verify", async (req, res) => {
 		res.status(404).send("Store/receipt not found")
 	}
 })
+
+// TESTING
+// Export the server instance so that we can test it with Supertest and Jest
+module.exports = app

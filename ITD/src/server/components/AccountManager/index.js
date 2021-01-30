@@ -1,3 +1,5 @@
+const phone = require("phone")
+const { InvalidInputError } = require("../../errors/InvalidInputError")
 const QueryManager = require("./../QueryManager/index")
 const smsApi = require("./../SmsApi/stub")
 
@@ -10,6 +12,14 @@ const smsApi = require("./../SmsApi/stub")
  * @returns {string} the code send to the user via SMS
  */
 exports.loginWithPhoneNumber = async (phoneNum) => {
+	let resultPhoneNum = phone(phoneNum, "IT")
+	// Reject invalid phone numbers
+	if (resultPhoneNum.length === 0) {
+		throw new InvalidInputError(phoneNum)
+	} else {
+		phoneNum = resultPhoneNum[0]
+	}
+
 	const queryInterface = await QueryManager.getQueryInterface()
 	let res = await queryInterface.checkIfPhoneNumberIsPresent(phoneNum)
 	if (res == false) {
