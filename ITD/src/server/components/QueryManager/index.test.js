@@ -1,10 +1,5 @@
 const queryManager = require(".")
 
-afterAll(async () => {
-	const queryInterface = await queryManager.getQueryInterface()
-	await queryInterface.globalEnd()
-})
-
 test("check if user is created", async () => {
 	const queryInterface = await queryManager.getQueryInterface()
 	await queryInterface.executeAndRollback(async () => {

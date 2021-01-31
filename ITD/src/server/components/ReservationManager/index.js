@@ -1,4 +1,5 @@
 const QueryManager = require("./../QueryManager/index")
+const utils = require("./../../utils")
 
 /**
  * This method takes as input the identification number ofthe store
@@ -28,14 +29,38 @@ exports.makeReservation = async (storeId, reservationId, userId) => {
  * and the store.
  * It checks by contacting the QueryManager if the provided ticket is
  * valid for the selected store.
+ * If the ticket is valid it is automatically used.
  *
  * @param {string} storeId
  * @param {string} ticketId
  * @returns whether the ticket is valid
  */
 exports.isTicketValid = async (storeId, ticketId) => {
-	//TODO
-	return true
+	const queryInterface = await QueryManager.getQueryInterface()
+
+	const ticketInfo = await queryInterface.getTicket(ticketId)
+	const reservationInfo = await queryInterface.getReservation(
+		ticketInfo.reservation_id
+	)
+	const storeInfo = await queryInterface.getStore(storeId)
+
+	const today = new Date()
+
+	const reservationTime = utils.timeToMinutes(reservationInfo.start_time)
+	const todayTime = today.getHours() * 60 + today.getMinutes()
+
+	if (
+		storeInfo.curr_number < storeInfo.max_capacity &&
+		reservationInfo.is_active &&
+		reservationInfo.weekday === today.getDay() &&
+		todayTime >= reservationTime &&
+		todayTime <= reservationTime + 5 //margin of five minutes
+	) {
+		await queryInterface.useTicket(storeId, ticketId)
+		return true
+	}
+
+	return false
 }
 
 /**

@@ -235,6 +235,20 @@ exports.getQueryInterface = async () => {
 			)[1][0].id
 		},
 
+		createReservationSlot: async (
+			storeId,
+			weekday,
+			startTime,
+			maxPeopleAllowed
+		) => {
+			return (
+				await mysqlConnection.query(
+					"insert into reservation (weekday, start_time, max_people_allowed, is_active, store_id) values (?, ?, ?, TRUE, ?); select last_insert_id() as id;",
+					[weekday, startTime, maxPeopleAllowed, storeId]
+				)
+			)[1][0].id
+		},
+
 		/**
 		 * This method adds a verification code associated to a user to
 		 * the database.
@@ -316,7 +330,7 @@ exports.getQueryInterface = async () => {
 		 */
 		cancelTicket: async (storeID, ticketID, userID) => {
 			await mysqlConnection.query(
-				"alter table ticket set status = 'cancelled' where status = 'valid' and id = ? and store_id = ? and user_id = ?",
+				"update ticket set status = 'cancelled' where status = 'valid' and id = ? and store_id = ? and user_id = ?",
 				[ticketID, storeID, userID]
 			)
 		},
@@ -334,10 +348,44 @@ exports.getQueryInterface = async () => {
 		createUserReservation: async (storeId, reservationId, userId) => {
 			return (
 				await mysqlConnection.query(
-					"insert into ticket (type, status, creation_date, store_id, user_id, reservation_id) values (reservation, valid, CURDATE(), ?, ?, ?); select last_insert_id() as id;",
+					"insert into ticket (type, status, creation_date, store_id, user_id, reservation_id) values ('reservation', 'valid', CURDATE(), ?, ?, ?); select last_insert_id() as id;",
 					[storeId, userId, reservationId]
 				)
-			)[0].id
+			)[1][0].id
+		},
+
+		getTicket: async (ticketId) => {
+			return (
+				await mysqlConnection.query(
+					"select * from ticket where id = ?",
+					[ticketId]
+				)
+			)[0]
+		},
+
+		getReservation: async (reservationId) => {
+			return (
+				await mysqlConnection.query(
+					"select * from reservation where id = ?",
+					[reservationId]
+				)
+			)[0]
+		},
+
+		useTicket: async (storeId, ticketId) => {
+			await mysqlConnection.query(
+				"update ticket set status = 'used' where id = ? and store_id = ?; update store set curr_number = curr_number + 1;",
+				[ticketId, storeId]
+			)
+		},
+
+		getStore: async (storeId) => {
+			return (
+				await mysqlConnection.query(
+					"select * from store where id = ?",
+					[storeId]
+				)
+			)[0]
 		},
 
 		/**
