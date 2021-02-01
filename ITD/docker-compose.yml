@@ -1,4 +1,3 @@
-# Use root/example as user/password credentials
 version: "3"
 
 services:
@@ -28,6 +27,18 @@ services:
     restart: always
     ports:
       - 8081:8080
+
+  server-dev:
+    build: .
+    command: server-dev
+    ports:
+      - "3000:3000"
+
+  client-dev:
+    build: .
+    command: client-dev
+    ports:
+      - "8080:8080"
 
 volumes:
   db_data:
