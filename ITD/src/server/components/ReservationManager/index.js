@@ -42,7 +42,7 @@ exports.isTicketValid = async (storeId, ticketId) => {
 	const reservationInfo = await queryInterface.getReservation(
 		ticketInfo.reservation_id
 	)
-	const storeInfo = await queryInterface.getStore(storeId)
+	const storeInfo = await queryInterface.getStoreFillLevel(storeId)
 
 	const today = new Date()
 

@@ -1,4 +1,5 @@
 const queryManager = require("./../QueryManager")
+const NoStoreError = require("./../../errors/NoStoreError")
 
 /**
  * This method takes as input a location passed by the user.
@@ -11,9 +12,10 @@ const queryManager = require("./../QueryManager")
  */
 exports.getStores = async (lat, long) => {
 	const queryInterface = await queryManager.getQueryInterface()
-	const res = await queryInterface.getStoreIds(lat, long, 50)
+	const res = await queryInterface.getStoresInRange(lat, long, 50)
+	console.log(res)
 	if (res.length === 0) {
-		throw "Store not found"
+		throw new NoStoreError()
 	}
 
 	return res

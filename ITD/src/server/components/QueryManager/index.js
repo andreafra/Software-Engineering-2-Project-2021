@@ -297,7 +297,7 @@ exports.getQueryInterface = async () => {
 		 * @param {number} range
 		 * @returns a list of stores
 		 */
-		getStoreIds: async (lat, long, range) => {
+		getStoresInRange: async (lat, long, range) => {
 			return await mysqlConnection.query(
 				"select * from store where latitude between ? and ? and longitude between ? and ?",
 				[lat - range, lat + range, long - range, long + range]

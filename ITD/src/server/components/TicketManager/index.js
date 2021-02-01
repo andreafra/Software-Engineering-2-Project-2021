@@ -3,7 +3,7 @@ const QueueManager = require("../QueueManager")
 
 /**
  * This method takes as input the identification number of the ticket.
- * It contacts the correspoding component (ReservationManager or QueueManager)
+ * It contacts the corresponding component (ReservationManager or QueueManager)
  * to get the informations regarding the validity of the presented ticket.
  *
  * @param {string} storeId
@@ -22,5 +22,5 @@ exports.checkTicket = async (storeId, ticketCode) => {
 			ticketCode.substring(1)
 		)
 	//else
-	//TODO: priority tickets? who handles them?
+	//TODO: priority tickets? who handles them? needed?
 }
