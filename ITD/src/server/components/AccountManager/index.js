@@ -48,6 +48,13 @@ exports.loginWithPhoneNumber = async (phoneNum) => {
  */
 exports.verifyPhoneNumber = async (phoneNum, code) => {
 	const queryInterface = await QueryManager.getQueryInterface()
+	let resultPhoneNum = phone(phoneNum, "IT")
+	// Reject invalid phone numbers
+	if (resultPhoneNum.length === 0) {
+		throw new InvalidInputError(phoneNum)
+	} else {
+		phoneNum = resultPhoneNum[0]
+	}
 	let res = await queryInterface.checkVerificationCode(phoneNum, code)
 	if (!res) {
 		throw "Bad code"
@@ -64,6 +71,13 @@ exports.verifyPhoneNumber = async (phoneNum, code) => {
  */
 exports.getAccountToken = async (phoneNum) => {
 	const queryInterface = await QueryManager.getQueryInterface()
+	let resultPhoneNum = phone(phoneNum, "IT")
+	// Reject invalid phone numbers
+	if (resultPhoneNum.length === 0) {
+		throw new InvalidInputError(phoneNum)
+	} else {
+		phoneNum = resultPhoneNum[0]
+	}
 	return queryInterface.createUserToken(phoneNum)
 }
 
