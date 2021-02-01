@@ -55,18 +55,29 @@ app.post("/api/auth/code", async (req, res) => {
 })
 
 app.get("/api/search/:coordinates", async (req, res) => {
+	/*let authToken = req.body.authToken
+	let userId
+	try {
+		userId = AccountManager.validateToken(authToken)
+		console.log("Authorized user is performing some actions...")
+	} catch (e) {
+		res.status(401).send("Invalid auth token")
+		return
+	}*/
+
 	let rawCoordinates = req.params.coordinates
 	let [lat, long] = rawCoordinates.split("|")
 	if (lat === undefined || long === undefined) {
 		res.status(400).send("Bad request")
 		return
 	}
-
 	lat = parseFloat(lat)
 	long = parseFloat(long)
 
 	try {
 		let stores = await StoreSearch.getStores(lat, long)
+		console.log("server --> client : sending stores list")
+		console.log(stores)
 		res.status(200).send(stores)
 	} catch (err) {
 		res.status(404).send("Store not found")

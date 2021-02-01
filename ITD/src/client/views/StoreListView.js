@@ -1,6 +1,9 @@
 import React, { useState } from "react"
+import cookie from "react-cookies"
 import { Link } from "react-router-dom"
 import StoreMap from "../components/StoreMap"
+import { API_BASE_URL, MAX_CODE_LENGTH, MAX_PHONE_LENGTH } from "../defaults"
+import { Redirect } from "react-router-dom"
 
 // DEBUG
 const FAKE_STORES = [
@@ -36,10 +39,25 @@ const FAKE_STORES = [
 	},
 ]
 
-export default function StoreListView() {
-	const [stores, setStores] = useState(FAKE_STORES)
+export default async function StoreListView() {
+	console.log("before useState")
+	const [stores, setStores] = useState()
+	console.log("after useState")
+	const token = cookie.load("authToken")
+	console.log("token: " + token)
 
-	const _listStores = () => {
+	//TODO: 0|0 should be the device GPS coordinates
+	let res = await fetch(API_BASE_URL + "search/" + "0|0", {
+		method: "GET",
+	})
+	console.log(res.status)
+
+	let stores_list = await res.json()
+	console.log(stores_list)
+
+	setStores(stores_list)
+
+	const _listStores = async () => {
 		return stores.map((store) => (
 			<li className="card mb-5" key={store.id}>
 				<div className="card-header has-background-primary-light">
@@ -99,7 +117,10 @@ export default function StoreListView() {
 							</Link>
 						</div>
 						<div className="column is-half">
-							<Link className="button is-rounded is-fullwidth" to="/settings">
+							<Link
+								className="button is-rounded is-fullwidth"
+								to="/settings"
+							>
 								Settings
 							</Link>
 						</div>
