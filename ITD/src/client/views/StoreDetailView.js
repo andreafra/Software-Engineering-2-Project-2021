@@ -1,5 +1,7 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
+import cookie from "react-cookies"
+import { API_BASE_URL } from "../defaults"
 
 const FAKE_STORE = {
 	id: "store-1",
@@ -15,14 +17,29 @@ const FAKE_STORE = {
 export default function StoreDetailView() {
 	// storeId
 	const storeId = useParams().id
+	const stores_list = cookie.load("stores_list")
 
-	const [store, setStore] = useState(FAKE_STORE)
+	const [store, setStore] = useState([])
+
+	useEffect(async () => {
+		const authToken = cookie.load("authToken")
+		// Fetch store list from server
+		let res = await fetch(API_BASE_URL + "store/" + storeId, {
+			method: "GET",
+			headers: {
+				// Don't forget to pass authorization token in the header
+				"X-Auth-Token": authToken,
+			},
+		})
+		let data = await res.json()
+		setStore(data)
+	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
+
+	console.log(store)
 
 	const waitTime = new Date(store.queueWaitTime)
 	const waitHours = waitTime.getHours()
 	const waitMinutes = waitTime.getMinutes()
-
-	// TODO: fetch data from server
 
 	/**
 	 * Called when the user click on the "Queue Now" button.
