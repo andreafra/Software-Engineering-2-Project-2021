@@ -1,5 +1,8 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useParams, Link } from "react-router-dom"
+import cookie from "react-cookies"
+import { API_BASE_URL } from "../defaults"
+import { Redirect } from "react-router-dom"
 
 const FAKE_STORE = {
 	id: "store-1",
@@ -47,12 +50,39 @@ const FAKE_TIMESLOTS = [
 
 export default function TimeslotsView() {
 	const storeId = useParams().id
-
-	const [store, setStore] = useState(FAKE_STORE)
-	const [timeslots, setTimeslots] = useState(FAKE_TIMESLOTS)
+	const [store, setStore] = useState([])
+	const [timeslots, setTimeslots] = useState([])
+	const [button_pressed, setButton] = useState(false)
 	const [selectedTimeslot, setSelectedTimeslot] = useState("")
 
-	// TODO: Fetch data from server
+	useEffect(async () => {
+		const authToken = cookie.load("authToken")
+		let res = await fetch(API_BASE_URL + "store/" + storeId, {
+			method: "GET",
+			headers: {
+				// Don't forget to pass authorization token in the header
+				"X-Auth-Token": authToken,
+			},
+		})
+		let data = await res.json()
+		setStore(data)
+
+		let res1 = await fetch(
+			API_BASE_URL + "store/" + storeId + "/reservation/timeslots",
+			{
+				method: "GET",
+				headers: {
+					// Don't forget to pass authorization token in the header
+					"X-Auth-Token": authToken,
+				},
+			}
+		)
+		let data1 = await res1.json()
+
+		console.log("Timeslots ricevuti:")
+		console.log(data1)
+		setTimeslots(data1)
+	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
 
 	// Handle selection of a timeslot from the list
 	const _selectTimeslot = (timeslotId) => {
@@ -109,8 +139,31 @@ export default function TimeslotsView() {
 	/**
 	 * Called when the user confirms their timeslot selection.
 	 */
-	const _handleReserveTimeslot = () => {
-		// TODO: Send request to server
+	const _handleReserveTimeslot = async () => {
+		const authToken1 = cookie.load("authToken")
+		const res = await fetch(
+			API_BASE_URL +
+				"store/" +
+				storeId +
+				"/reservation/book/" +
+				selectedTimeslot,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					storeId: storeId,
+					timeslotId: selectedTimeslot,
+					authToken: authToken1,
+				}),
+			}
+		)
+		let data = await res.json()
+		console.log("Booking a timeslot reply:")
+		console.log(data)
+
+		setButton(true)
 	}
 
 	return (
@@ -143,6 +196,8 @@ export default function TimeslotsView() {
 						>
 							Book the selected timeslot
 						</button>
+						{/*Redirect us only if we have pressed the button*/}
+						{button_pressed ? <Redirect to="/tickets" /> : null}
 						<Link
 							to={"/stores/" + storeId}
 							className="button is-rounded is-light is-fullwidth"

@@ -33,7 +33,11 @@ export default function StoreDetailView() {
 			},
 		})
 		let data = await res.json()
+		console.log(data)
+
 		setStore(data)
+		console.log("Store:")
+		console.log(store)
 	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
 
 	const waitTime = new Date(store.queueWaitTime)
