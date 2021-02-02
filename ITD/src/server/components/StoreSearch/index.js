@@ -19,3 +19,21 @@ exports.getStores = async (lat, long) => {
 
 	return res
 }
+
+/**
+ * This method takes as input a storeId passed by the user.
+ * By contacting the QueryManager it retrives the store
+ * matching the criteria.
+ *
+ * @param {string} storeId
+ * @returns the store matching `storeId`
+ */
+exports.getStore = async (storeId) => {
+	const queryInterface = await queryManager.getQueryInterface()
+	const res = await queryInterface.getStore(storeId)
+	if (!res) {
+		throw new NoStoreError()
+	}
+
+	return res
+}

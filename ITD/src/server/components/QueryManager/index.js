@@ -151,12 +151,22 @@ exports.getQueryInterface = async () => {
 		 * @returns the number of customers present in the queue
 		 */
 		getQueueData: async (storeID) => {
-			return (
+			let customersInQueue = (
 				await mysqlConnection.query(
 					"select count(*) as count from ticket where type = 'queue' and status = 'valid' and store_id = ?",
 					storeID
 				)
 			)[0].count
+
+			// STUB
+			// duration of the average visit in seconds
+			let averageVisitTime = 30 * 60
+
+			return {
+				queueLength: customersInQueue,
+				// TODO: Calculate wait time
+				queueWaitTime: customersInQueue * averageVisitTime,
+			}
 		},
 
 		/**
@@ -205,7 +215,9 @@ exports.getQueryInterface = async () => {
 		 * @returns
 		 */
 		getReservationData: async (storeID) => {
-			return await mysqlConnection.query("")
+			// TODO: Implement
+			// return await mysqlConnection.query("")
+			return { freeTimeslots: 0 }
 		},
 
 		/**

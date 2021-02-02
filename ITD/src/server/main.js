@@ -101,6 +101,45 @@ app.get("/api/search/:coordinates", async (req, res) => {
 	}
 })
 
+app.get("/api/store/:storeId", async (req, res) => {
+	let storeId = req.params.storeId
+	let authToken = req.body.authToken
+
+	try {
+		_validateToken(req, res)
+	} catch (error) {
+		return
+	}
+
+	let storeData, queueData, reservationData
+
+	try {
+		storeData = await StoreSearch.getStore(storeId)
+	} catch (err) {
+		res.status(404).send("Store not found")
+	}
+	try {
+		queueData = await QueueManager.getQueueData(storeId)
+	} catch (err) {
+		queueData = {}
+	}
+	try {
+		reservationData = await ReservationManager.getReservationData(storeId)
+	} catch (err) {
+		reservationData = {}
+	}
+	console.log(storeData)
+	console.log(queueData)
+	console.log(reservationData)
+
+	// return a merged json object
+	res.status(200).json({
+		...storeData,
+		...queueData,
+		...reservationData,
+	})
+})
+
 app.post("/api/store/:storeId/queue/join", async (req, res) => {
 	let storeId = req.params.storeId
 	let authToken = req.body.authToken
