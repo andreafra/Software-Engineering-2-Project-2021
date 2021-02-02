@@ -258,6 +258,10 @@ exports.getQueryInterface = async () => {
 		 */
 		addVerificationCode: async (phoneNum, code) => {
 			await mysqlConnection.query(
+				"delete from verification_code where number = ?",
+				[phoneNum]
+			)
+			await mysqlConnection.query(
 				"insert into verification_code values (?, ?)",
 				[phoneNum, code]
 			)
