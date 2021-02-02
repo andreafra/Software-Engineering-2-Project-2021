@@ -119,7 +119,7 @@ exports.getQueryInterface = async () => {
 		 */
 		validateToken: async (token) => {
 			const res = await mysqlConnection.query(
-				"select id from token where token = ?",
+				"select user_id from token where token = ?",
 				token
 			)
 

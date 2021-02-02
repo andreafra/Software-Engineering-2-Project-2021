@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import cookie from "react-cookies"
 import { Link } from "react-router-dom"
 import StoreMap from "../components/StoreMap"
@@ -39,25 +39,24 @@ const FAKE_STORES = [
 	},
 ]
 
-export default async function StoreListView() {
-	console.log("before useState")
-	const [stores, setStores] = useState()
-	console.log("after useState")
-	const token = cookie.load("authToken")
-	console.log("token: " + token)
+export default function StoreListView() {
+	const [stores, setStores] = useState([])
 
-	//TODO: 0|0 should be the device GPS coordinates
-	let res = await fetch(API_BASE_URL + "search/" + "0|0", {
-		method: "GET",
-	})
-	console.log(res.status)
+	useEffect(async () => {
+		const authToken = cookie.load("authToken")
+		// Fetch store list from server
+		let res = await fetch(API_BASE_URL + "search/" + "0|0", {
+			method: "GET",
+			headers: {
+				// Don't forget to pass authorization token in the header
+				"X-Auth-Token": authToken,
+			},
+		})
+		let data = await res.json()
+		setStores(data)
+	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
 
-	let stores_list = await res.json()
-	console.log(stores_list)
-
-	setStores(stores_list)
-
-	const _listStores = async () => {
+	const _listStores = () => {
 		return stores.map((store) => (
 			<li className="card mb-5" key={store.id}>
 				<div className="card-header has-background-primary-light">

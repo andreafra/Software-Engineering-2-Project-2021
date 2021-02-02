@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  db:
+    image: mysql
+    container_name: clup_db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    privileged: true
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/conf:/etc/mysql/conf.d #this will export the custom.cnf in the ./database/conf/ folder
+      - ./database/init/:/docker-entrypoint-initdb.d #this will execute only if db_data is empty
+    cap_add:
+      - SYS_NICE # CAP_SYS_NICE
+
+  adminer:
+    image: adminer
+    container_name: clup_adminer
+    restart: always
+    ports:
+      - 8081:8080
+
+  # server-dev:
+  #   build: .
+  #   command: server-dev
+  #   ports:
+  #     - "3000:3000"
+
+  # client-dev:
+  #   build: .
+  #   command: client-dev
+  #   ports:
+  #     - "8080:8080"
+
+volumes:
+  db_data:
+    name: db_data

@@ -106,6 +106,9 @@ export default function TimeslotsView() {
 		return ret
 	}
 
+	/**
+	 * Called when the user confirms their timeslot selection.
+	 */
 	const _handleReserveTimeslot = () => {
 		// TODO: Send request to server
 	}

@@ -13,7 +13,6 @@ const NoStoreError = require("./../../errors/NoStoreError")
 exports.getStores = async (lat, long) => {
 	const queryInterface = await queryManager.getQueryInterface()
 	const res = await queryInterface.getStoresInRange(lat, long, 50)
-	console.log(res)
 	if (res.length === 0) {
 		throw new NoStoreError()
 	}

@@ -10,6 +10,10 @@ export default function TicketListView() {
 
 	// TODO: fetch data from server
 
+	/**
+	 * Renders the list of tickets belonging to that user.
+	 * @returns JSX elements
+	 */
 	const _showTickets = () => {
 		return tickets.map((t) => {
 			let isQueue = t.receiptId[0] === "Q"

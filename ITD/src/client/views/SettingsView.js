@@ -2,8 +2,9 @@ import React from "react"
 import Cookie from "react-cookies"
 import { Link } from "react-router-dom"
 export default function SettingsView() {
-	
-	// Log out the user by clearing cookies
+	/**
+	 * Log out the user by clearing cookies
+	 */
 	const _logout = () => {
 		Cookie.remove("authToken")
 		window.location.reload()
@@ -29,7 +30,12 @@ export default function SettingsView() {
 						</div>
 					</div>
 					<div className="block">
-						<button class="button is-danger is-rounded" onClick={_logout}>Logout</button>
+						<button
+							class="button is-danger is-rounded"
+							onClick={_logout}
+						>
+							Logout
+						</button>
 					</div>
 				</div>
 			</div>

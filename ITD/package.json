@@ -74,6 +74,7 @@
 	},
 	"scripts": {
 		"server-dev": "nodemon ./src/server/main.js",
+		"server-debug": "nodemon --inspect ./src/server/main.js",
 		"client-dev": "parcel serve --port 8080 ./src/client/index.html",
 		"client-build": "parcel build ./src/client/index.html",
 		"test": "jest",

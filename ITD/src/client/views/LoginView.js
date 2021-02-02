@@ -33,6 +33,7 @@ export default function LoginView() {
 					if (loginStep < 2) setLoginStep(loginStep + 1)
 				} else {
 					console.error(res.statusText)
+					setErrorMsg(res.statusText)
 				}
 			}
 			if (loginStep === 1) {
@@ -55,7 +56,10 @@ export default function LoginView() {
 					cookie.save("authToken", json.authToken, { path: "/" })
 					// Proceed to next step
 					if (loginStep < 2) setLoginStep(loginStep + 1)
-				} else console.error(res.status, res.statusText)
+				} else {
+					console.error(res.status, res.statusText)
+					setErrorMsg(res.statusText)
+				}
 			}
 		} catch (error) {
 			console.log(error.message)

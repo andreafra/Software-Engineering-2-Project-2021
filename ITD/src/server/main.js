@@ -18,6 +18,27 @@ app.listen(port, () => {
 app.use(express.json())
 app.use(cors())
 
+// Utility
+/**
+ * If the user is authenticated returns its userId, otherwise sends a
+ * 401 error to the client and throws.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @returns userId
+ * @throws InvalidAuthTokenError if user is not authenticated
+ */
+const _validateToken = async (req, res) => {
+	// Verify that user have valid token to authenticate
+	let authToken = req.header("X-Auth-Token")
+	try {
+		return AccountManager.validateToken(authToken)
+	} catch (e) {
+		res.status(401).send("Invalid auth token")
+		throw new InvalidAuthTokenError()
+	}
+}
+
 /* REST ENDPOINTS */
 app.get("/", (req, res) => {
 	res.status(200).send("CLup API")
@@ -25,7 +46,7 @@ app.get("/", (req, res) => {
 
 app.post("/api/auth/login", (req, res) => {
 	let phoneNum = req.body.phoneNumber
-	console.log(phoneNum)
+	// console.log(phoneNum)
 	try {
 		console.log(`/api/auth/login <-- phoneNum=${phoneNum}`)
 		AccountManager.loginWithPhoneNumber(phoneNum)
@@ -50,20 +71,16 @@ app.post("/api/auth/code", async (req, res) => {
 		})
 	} catch (err) {
 		console.error(err)
-		res.status(400).send("Bad code")
+		res.status(400).send(err.message)
 	}
 })
 
 app.get("/api/search/:coordinates", async (req, res) => {
-	/*let authToken = req.body.authToken
-	let userId
 	try {
-		userId = AccountManager.validateToken(authToken)
-		console.log("Authorized user is performing some actions...")
-	} catch (e) {
-		res.status(401).send("Invalid auth token")
+		_validateToken(req, res)
+	} catch (error) {
 		return
-	}*/
+	}
 
 	let rawCoordinates = req.params.coordinates
 	let [lat, long] = rawCoordinates.split("|")
@@ -193,7 +210,7 @@ app.post("/api/store/:storeId/reservation/cancel", (req, res) => {
 	}
 })
 
-app.post("/api/store/<storeId>/ticket/verify", async (req, res) => {
+app.post("/api/store/:storeId/ticket/verify", async (req, res) => {
 	let storeId = req.params.storeId
 	let authToken = req.body.authToken
 	let ticketId = req.body.receiptId

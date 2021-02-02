@@ -1,5 +1,6 @@
 const phone = require("phone")
 const { InvalidInputError } = require("../../errors/InvalidInputError")
+const { BadLoginCodeError } = require("../../errors/BadLoginCodeError")
 const QueryManager = require("./../QueryManager/index")
 const smsApi = require("./../SmsApi/stub")
 
@@ -57,7 +58,7 @@ exports.verifyPhoneNumber = async (phoneNum, code) => {
 	}
 	let res = await queryInterface.checkVerificationCode(phoneNum, code)
 	if (!res) {
-		throw "Bad code"
+		throw new BadLoginCodeError()
 	}
 
 	return res

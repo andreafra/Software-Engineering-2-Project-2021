@@ -2,6 +2,17 @@
 
 This folder contains the description of how we implemented and tested the project described in the RASD and DD.
 
+## Ports
+
+Make sure these ports are available if you're trying to setup up the project.
+
+| Port | Service                 |
+| ---- | ----------------------- |
+| 8080 | Client Server           |
+| 3000 | REST API Server         |
+| 3306 | MySQL Database          |
+| 8081 | Adminer (to inspect DB) |
+
 ## Setup
 
 This project is developed in JavaScript and run on NodeJS. You'll have to install a couple of tools in order to get started.
@@ -18,13 +29,17 @@ This project is developed in JavaScript and run on NodeJS. You'll have to instal
 - Change directory into the ITD folder `cd DiDioLavoreFuscoFranchini-CLup/ITD`
 - Run `yarn install` to install the dependencies
 
+At this point you may really want to install Docker to ease the process on your machine:
+
+- Install [Docker](https://www.docker.com/) on your device, and make sure [docker-compose](https://docs.docker.com/compose/install/) is installed.
+
+If you just want to spin up the whole system, skip to [this section](#atd)
+
 ### Setting up the database
 
 #### The easy way: using Docker
 
-You'll have to install [Docker](https://www.docker.com/) or an equivalent on your device, and make sure [docker-compose](https://docs.docker.com/compose/install/) is installed.
-
-- Run `docker-compose up -d` to spin up the images specified in the `docker-compose.yml` file.
+- Run `docker-compose up -f docker-compose.dev.yml -d` to spin up the images specified in the `docker-compose.yml` file. _Make sure you have typed .dev.yml not just .yml_
 
 Visit [http://localhost:8081](http://localhost:8081) to see if [Adminer](https://www.adminer.org) is running, and log in with
 the credentials specified in the `.env` file.
@@ -44,6 +59,7 @@ DB_NAME="db_clup"
 ```
 
 The user should be created with the following commands:
+
 ```SQL
 create user clup_admin@localhost identified with mysql_native_password by 'clup';
 grant all privileges on * . * to clup_admin@localhost;
@@ -51,12 +67,30 @@ grant all privileges on * . * to clup_admin@localhost;
 
 ### Verify the installation
 
-Everything should be installed correctly now. Try running one of the following commands
+Everything should be installed correctly now. Try running spinning up the server with the commands described in the next section.
 
-- Run `yarn server-dev` to run the developer server
+- Run `yarn server-dev` to run the server
+- Run `yarn server-debug` to debug the server
+  > **How to debug:** In VSCode open the _itd.code-workspace_ project or the ITD folder. Just check that .vscode/launch.json is present.
+  > Run `yarn server-debug` to spin up the server in debug mode.
+  > Then from the Debug Menu select "Node: Nodemon", click the green "play" button and attach the debugger to the nodemon process (it should be the first one in the list).
 - Run `yarn client-dev` to run the client server
 - Run `yarn client-build` to compile the client package (output is in `dist`)
-- Run `yarn test` to run the test suite with [Jest](https://jestjs.io)
+- Run `yarn test` to run the test suite with [Jest](https://jestjs.io). If you need to pass Jest additional parameters, use `yarn test -- <parameters here>`.
+
+<a name="deployment"></a>
+
+## Deployment
+
+When you want to spin up the database, server and the client static server, run the _✨magic command✨_:
+
+```bash
+docker-compose -f docker-compose.yml --build
+```
+
+It'll build and bring online the system!
+
+If for some reason you have run docker-compose.dev.yml file, shut it down with `docker-compose down`.
 
 ### TL;DR
 

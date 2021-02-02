@@ -24,6 +24,9 @@ export default function StoreDetailView() {
 
 	// TODO: fetch data from server
 
+	/**
+	 * Called when the user click on the "Queue Now" button.
+	 */
 	const _handleJoinQueue = () => {
 		// TODO: send request to server
 	}
