@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import cookie from "react-cookies"
 import { API_BASE_URL } from "../defaults"
+import { Redirect } from "react-router-dom"
 
 const FAKE_STORE = {
 	id: "store-1",
@@ -18,8 +19,8 @@ export default function StoreDetailView() {
 	// storeId
 	const storeId = useParams().id
 	const stores_list = cookie.load("stores_list")
-
 	const [store, setStore] = useState([])
+	const [button_pressed, setButton] = useState(false)
 
 	useEffect(async () => {
 		const authToken = cookie.load("authToken")
@@ -35,8 +36,6 @@ export default function StoreDetailView() {
 		setStore(data)
 	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
 
-	console.log(store)
-
 	const waitTime = new Date(store.queueWaitTime)
 	const waitHours = waitTime.getHours()
 	const waitMinutes = waitTime.getMinutes()
@@ -44,8 +43,27 @@ export default function StoreDetailView() {
 	/**
 	 * Called when the user click on the "Queue Now" button.
 	 */
-	const _handleJoinQueue = () => {
-		// TODO: send request to server
+	const _handleJoinQueue = async () => {
+		const authToken = cookie.load("authToken")
+		console.log(storeId)
+
+		const res = await fetch(
+			API_BASE_URL + "store/" + storeId + "/queue/join",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					storeId: storeId,
+					authToken: authToken,
+				}),
+			}
+		)
+		let data = await res.json()
+		console.log(data)
+
+		setButton(true)
 	}
 
 	return (
@@ -105,6 +123,8 @@ export default function StoreDetailView() {
 						>
 							Queue now
 						</button>
+						{/*Redirect us only if we have pressed the button*/}
+						{button_pressed ? <Redirect to="/tickets" /> : null}
 					</div>
 				</div>
 			</div>

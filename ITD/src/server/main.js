@@ -143,7 +143,6 @@ app.get("/api/store/:storeId", async (req, res) => {
 app.post("/api/store/:storeId/queue/join", async (req, res) => {
 	let storeId = req.params.storeId
 	let authToken = req.body.authToken
-
 	let userId
 	try {
 		userId = AccountManager.validateToken(authToken)
@@ -153,7 +152,7 @@ app.post("/api/store/:storeId/queue/join", async (req, res) => {
 	}
 
 	try {
-		let receipt = QueueManager.joinQueue(storeID, userId)
+		let receipt = QueueManager.joinQueue(storeId, userId)
 		res.status(200).send(receipt)
 	} catch (err) {
 		res.status(404).send("Store not found")
