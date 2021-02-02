@@ -99,7 +99,19 @@ exports.getQueryInterface = async () => {
 				phoneNum
 			)
 
-			const userToken = uuid.v4()
+			let userToken = uuid.v4()
+
+			// checks if already exists
+			while (
+				(
+					await mysqlConnection.query(
+						"select count(*) as count from token where token = ?",
+						[userToken]
+					)
+				)[0].count > 0
+			) {
+				userToken = uuid.v4()
+			}
 
 			await mysqlConnection.query(
 				"insert into token (user_id, token, end_timestamp) values (?, ?, TIMESTAMP('2025-01-01'))",
