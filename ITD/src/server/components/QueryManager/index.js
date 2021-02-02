@@ -216,8 +216,10 @@ exports.getQueryInterface = async () => {
 		 */
 		getReservationData: async (storeID) => {
 			// TODO: Implement
-			// return await mysqlConnection.query("")
-			return { freeTimeslots: 0 }
+			return await mysqlConnection.query(
+				"select r.weekday, r.start_time, r.max_people_allowed, (select count(*) from ticket as t where t.reservation_id = r.id) as count from reservation as r where r.is_active = TRUE and r.store_id = ?",
+				[storeID]
+			)
 		},
 
 		/**

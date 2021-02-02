@@ -193,8 +193,9 @@ app.get("/api/store/:storeId/reservation/timeslots", async (req, res) => {
 	}
 
 	try {
-		let reservations = {}
-		reservations = await ReservationManager.getReservationData(storeId)
+		const reservations = await ReservationManager.getReservationData(
+			storeId
+		)
 		res.status(200).send(reservations)
 	} catch (err) {
 		res.status(404).send("Store not found")
