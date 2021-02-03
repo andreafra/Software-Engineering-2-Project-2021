@@ -41,6 +41,9 @@ export default function TicketListView() {
 							<QRCode value={t.id} />
 							<p className="title">{t.id}</p>
 							<p className="subtitle">
+								<b>Id store: </b> {t.store_id}
+							</p>
+							<p className="subtitle">
 								<b>Type </b> {isQueue ? "Queue" : "Reservation"}
 							</p>
 							<p className="is-size-5">
