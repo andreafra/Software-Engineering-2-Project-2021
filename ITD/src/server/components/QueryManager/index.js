@@ -217,7 +217,7 @@ exports.getQueryInterface = async () => {
 		getReservationData: async (storeID) => {
 			// TODO: Implement
 			return await mysqlConnection.query(
-				"select r.weekday, r.start_time, r.max_people_allowed, (select count(*) from ticket as t where t.reservation_id = r.id) as count from reservation as r where r.is_active = TRUE and r.store_id = ?",
+				"select r.id, r.weekday, r.start_time, r.max_people_allowed, (select count(*) from ticket as t where t.reservation_id = r.id) as count from reservation as r where r.is_active = TRUE and r.store_id = ?",
 				[storeID]
 			)
 		},
@@ -419,10 +419,12 @@ exports.getQueryInterface = async () => {
 		},
 
 		getActiveTicketFromUser: async (userId) => {
-			return (await mysqlConnection.query(
-				"select * from ticket where user_id = ? and state = 'active' order by creation_date asc limit 1"
-			))[0]
-		}
+			return (
+				await mysqlConnection.query(
+					"select * from ticket where user_id = ? and state = 'active' order by creation_date asc limit 1"
+				)
+			)[0]
+		},
 
 		/**
 		 * Destroy the instance of the MySQL connection in a safe way.
