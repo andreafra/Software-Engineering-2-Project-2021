@@ -218,8 +218,7 @@ app.post(
 		}
 
 		try {
-			let receipt = {}
-			receipt = await ReservationManager.makeReservation(
+			const receipt = await ReservationManager.makeReservation(
 				storeId,
 				timeslotId,
 				userId

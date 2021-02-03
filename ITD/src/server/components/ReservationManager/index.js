@@ -14,6 +14,12 @@ const utils = require("./../../utils")
 exports.makeReservation = async (storeId, reservationId, userId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
+	// TODO: clear old reservations
+	//await queryInterface.clearOldReservations(userId)
+	const hasReservation = await queryInterface.hasReservation(userId)
+
+	if (hasReservation) throw "Already has reservation"
+
 	return (
 		"R" +
 		(await queryInterface.createUserReservation(

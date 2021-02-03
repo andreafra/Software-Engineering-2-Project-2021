@@ -419,10 +419,31 @@ exports.getQueryInterface = async () => {
 		},
 
 		getActiveTicketFromUser: async (userId) => {
-			return (await mysqlConnection.query(
-				"select * from ticket where user_id = ? and state = 'active' order by creation_date asc limit 1"
-			))[0]
-		}
+			return (
+				await mysqlConnection.query(
+					"select * from ticket where user_id = ? and state = 'active' order by creation_date asc limit 1"
+				)
+			)[0]
+		},
+
+		setFirst: async (ticketId) => {
+			return await mysqlConnection.query(
+				"update ticket set first_timestamp = NOW() where id = ?",
+				[ticketId]
+			)
+		},
+
+		clearOldTickets: async () => {
+			return await mysqlConnection.query(
+				"update ticket set state = 'cancelled' where first_timestamp <> NULL and first_timestamp < DATE_SUB(NOW(), INTERVAL 1 MINUTE)"
+			)
+		},
+
+		hasReservation: async (userId) => {
+			return await mysqlConnection.query(
+				"select count(*) as count from ticket where user_id = ? and type = 'reservation' and status = 'active'"
+			)
+		},
 
 		/**
 		 * Destroy the instance of the MySQL connection in a safe way.

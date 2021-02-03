@@ -31,6 +31,8 @@ exports.joinQueue = async (storeId, userId) => {
 exports.isTicketValid = async (storeId, ticketId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
+	await queryInterface.clearOldTickets()
+
 	const firstTicket = await queryInterface.getFirstQueueTicket(storeId)
 
 	if (firstTicket.id == ticketId) {
@@ -48,6 +50,7 @@ exports.isTicketValid = async (storeId, ticketId) => {
 				const nextTicket = await queryInterface.getFirstQueueTicket(
 					storeId
 				)
+				await queryInterface.setFirst(nextTicket)
 			} catch (err) {
 				// do nothing
 			}
