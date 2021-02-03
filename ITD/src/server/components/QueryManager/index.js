@@ -130,6 +130,7 @@ exports.getQueryInterface = async () => {
 		 * @returns the userId if found
 		 */
 		validateToken: async (token) => {
+			console.log(token)
 			const res = await mysqlConnection.query(
 				"select user_id from token where token = ?",
 				token
@@ -139,7 +140,7 @@ exports.getQueryInterface = async () => {
 				throw "Token not found"
 			}
 
-			return res[0].id
+			return res[0].user_id
 		},
 
 		/**
@@ -217,7 +218,7 @@ exports.getQueryInterface = async () => {
 		getReservationData: async (storeID) => {
 			// TODO: Implement
 			return await mysqlConnection.query(
-				"select r.weekday, r.start_time, r.max_people_allowed, (select count(*) from ticket as t where t.reservation_id = r.id) as count from reservation as r where r.is_active = TRUE and r.store_id = ?",
+				"select r.id, r.weekday, r.start_time, r.max_people_allowed, (select count(*) from ticket as t where t.reservation_id = r.id) as count from reservation as r where r.is_active = TRUE and r.store_id = ?",
 				[storeID]
 			)
 		},
@@ -419,6 +420,7 @@ exports.getQueryInterface = async () => {
 		},
 
 		getActiveTicketFromUser: async (userId) => {
+<<<<<<< HEAD
 			return (
 				await mysqlConnection.query(
 					"select * from ticket where user_id = ? and state = 'active' order by creation_date asc limit 1"
@@ -440,9 +442,11 @@ exports.getQueryInterface = async () => {
 		},
 
 		hasReservation: async (userId) => {
-			return await mysqlConnection.query(
-				"select count(*) as count from ticket where user_id = ? and type = 'reservation' and status = 'active'"
+			let res = await mysqlConnection.query(
+				"select * from ticket where user_id = ? and status = 'valid' order by creation_date asc limit 1",
+				[userId]
 			)
+			return res[0]
 		},
 
 		/**

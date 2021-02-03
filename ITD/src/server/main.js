@@ -103,7 +103,7 @@ app.get("/api/search/:coordinates", async (req, res) => {
 
 app.get("/api/store/:storeId", async (req, res) => {
 	let storeId = req.params.storeId
-	let authToken = req.body.authToken
+	let authToken = req.header("X-Auth-Token")
 
 	try {
 		_validateToken(req, res)
@@ -183,11 +183,12 @@ app.post("/api/store/:storeId/queue/leave", async (req, res) => {
 
 app.get("/api/store/:storeId/reservation/timeslots", async (req, res) => {
 	let storeId = req.params.storeId
-	let authToken = req.body.authToken
+	let authToken = req.header("X-Auth-Token")
 
 	try {
 		await AccountManager.validateToken(authToken)
 	} catch (e) {
+		console.log(e)
 		res.status(401).send("Invalid auth token")
 		return
 	}
@@ -209,10 +210,14 @@ app.post(
 		let timeslotId = req.params.timeslotId
 		let authToken = req.body.authToken
 
+		console.log("Reservation: " + authToken)
+		console.log(authToken)
+
 		let userId
 		try {
 			userId = await AccountManager.validateToken(authToken)
 		} catch (e) {
+			console.log(e)
 			res.status(401).send("Invalid auth token")
 			return
 		}
@@ -225,6 +230,7 @@ app.post(
 			)
 			res.status(200).send(receipt)
 		} catch (err) {
+			console.log(err)
 			res.status(404).send("Store not found")
 		}
 	}
@@ -244,9 +250,15 @@ app.post("/api/store/:storeId/reservation/cancel", async (req, res) => {
 	}
 
 	try {
-		await ReservationManager.cancelReservation(storeId, ticketId, userId)
+		console.log(storeId + " " + authToken + " " + ticketId)
+		let receipt = await ReservationManager.cancelReservation(
+			storeId,
+			ticketId,
+			userId
+		)
 		res.status(200).send(receipt)
 	} catch (err) {
+		console.log(err)
 		res.status(404).send("Store/receipt not found")
 	}
 })
@@ -275,7 +287,7 @@ app.post("/api/store/:storeId/ticket/verify", async (req, res) => {
 })
 
 app.get("/api/user/ticket", async (req, res) => {
-	const authToken = req.body.authToken
+	let authToken = req.header("X-Auth-Token")
 
 	let userId
 	try {
@@ -286,9 +298,11 @@ app.get("/api/user/ticket", async (req, res) => {
 	}
 
 	try {
-		const tickets = await TicketManager.getTicket(userId)
+		let tickets = await TicketManager.getTicket(userId)
+		console.log(tickets)
 		res.status(200).send(tickets)
 	} catch (err) {
+		console.log(err)
 		res.status(404).send("Ticket not found")
 	}
 })

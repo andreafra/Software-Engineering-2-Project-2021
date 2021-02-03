@@ -93,15 +93,32 @@ export default function TimeslotsView() {
 	const _getTimeslots = () => {
 		let ret = []
 		let timeslotsSorted = timeslots
-			.sort((a, b) => getDayId(a.day) - getDayId(b.day))
+			.sort((a, b) => a.weekday - b.weekday)
 			.sort((a, b) => {
-				let a_time = a.time.split(":")
-				let b_time = b.time.split(":")
+				let a_time = a.start_time.split(":")
+				let b_time = b.start_time.split(":")
 				return a_time[0] * 60 + a_time[1] - (b_time[0] * 60 + b_time[1])
 			})
+		timeslotsSorted.forEach((ts) => {
+			if (ts.weekday == 1) {
+				ts.weekday = "Monday"
+			} else if (ts.weekday == 2) {
+				ts.weekday = "Tuesday"
+			} else if (ts.weekday == 2) {
+				ts.weekday = "Wednesday"
+			} else if (ts.weekday == 2) {
+				ts.weekday = "Thursday"
+			} else if (ts.weekday == 2) {
+				ts.weekday = "Friday"
+			} else if (ts.weekday == 2) {
+				ts.weekday = "Saturday"
+			} else {
+				ts.weekday = "Sunday"
+			}
+		})
 		DAYS.forEach((d) => {
 			// Get all the timeslots in that day
-			let slots = timeslotsSorted.filter((t) => t.day === d)
+			let slots = timeslotsSorted.filter((t) => t.weekday === d)
 			if (slots.length > 0) {
 				// Add a separator for each day
 				ret.push(
@@ -119,7 +136,7 @@ export default function TimeslotsView() {
 							(t.id === selectedTimeslot ? "is-primary" : "")
 						}
 					>
-						{t.time}
+						{t.start_time}
 						<span
 							className={
 								"ml-2 tag " + getCrowdnessColor(t.crowdness)
