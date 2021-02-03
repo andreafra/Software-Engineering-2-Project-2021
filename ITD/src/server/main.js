@@ -44,12 +44,12 @@ app.get("/", (req, res) => {
 	res.status(200).send("CLup API")
 })
 
-app.post("/api/auth/login", (req, res) => {
+app.post("/api/auth/login", async (req, res) => {
 	let phoneNum = req.body.phoneNumber
 	// console.log(phoneNum)
 	try {
 		console.log(`/api/auth/login <-- phoneNum=${phoneNum}`)
-		AccountManager.loginWithPhoneNumber(phoneNum)
+		await AccountManager.loginWithPhoneNumber(phoneNum)
 		res.status(200).send("OK - phoneNumber received")
 	} catch (err) {
 		console.error(err)
@@ -77,7 +77,7 @@ app.post("/api/auth/code", async (req, res) => {
 
 app.get("/api/search/:coordinates", async (req, res) => {
 	try {
-		_validateToken(req, res)
+		await _validateToken(req, res)
 	} catch (error) {
 		return
 	}
@@ -145,14 +145,14 @@ app.post("/api/store/:storeId/queue/join", async (req, res) => {
 	let authToken = req.body.authToken
 	let userId
 	try {
-		userId = AccountManager.validateToken(authToken)
+		userId = await AccountManager.validateToken(authToken)
 	} catch (e) {
 		res.status(401).send("Invalid auth token")
 		return
 	}
 
 	try {
-		let receipt = QueueManager.joinQueue(storeId, userId)
+		let receipt = await QueueManager.joinQueue(storeId, userId)
 		res.status(200).send(receipt)
 	} catch (err) {
 		res.status(404).send("Store not found")
@@ -160,21 +160,21 @@ app.post("/api/store/:storeId/queue/join", async (req, res) => {
 	}
 })
 
-app.post("/api/store/:storeId/queue/leave", (req, res) => {
+app.post("/api/store/:storeId/queue/leave", async (req, res) => {
 	let storeId = req.params.storeId
 	let authToken = req.body.authToken
 	let ticketId = req.body.queueReceiptId
 
 	let userId
 	try {
-		userId = AccountManager.validateToken(authToken)
+		userId = await AccountManager.validateToken(authToken)
 	} catch (e) {
 		res.status(401).send("Invalid auth token")
 		return
 	}
 
 	try {
-		QueueManager.cancelQueueTicket(storeId, ticketId, userId)
+		await QueueManager.cancelQueueTicket(storeId, ticketId, userId)
 		res.status(200).send("OK")
 	} catch (err) {
 		res.status(404).send("Receipt not found")
@@ -186,7 +186,7 @@ app.get("/api/store/:storeId/reservation/timeslots", async (req, res) => {
 	let authToken = req.body.authToken
 
 	try {
-		AccountManager.validateToken(authToken)
+		await AccountManager.validateToken(authToken)
 	} catch (e) {
 		res.status(401).send("Invalid auth token")
 		return
@@ -202,47 +202,50 @@ app.get("/api/store/:storeId/reservation/timeslots", async (req, res) => {
 	}
 })
 
-app.post("/api/store/:storeId/reservation/book/:timeslotId", (req, res) => {
-	let storeId = req.params.storeId
-	let timeslotId = req.params.timeslotId
-	let authToken = req.body.authToken
+app.post(
+	"/api/store/:storeId/reservation/book/:timeslotId",
+	async (req, res) => {
+		let storeId = req.params.storeId
+		let timeslotId = req.params.timeslotId
+		let authToken = req.body.authToken
 
-	let userId
-	try {
-		userId = AccountManager.validateToken(authToken)
-	} catch (e) {
-		res.status(401).send("Invalid auth token")
-		return
+		let userId
+		try {
+			userId = await AccountManager.validateToken(authToken)
+		} catch (e) {
+			res.status(401).send("Invalid auth token")
+			return
+		}
+
+		try {
+			let receipt = {}
+			receipt = await ReservationManager.makeReservation(
+				storeId,
+				timeslotId,
+				userId
+			)
+			res.status(200).send(receipt)
+		} catch (err) {
+			res.status(404).send("Store not found")
+		}
 	}
+)
 
-	try {
-		let receipt = {}
-		receipt = ReservationManager.makeReservation(
-			storeId,
-			timeslotId,
-			userId
-		)
-		res.status(200).send(receipt)
-	} catch (err) {
-		res.status(404).send("Store not found")
-	}
-})
-
-app.post("/api/store/:storeId/reservation/cancel", (req, res) => {
+app.post("/api/store/:storeId/reservation/cancel", async (req, res) => {
 	let storeId = req.params.storeId
 	let authToken = req.body.authToken
 	let ticketId = req.body.reservationReceiptId
 
 	let userId
 	try {
-		userId = AccountManager.validateToken(authToken)
+		userId = await AccountManager.validateToken(authToken)
 	} catch (e) {
 		res.status(401).send("Invalid auth token")
 		return
 	}
 
 	try {
-		ReservationManager.cancelReservation(storeId, ticketId, userId)
+		await ReservationManager.cancelReservation(storeId, ticketId, userId)
 		res.status(200).send(receipt)
 	} catch (err) {
 		res.status(404).send("Store/receipt not found")
@@ -255,7 +258,7 @@ app.post("/api/store/:storeId/ticket/verify", async (req, res) => {
 	let ticketId = req.body.receiptId
 
 	try {
-		AccountManager.validateToken(authToken)
+		await AccountManager.validateToken(authToken)
 	} catch (e) {
 		res.status(401).send("Invalid auth token")
 		return
@@ -269,6 +272,25 @@ app.post("/api/store/:storeId/ticket/verify", async (req, res) => {
 		})
 	} catch (err) {
 		res.status(404).send("Store/receipt not found")
+	}
+})
+
+app.get("/api/user/ticket", async (req, res) => {
+	const authToken = req.body.authToken
+
+	let userId
+	try {
+		userId = await AccountManager.validateToken(authToken)
+	} catch (e) {
+		res.status(401).send("Invalid auth token")
+		return
+	}
+
+	try {
+		const tickets = await TicketManager.getTicket(userId)
+		res.status(200).send(tickets)
+	} catch (err) {
+		res.status(404).send("Ticket not found")
 	}
 })
 

@@ -418,6 +418,12 @@ exports.getQueryInterface = async () => {
 			)[0]
 		},
 
+		getActiveTicketFromUser: async (userId) => {
+			return (await mysqlConnection.query(
+				"select * from ticket where user_id = ? and state = 'active' order by creation_date asc limit 1"
+			))[0]
+		}
+
 		/**
 		 * Destroy the instance of the MySQL connection in a safe way.
 		 */

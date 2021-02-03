@@ -22,6 +22,7 @@ exports.joinQueue = async (storeId, userId) => {
  * This method takes as input the identification number of the ticket and
  * the store. It checks by contacting the QueryManager if the provided
  * ticket is currently valid for the selected store.
+ * If the ticket is valid it is automatically used.
  *
  * @param {string} storeId
  * @param {string} ticketId
@@ -40,6 +41,17 @@ exports.isTicketValid = async (storeId, ticketId) => {
 		)
 
 		if (storeData.curr_number + reservations < storeData.max_capacity) {
+			await queryInterface.useTicket(storeId, ticketId)
+
+			// start to consider the next ticket
+			try {
+				const nextTicket = await queryInterface.getFirstQueueTicket(
+					storeId
+				)
+			} catch (err) {
+				// do nothing
+			}
+
 			return true
 		}
 	}

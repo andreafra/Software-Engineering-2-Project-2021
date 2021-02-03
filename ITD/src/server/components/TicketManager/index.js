@@ -1,5 +1,6 @@
 const ReservationManager = require("../ReservationManager")
 const QueueManager = require("../QueueManager")
+const QueryManager = require("../QueryManager")
 
 /**
  * This method takes as input the identification number of the ticket.
@@ -23,4 +24,10 @@ exports.checkTicket = async (storeId, ticketCode) => {
 		)
 	//else
 	//TODO: priority tickets? who handles them? needed?
+}
+
+exports.getTicket = async (userId) => {
+	const queryInterface = await QueryManager.getQueryInterface()
+
+	const ticket = queryInterface.getActiveTicketFromUser(userId)
 }
