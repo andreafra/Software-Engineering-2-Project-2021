@@ -130,6 +130,7 @@ exports.getQueryInterface = async () => {
 		 * @returns the userId if found
 		 */
 		validateToken: async (token) => {
+			console.log(token)
 			const res = await mysqlConnection.query(
 				"select user_id from token where token = ?",
 				token
@@ -139,7 +140,7 @@ exports.getQueryInterface = async () => {
 				throw "Token not found"
 			}
 
-			return res[0].id
+			return res[0].user_id
 		},
 
 		/**
@@ -419,11 +420,11 @@ exports.getQueryInterface = async () => {
 		},
 
 		getActiveTicketFromUser: async (userId) => {
-			return (
-				await mysqlConnection.query(
-					"select * from ticket where user_id = ? and state = 'active' order by creation_date asc limit 1"
-				)
-			)[0]
+			let res = await mysqlConnection.query(
+				"select * from ticket where user_id = ? and status = 'valid' order by creation_date asc limit 1",
+				[userId]
+			)
+			return res[0]
 		},
 
 		/**

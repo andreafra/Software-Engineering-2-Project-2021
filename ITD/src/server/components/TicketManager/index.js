@@ -29,5 +29,5 @@ exports.checkTicket = async (storeId, ticketCode) => {
 exports.getTicket = async (userId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
-	const ticket = queryInterface.getActiveTicketFromUser(userId)
+	return await queryInterface.getActiveTicketFromUser(userId)
 }
