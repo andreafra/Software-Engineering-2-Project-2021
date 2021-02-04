@@ -442,7 +442,7 @@ exports.getQueryInterface = async () => {
 
 		clearOldTickets: async () => {
 			return await mysqlConnection.query(
-				"update ticket set state = 'cancelled' where first_timestamp <> NULL and first_timestamp < DATE_SUB(NOW(), INTERVAL 1 MINUTE)"
+				"update ticket set status = 'cancelled' where first_timestamp <> NULL and first_timestamp < DATE_SUB(NOW(), INTERVAL 1 MINUTE)"
 			)
 		},
 
