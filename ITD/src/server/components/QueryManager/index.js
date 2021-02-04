@@ -420,12 +420,11 @@ exports.getQueryInterface = async () => {
 		},
 
 		getActiveTicketFromUser: async (userId) => {
-<<<<<<< HEAD
-			return (
-				await mysqlConnection.query(
-					"select * from ticket where user_id = ? and state = 'active' order by creation_date asc limit 1"
-				)
-			)[0]
+			let res = await mysqlConnection.query(
+				"select * from ticket where user_id = ? and status = 'valid' order by creation_date asc limit 1",
+				[userId]
+			)
+			return res[0]
 		},
 
 		setFirst: async (ticketId) => {
