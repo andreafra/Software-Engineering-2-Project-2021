@@ -34,6 +34,8 @@ exports.isTicketValid = async (storeId, ticketId) => {
 
 	const firstTicket = await queryInterface.getFirstQueueTicket(storeId)
 
+	if (firstTicket === undefined) return false
+
 	if (firstTicket.id == ticketId) {
 		const storeData = await queryInterface.getStoreFillLevel(storeId)
 		const reservations = await queryInterface.getStoreNextReservations(

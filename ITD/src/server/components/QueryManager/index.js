@@ -376,11 +376,16 @@ exports.getQueryInterface = async () => {
 		 * @param {string} userId
 		 * @returns the `receiptId`
 		 */
-		createUserReservation: async (storeId, reservationId, userId) => {
+		createUserReservation: async (
+			storeId,
+			reservationId,
+			userId,
+			resDay
+		) => {
 			return (
 				await mysqlConnection.query(
-					"insert into ticket (type, status, creation_date, store_id, user_id, reservation_id) values ('reservation', 'valid', CURDATE(), ?, ?, ?); select last_insert_id() as id;",
-					[storeId, userId, reservationId]
+					"insert into ticket (type, status, creation_date, store_id, user_id, reservation_id, first_timestamp) values ('reservation', 'valid', CURDATE(), ?, ?, ?, ?); select last_insert_id() as id;",
+					[storeId, userId, reservationId, resDay]
 				)
 			)[1][0].id
 		},
@@ -442,7 +447,13 @@ exports.getQueryInterface = async () => {
 
 		clearOldTickets: async () => {
 			return await mysqlConnection.query(
-				"update ticket set status = 'cancelled' where first_timestamp <> NULL and first_timestamp < DATE_SUB(NOW(), INTERVAL 1 MINUTE)"
+				"update ticket set status = 'cancelled' where type = 'queue' and first_timestamp <> NULL and first_timestamp < DATE_SUB(NOW(), INTERVAL 1 MINUTE)"
+			)
+		},
+
+		clearOldReservations: async () => {
+			return await mysqlConnection.query(
+				"update ticket set status = 'cancelled' where type = 'reservation' and first_timestamp < DATE_SUB(NOW(), INTERVAL 5 MINUTE)"
 			)
 		},
 

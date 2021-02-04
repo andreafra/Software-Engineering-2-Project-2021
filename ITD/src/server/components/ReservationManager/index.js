@@ -14,18 +14,29 @@ const utils = require("./../../utils")
 exports.makeReservation = async (storeId, reservationId, userId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
-	// TODO: clear old reservations
-	//await queryInterface.clearOldReservations(userId)
+	await queryInterface.clearOldReservations(userId)
 	const hasReservation = await queryInterface.hasReservation(userId)
 
 	if (hasReservation) throw "Already has reservation"
+
+	const reservationInfo = await queryInterface.getReservation(reservationId)
+	const resTime = reservationInfo.start_time.split(":")
+
+	const resDay = new Date()
+	resDay.setDate(
+		resDay.getDate() + Math.abs(reservationInfo.weekday - resDay.getDay())
+	)
+	resDay.setHours(parseInt(resTime[0]), parseInt(resTime[1]), 0)
+
+	if (new Date() > resDay) throw "too late!"
 
 	return (
 		"R" +
 		(await queryInterface.createUserReservation(
 			storeId,
 			reservationId,
-			userId
+			userId,
+			resDay
 		))
 	)
 }
