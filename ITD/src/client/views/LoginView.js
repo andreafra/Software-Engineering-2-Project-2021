@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import cookie from "react-cookies"
 import { Redirect } from "react-router-dom"
 import Button from "../components/Button"
+import ErrorMsg from "../components/ErrorMsg"
 import { PhoneField, TextField } from "../components/Field"
 import { API_BASE_URL, MAX_CODE_LENGTH, MAX_PHONE_LENGTH } from "../defaults"
 export default function LoginView() {
@@ -32,8 +33,7 @@ export default function LoginView() {
 					console.log(res.statusText)
 					if (loginStep < 2) setLoginStep(loginStep + 1)
 				} else {
-					console.error(res.statusText)
-					setErrorMsg(res.statusText)
+					setErrorMsg(await res.text())
 				}
 			}
 			if (loginStep === 1) {
@@ -57,13 +57,12 @@ export default function LoginView() {
 					// Proceed to next step
 					if (loginStep < 2) setLoginStep(loginStep + 1)
 				} else {
-					console.error(res.status, res.statusText)
-					setErrorMsg(res.statusText)
+					setErrorMsg(await res.text())
 				}
 			}
 		} catch (error) {
-			console.log(error.message)
-			setErrorMsg(error.message)
+			console.error(error.message)
+			setErrorMsg("Error: " + error.message)
 		}
 	}
 
@@ -72,11 +71,7 @@ export default function LoginView() {
 			<div className="column is-half is-offset-one-quarter">
 				<div className="section">
 					<h1 className="title">Login</h1>
-					{errorMsg !== "" ? (
-						<p className="message is-danger">
-							<div className="message-body">{errorMsg}</div>
-						</p>
-					) : null}
+					<ErrorMsg message={errorMsg} />
 					<div>
 						<PhoneField
 							id="phone"

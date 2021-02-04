@@ -13,7 +13,6 @@ exports.joinQueue = async (storeId, userId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 	// "Q" added to distinguish between Queue tickets and Reservation tickets
 	let code = "Q" + (await queryInterface.addUserToQueue(userId, storeId))
-	// console.log("QueueManager: added " + code)
 
 	return code
 }

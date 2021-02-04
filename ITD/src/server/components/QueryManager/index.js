@@ -130,7 +130,7 @@ exports.getQueryInterface = async () => {
 		 * @returns the userId if found
 		 */
 		validateToken: async (token) => {
-			console.log(token)
+			console.log("Validating token: " + token)
 			const res = await mysqlConnection.query(
 				"select user_id from token where token = ?",
 				token
@@ -216,7 +216,6 @@ exports.getQueryInterface = async () => {
 		 * @returns
 		 */
 		getReservationData: async (storeID) => {
-			// TODO: Implement
 			return await mysqlConnection.query(
 				"select r.id, r.weekday, r.start_time, r.max_people_allowed, (select count(*) from ticket as t where t.reservation_id = r.id) as count from reservation as r where r.is_active = TRUE and r.store_id = ?",
 				[storeID]
@@ -230,15 +229,16 @@ exports.getQueryInterface = async () => {
 		 *
 		 * @param {string} userID
 		 * @param {*} storeID
-		 * @returns the `receiptId` of this operation.
+		 * @returns {number} storeId
 		 */
 		addUserToQueue: async (userID, storeID) => {
+			await mysqlConnection.query(
+				"insert into ticket (type, status, creation_date, store_id, user_id) values ('queue', 'valid', CURDATE(), ?, ?)",
+				[storeID, userID]
+			)
 			return (
-				await mysqlConnection.query(
-					"insert into ticket (type, status, creation_date, store_id, user_id) values ('queue', 'valid', CURDATE(), ?, ?); select last_insert_id() as id;",
-					[storeID, userID]
-				)
-			)[1][0].id
+				await mysqlConnection.query("select last_insert_id() as id")
+			)[0].id
 		},
 
 		/**
@@ -419,6 +419,12 @@ exports.getQueryInterface = async () => {
 			)[0]
 		},
 
+		/**
+		 * Retrives a the most recent active ticket associated with a user.
+		 *
+		 * @param {string} userId
+		 * @returns the ticket object
+		 */
 		getActiveTicketFromUser: async (userId) => {
 			let res = await mysqlConnection.query(
 				"select * from ticket where user_id = ? and status = 'valid' order by creation_date asc limit 1",

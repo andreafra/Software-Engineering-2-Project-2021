@@ -26,8 +26,16 @@ exports.checkTicket = async (storeId, ticketCode) => {
 	//TODO: priority tickets? who handles them? needed?
 }
 
+/**
+ * This method returns the most recent active ticket associated with a certain user.
+ *
+ * @param {string} userId
+ * @returns the ticket object
+ */
 exports.getTicket = async (userId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
-	return await queryInterface.getActiveTicketFromUser(userId)
+	let res = await queryInterface.getActiveTicketFromUser(userId)
+	if (res) return res
+	else throw new Error("No tickets found!")
 }

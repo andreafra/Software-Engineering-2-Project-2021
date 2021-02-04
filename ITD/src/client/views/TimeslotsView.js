@@ -78,9 +78,6 @@ export default function TimeslotsView() {
 			}
 		)
 		let data1 = await res1.json()
-
-		console.log("Timeslots ricevuti:")
-		console.log(data1)
 		setTimeslots(data1)
 	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
 
@@ -157,7 +154,7 @@ export default function TimeslotsView() {
 	 * Called when the user confirms their timeslot selection.
 	 */
 	const _handleReserveTimeslot = async () => {
-		const authToken1 = cookie.load("authToken")
+		const authToken = cookie.load("authToken")
 		const res = await fetch(
 			API_BASE_URL +
 				"store/" +
@@ -168,11 +165,11 @@ export default function TimeslotsView() {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					"X-Auth-Token": authToken,
 				},
 				body: JSON.stringify({
 					storeId: storeId,
 					timeslotId: selectedTimeslot,
-					authToken: authToken1,
 				}),
 			}
 		)

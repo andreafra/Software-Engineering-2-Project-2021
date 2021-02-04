@@ -3,27 +3,33 @@ import QRCode from "react-qr-code"
 import { Link } from "react-router-dom"
 import cookie from "react-cookies"
 import { API_BASE_URL } from "../defaults"
-import { Redirect } from "react-router-dom"
+import ErrorMsg from "../components/ErrorMsg"
 
-const FAKE_TICKETS = [
-	{ receiptId: "QROGUOHRYMM", time: "2011-10-05T14:48:00.000Z" },
-]
 export default function TicketListView() {
 	const [tickets, setTickets] = useState([])
+	const [errorMsg, setErrorMsg] = useState("")
 
 	useEffect(async () => {
 		const authToken = cookie.load("authToken")
 		// Fetch store list from server
-		let res = await fetch(API_BASE_URL + "user/" + "ticket", {
+		let res = await fetch(API_BASE_URL + "user/ticket", {
 			method: "GET",
 			headers: {
 				// Don't forget to pass authorization token in the header
 				"X-Auth-Token": authToken,
 			},
 		})
-		let data = await res.json()
-		console.log(data)
-		setTickets([data])
+
+		if (res.status === 200) {
+			let data = await res.json()
+			setTickets([data])
+			// Cache the fact that user has a ticket
+			// This causes users to be redirected to this page as long as
+			// they have a valid ticket.
+			cookie.save("user_has_tickets", true, { path: "/" })
+		} else {
+			setErrorMsg(await res.text())
+		}
 	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
 
 	/**
@@ -35,19 +41,20 @@ export default function TicketListView() {
 			let isQueue = t.type === "queue"
 
 			return (
-				<div className="card">
+				<div className="card" key={t.id}>
 					<div className="card-content">
 						<div className="content has-text-centered">
-							<QRCode value={t.id} />
-							<p className="title">{t.id}</p>
+							<QRCode value={String(t.id)} />
+							<p className="title">#{t.id}</p>
 							<p className="subtitle">
-								<b>Id store: </b> {t.store_id}
+								<b>Id store: </b> {String(t.store_id)}
 							</p>
 							<p className="subtitle">
 								<b>Type </b> {isQueue ? "Queue" : "Reservation"}
 							</p>
 							<p className="is-size-5">
-								Creation time: {t.creation_date}
+								<b>Creation time: </b>{" "}
+								{new Date(t.creation_date).toLocaleDateString()}
 							</p>
 						</div>
 					</div>
@@ -68,8 +75,10 @@ export default function TicketListView() {
 
 	const _deleteTicket = async () => {
 		let ticket = tickets[0]
-		const auth = cookie.load("authToken")
+		const authToken = cookie.load("authToken")
+
 		if (ticket.type == "reservation") {
+			// Delete reservation
 			const res = await fetch(
 				API_BASE_URL +
 					"store/" +
@@ -79,33 +88,52 @@ export default function TicketListView() {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
+						"X-Auth-Token": authToken,
 					},
 					body: JSON.stringify({
-						authToken: auth,
-						storeId: ticket.store_id,
 						reservationReceiptId: ticket.id,
 					}),
 				}
 			)
+
+			if (res !== 200) {
+				setErrorMsg(await res.text())
+			} else {
+				cookie.save("user_has_tickets", false, { path: "/" })
+			}
 		} else {
+			// Exit queue
 			const res = await fetch(
-				API_BASE_URL +
-					"store/" +
-					ticket.store_id +
-					"/reservation/cancel",
+				API_BASE_URL + "store/" + ticket.store_id + "/queue/leave",
 				{
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
+						"X-Auth-Token": authToken,
 					},
 					body: JSON.stringify({
-						authToken: auth,
-						storeId: ticket.store_id,
-						reservationReceiptId: ticket.id,
+						queueReceiptId: ticket.id,
 					}),
 				}
 			)
+			if (res !== 200) {
+				setErrorMsg(await res.text())
+			} else {
+				cookie.save("user_has_tickets", false, { path: "/" })
+			}
 		}
+	}
+
+	// DEBUG/DEMO utility:
+	const _clearCookies = () => {
+		cookie.remove("authToken")
+		cookie.remove("user_has_tickets")
+		window.location.reload()
+	}
+
+	const _clearTickets = () => {
+		cookie.remove("user_has_tickets")
+		window.location.reload()
 	}
 
 	return (
@@ -127,7 +155,15 @@ export default function TicketListView() {
 							</Link>
 						</div>
 					</div>
+					<div className="block">
+						<ErrorMsg message={errorMsg} />
+					</div>
 					<div className="block">{_showTickets()}</div>
+				</div>
+				<div className="footer has-background-white">
+					<a onClick={_clearCookies}>Clear Cookies</a>
+					<br />
+					<a onClick={_clearTickets}>Clear Tickets</a>
 				</div>
 			</div>
 		</div>

@@ -31,7 +31,7 @@ export default function SettingsView() {
 					</div>
 					<div className="block">
 						<button
-							class="button is-danger is-rounded"
+							className="button is-danger is-rounded"
 							onClick={_logout}
 						>
 							Logout

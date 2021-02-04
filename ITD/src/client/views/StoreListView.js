@@ -3,44 +3,11 @@ import cookie from "react-cookies"
 import { Link } from "react-router-dom"
 import StoreMap from "../components/StoreMap"
 import { API_BASE_URL, MAX_CODE_LENGTH, MAX_PHONE_LENGTH } from "../defaults"
-import { Redirect } from "react-router-dom"
-
-// DEBUG
-const FAKE_STORES = [
-	{
-		id: "store-1",
-		name: "Store 1",
-		address: "Via Milano 16",
-		open: true,
-		distance: "0.6km",
-		freeTimeslots: 12,
-		queueLength: 15,
-		queueWaitTime: "03:34:00",
-	},
-	{
-		id: "store-2",
-		name: "Store 2",
-		address: "Corso Roma 4",
-		open: false,
-		distance: "0.3km",
-		freeTimeslots: 5,
-		queueLength: 3,
-		queueWaitTime: "00:15:00",
-	},
-	{
-		id: "store-3",
-		name: "Store 3",
-		address: "Piazza Leonardo da Vinci",
-		open: true,
-		distance: "0.1km",
-		freeTimeslots: 23,
-		queueLength: 999,
-		queueWaitTime: "08:44:00",
-	},
-]
+import ErrorMsg from "../components/ErrorMsg"
 
 export default function StoreListView() {
 	const [stores, setStores] = useState([])
+	const [errorMsg, setErrorMsg] = useState("")
 
 	useEffect(async () => {
 		const authToken = cookie.load("authToken")
@@ -52,8 +19,12 @@ export default function StoreListView() {
 				"X-Auth-Token": authToken,
 			},
 		})
-		let data = await res.json()
-		setStores(data)
+		if (res.status === 200) {
+			let data = await res.json()
+			setStores(data)
+		} else {
+			setErrorMsg(await res.text())
+		}
 	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
 
 	const _listStores = () => {
@@ -97,6 +68,7 @@ export default function StoreListView() {
 			<div className="columns is-gapless store-view">
 				<div className="column is-one-third store-list">
 					<div className="p-5">
+						<ErrorMsg message={errorMsg} />
 						<ul>{_listStores()}</ul>
 					</div>
 				</div>

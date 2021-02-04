@@ -103,7 +103,6 @@ app.get("/api/search/:coordinates", async (req, res) => {
 
 app.get("/api/store/:storeId", async (req, res) => {
 	let storeId = req.params.storeId
-	let authToken = req.header("X-Auth-Token")
 
 	try {
 		_validateToken(req, res)
@@ -142,42 +141,39 @@ app.get("/api/store/:storeId", async (req, res) => {
 
 app.post("/api/store/:storeId/queue/join", async (req, res) => {
 	let storeId = req.params.storeId
-	let authToken = req.body.authToken
-	let userId
-	try {
-		userId = await AccountManager.validateToken(authToken)
-	} catch (e) {
-		res.status(401).send("Invalid auth token")
-		return
-	}
 
 	try {
-		let receipt = await QueueManager.joinQueue(storeId, userId)
-		res.status(200).send(receipt)
-	} catch (err) {
-		res.status(404).send("Store not found")
-		// res.status(503).send("Failed to join the queue at this time. Try later.")
+		let userId = await _validateToken(req, res)
+
+		try {
+			let receiptId = await QueueManager.joinQueue(storeId, userId)
+			res.status(200).json({ receiptId: receiptId })
+		} catch (err) {
+			// TODO: Handle also the case where user is already in queue, and return status code 503
+			res.status(404).send("Store not found")
+			return
+		}
+	} catch (error) {
+		return
 	}
 })
 
 app.post("/api/store/:storeId/queue/leave", async (req, res) => {
 	let storeId = req.params.storeId
-	let authToken = req.body.authToken
 	let ticketId = req.body.queueReceiptId
 
-	let userId
 	try {
-		userId = await AccountManager.validateToken(authToken)
-	} catch (e) {
-		res.status(401).send("Invalid auth token")
+		let userId = await _validateToken(req, res)
+		try {
+			console.log(`Leaving queue: (${storeId} ${authToken} ${ticketId})`)
+			await QueueManager.cancelQueueTicket(storeId, ticketId, userId)
+			res.status(200).send("OK")
+		} catch (err) {
+			res.status(404).send("Receipt not found")
+			return
+		}
+	} catch (error) {
 		return
-	}
-
-	try {
-		await QueueManager.cancelQueueTicket(storeId, ticketId, userId)
-		res.status(200).send("OK")
-	} catch (err) {
-		res.status(404).send("Receipt not found")
 	}
 })
 
@@ -238,72 +234,66 @@ app.post(
 
 app.post("/api/store/:storeId/reservation/cancel", async (req, res) => {
 	let storeId = req.params.storeId
-	let authToken = req.body.authToken
 	let ticketId = req.body.reservationReceiptId
 
-	let userId
 	try {
-		userId = await AccountManager.validateToken(authToken)
-	} catch (e) {
-		res.status(401).send("Invalid auth token")
-		return
-	}
+		let userId = await _validateToken(req, res)
 
-	try {
-		console.log(storeId + " " + authToken + " " + ticketId)
-		let receipt = await ReservationManager.cancelReservation(
-			storeId,
-			ticketId,
-			userId
-		)
-		res.status(200).send(receipt)
-	} catch (err) {
-		console.log(err)
-		res.status(404).send("Store/receipt not found")
+		try {
+			console.log(
+				`Canceling reservation: (${storeId} ${authToken} ${ticketId})`
+			)
+			let receipt = await ReservationManager.cancelReservation(
+				storeId,
+				ticketId,
+				userId
+			)
+			res.status(200).send(receipt)
+		} catch (err) {
+			res.status(404).send("Store/receipt not found")
+			return
+		}
+	} catch (error) {
+		return
 	}
 })
 
 app.post("/api/store/:storeId/ticket/verify", async (req, res) => {
 	let storeId = req.params.storeId
-	let authToken = req.body.authToken
 	let ticketId = req.body.receiptId
 
 	try {
-		await AccountManager.validateToken(authToken)
-	} catch (e) {
-		res.status(401).send("Invalid auth token")
-		return
-	}
+		await _validateToken(req, res)
 
-	try {
-		let isValid = false
-		isValid = await TicketManager.checkTicket(storeId, ticketId)
-		res.status(200).send({
-			isTicketValid: isValid,
-		})
-	} catch (err) {
-		res.status(404).send("Store/receipt not found")
+		try {
+			let isValid = false
+			isValid = await TicketManager.checkTicket(storeId, ticketId)
+			res.status(200).send({
+				isTicketValid: isValid,
+			})
+		} catch (err) {
+			res.status(404).send("Store/receipt not found")
+			return
+		}
+	} catch (error) {
+		return
 	}
 })
 
 app.get("/api/user/ticket", async (req, res) => {
-	let authToken = req.header("X-Auth-Token")
-
-	let userId
 	try {
-		userId = await AccountManager.validateToken(authToken)
-	} catch (e) {
-		res.status(401).send("Invalid auth token")
+		let userId = await _validateToken(req, res)
+
+		try {
+			let ticket = await TicketManager.getTicket(userId)
+			console.log(ticket)
+			res.status(200).send(ticket)
+		} catch (err) {
+			res.status(404).send("No tickets found")
+			return
+		}
+	} catch (error) {
 		return
-	}
-
-	try {
-		let tickets = await TicketManager.getTicket(userId)
-		console.log(tickets)
-		res.status(200).send(tickets)
-	} catch (err) {
-		console.log(err)
-		res.status(404).send("Ticket not found")
 	}
 })
 
