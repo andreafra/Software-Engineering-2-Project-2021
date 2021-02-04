@@ -161,6 +161,7 @@ app.post("/api/store/:storeId/queue/join", async (req, res) => {
 app.post("/api/store/:storeId/queue/leave", async (req, res) => {
 	let storeId = req.params.storeId
 	let ticketId = req.body.queueReceiptId
+	let authToken = req.header("X-Auth-Token")
 
 	try {
 		let userId = await _validateToken(req, res)
@@ -169,6 +170,7 @@ app.post("/api/store/:storeId/queue/leave", async (req, res) => {
 			await QueueManager.cancelQueueTicket(storeId, ticketId, userId)
 			res.status(200).send("OK")
 		} catch (err) {
+			console.log(err)
 			res.status(404).send("Receipt not found")
 			return
 		}
@@ -204,10 +206,9 @@ app.post(
 	async (req, res) => {
 		let storeId = req.params.storeId
 		let timeslotId = req.params.timeslotId
-		let authToken = req.body.authToken
+		let authToken = req.header("X-Auth-Token")
 
 		console.log("Reservation: " + authToken)
-		console.log(authToken)
 
 		let userId
 		try {
@@ -235,6 +236,7 @@ app.post(
 app.post("/api/store/:storeId/reservation/cancel", async (req, res) => {
 	let storeId = req.params.storeId
 	let ticketId = req.body.reservationReceiptId
+	let authToken = req.header("X-Auth-Token")
 
 	try {
 		let userId = await _validateToken(req, res)

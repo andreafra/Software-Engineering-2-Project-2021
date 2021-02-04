@@ -21,6 +21,7 @@ export default function StoreListView() {
 		})
 		if (res.status === 200) {
 			let data = await res.json()
+			console.log(data)
 			setStores(data)
 		} else {
 			setErrorMsg(await res.text())
