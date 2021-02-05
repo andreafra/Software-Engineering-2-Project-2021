@@ -161,12 +161,13 @@ app.post("/api/store/:storeId/queue/join", async (req, res) => {
 app.post("/api/store/:storeId/queue/leave", async (req, res) => {
 	let storeId = req.params.storeId
 	let ticketId = req.body.queueReceiptId
-	let authToken = req.header("X-Auth-Token")
 
 	try {
 		let userId = await _validateToken(req, res)
 		try {
-			console.log(`Leaving queue: (${storeId} ${authToken} ${ticketId})`)
+			console.log(
+				`Leaving queue: (S: ${storeId} U:${userId} T:${ticketId})`
+			)
 			await QueueManager.cancelQueueTicket(storeId, ticketId, userId)
 			res.status(200).send("OK")
 		} catch (err) {
@@ -181,23 +182,20 @@ app.post("/api/store/:storeId/queue/leave", async (req, res) => {
 
 app.get("/api/store/:storeId/reservation/timeslots", async (req, res) => {
 	let storeId = req.params.storeId
-	let authToken = req.header("X-Auth-Token")
 
 	try {
-		await AccountManager.validateToken(authToken)
+		await _validateToken(req, res)
+
+		try {
+			const reservations = await ReservationManager.getReservationData(
+				storeId
+			)
+			res.status(200).send(reservations)
+		} catch (err) {
+			res.status(404).send("Store not found")
+		}
 	} catch (e) {
-		console.log(e)
-		res.status(401).send("Invalid auth token")
 		return
-	}
-
-	try {
-		const reservations = await ReservationManager.getReservationData(
-			storeId
-		)
-		res.status(200).send(reservations)
-	} catch (err) {
-		res.status(404).send("Store not found")
 	}
 })
 
@@ -206,29 +204,23 @@ app.post(
 	async (req, res) => {
 		let storeId = req.params.storeId
 		let timeslotId = req.params.timeslotId
-		let authToken = req.header("X-Auth-Token")
 
-		console.log("Reservation: " + authToken)
-
-		let userId
 		try {
-			userId = await AccountManager.validateToken(authToken)
+			let userId = await _validateToken(req, res)
+
+			try {
+				const receiptId = await ReservationManager.makeReservation(
+					storeId,
+					timeslotId,
+					userId
+				)
+				res.status(200).send({ receiptId: receiptId })
+			} catch (err) {
+				console.log(err)
+				res.status(404).send("Store not found")
+			}
 		} catch (e) {
-			console.log(e)
-			res.status(401).send("Invalid auth token")
 			return
-		}
-
-		try {
-			const receipt = await ReservationManager.makeReservation(
-				storeId,
-				timeslotId,
-				userId
-			)
-			res.status(200).send(receipt)
-		} catch (err) {
-			console.log(err)
-			res.status(404).send("Store not found")
 		}
 	}
 )
@@ -236,14 +228,13 @@ app.post(
 app.post("/api/store/:storeId/reservation/cancel", async (req, res) => {
 	let storeId = req.params.storeId
 	let ticketId = req.body.reservationReceiptId
-	let authToken = req.header("X-Auth-Token")
 
 	try {
 		let userId = await _validateToken(req, res)
 
 		try {
 			console.log(
-				`Canceling reservation: (${storeId} ${authToken} ${ticketId})`
+				`Canceling reservation: (S:${storeId} U:${userId} T:${ticketId})`
 			)
 			let receipt = await ReservationManager.cancelReservation(
 				storeId,
@@ -265,7 +256,8 @@ app.post("/api/store/:storeId/ticket/verify", async (req, res) => {
 	let ticketId = req.body.receiptId
 
 	try {
-		await _validateToken(req, res)
+		// DEBUG/DEMO: Skip authentication
+		// await _validateToken(req, res)
 
 		try {
 			let isValid = false

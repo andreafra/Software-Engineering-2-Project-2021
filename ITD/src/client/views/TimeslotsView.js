@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react"
 import { useParams, Link, useHistory } from "react-router-dom"
 import cookie from "react-cookies"
 import { API_BASE_URL } from "../defaults"
-import { Redirect } from "react-router-dom"
 import checkForExistingTicket from "../components/TicketCache"
 
 export default function TimeslotsView() {
 	const storeId = useParams().id
 	const [store, setStore] = useState([])
+	const [errorMsg, setErrorMsg] = useState("")
 	const [timeslots, setTimeslots] = useState([])
-	const [button_pressed, setButton] = useState(false)
 	const [selectedTimeslot, setSelectedTimeslot] = useState("")
 	const authToken = cookie.load("authToken")
 	const history = useHistory()
@@ -134,11 +133,13 @@ export default function TimeslotsView() {
 				}),
 			}
 		)
-		let data = await res.json()
-		console.log("Booking a timeslot reply:")
-		console.log(data)
-
-		setButton(true)
+		if (res.status === 200) {
+			let data = await res.json()
+			console.log(data)
+			history.push("/tickets")
+		} else {
+			setErrorMsg(await res.text())
+		}
 	}
 
 	return (
@@ -171,8 +172,6 @@ export default function TimeslotsView() {
 						>
 							Book the selected timeslot
 						</button>
-						{/*Redirect us only if we have pressed the button*/}
-						{button_pressed ? <Redirect to="/tickets" /> : null}
 						<Link
 							to={"/stores/" + storeId}
 							className="button is-rounded is-light is-fullwidth"

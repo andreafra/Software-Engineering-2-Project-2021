@@ -47,7 +47,6 @@ export default function StoreDetailView() {
 	 */
 	const _handleJoinQueue = async () => {
 		const authToken = cookie.load("authToken")
-		console.log(storeId)
 
 		const res = await fetch(
 			API_BASE_URL + "store/" + storeId + "/queue/join",

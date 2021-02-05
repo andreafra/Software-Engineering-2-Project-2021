@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import QRCode from "react-qr-code"
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import cookie from "react-cookies"
 import { API_BASE_URL } from "../defaults"
 import ErrorMsg from "../components/ErrorMsg"
@@ -8,6 +8,7 @@ import ErrorMsg from "../components/ErrorMsg"
 export default function TicketListView() {
 	const [tickets, setTickets] = useState([])
 	const [errorMsg, setErrorMsg] = useState("")
+	const history = useHistory()
 
 	useEffect(async () => {
 		const authToken = cookie.load("authToken")
@@ -30,6 +31,7 @@ export default function TicketListView() {
 			cookie.save("user_has_tickets", true, { path: "/" })
 		} else {
 			setErrorMsg(await res.text())
+			history.push("/stores")
 		}
 	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
 
@@ -103,6 +105,7 @@ export default function TicketListView() {
 				// clear tickets
 				setTickets([])
 				cookie.save("user_has_tickets", false, { path: "/" })
+				history.push("/stores")
 			}
 		} else {
 			// Exit queue
@@ -125,6 +128,7 @@ export default function TicketListView() {
 				// clear tickets
 				setTickets([])
 				cookie.save("user_has_tickets", false, { path: "/" })
+				history.push("/stores")
 			}
 		}
 	}

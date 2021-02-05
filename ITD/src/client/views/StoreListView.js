@@ -6,6 +6,7 @@ import { API_BASE_URL, MAX_CODE_LENGTH, MAX_PHONE_LENGTH } from "../defaults"
 import ErrorMsg from "../components/ErrorMsg"
 import checkForExistingTicket from "../components/TicketCache"
 import { useHistory } from "react-router-dom"
+
 export default function StoreListView() {
 	const [stores, setStores] = useState([])
 	const [errorMsg, setErrorMsg] = useState("")
@@ -88,7 +89,14 @@ export default function StoreListView() {
 						<div className="column is-half">
 							<Link
 								className="button is-primary is-fullwidth is-rounded"
-								to="/tickets"
+								to={
+									cookie.load("user_has_tickets") === "true"
+										? "/tickets"
+										: ""
+								}
+								disabled={
+									cookie.load("user_has_tickets") === "false"
+								}
 							>
 								See tickets
 							</Link>

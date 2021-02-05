@@ -21,7 +21,6 @@ export default async function checkForExistingTicket(history) {
 					"X-Auth-Token": authToken,
 				},
 			})
-			console.log(res.status)
 			if (res.status === 200) {
 				cookie.save("user_has_tickets", true, { path: "/" })
 				history.push("/tickets")
