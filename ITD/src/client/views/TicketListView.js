@@ -12,6 +12,7 @@ export default function TicketListView() {
 	useEffect(async () => {
 		const authToken = cookie.load("authToken")
 		// Fetch store list from server
+
 		let res = await fetch(API_BASE_URL + "user/ticket", {
 			method: "GET",
 			headers: {
@@ -96,9 +97,11 @@ export default function TicketListView() {
 				}
 			)
 
-			if (res !== 200) {
+			if (res.status !== 200) {
 				setErrorMsg(await res.text())
 			} else {
+				// clear tickets
+				setTickets([])
 				cookie.save("user_has_tickets", false, { path: "/" })
 			}
 		} else {
@@ -116,9 +119,11 @@ export default function TicketListView() {
 					}),
 				}
 			)
-			if (res !== 200) {
+			if (res.status !== 200) {
 				setErrorMsg(await res.text())
 			} else {
+				// clear tickets
+				setTickets([])
 				cookie.save("user_has_tickets", false, { path: "/" })
 			}
 		}

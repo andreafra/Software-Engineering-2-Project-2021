@@ -4,13 +4,15 @@ import { Link } from "react-router-dom"
 import StoreMap from "../components/StoreMap"
 import { API_BASE_URL, MAX_CODE_LENGTH, MAX_PHONE_LENGTH } from "../defaults"
 import ErrorMsg from "../components/ErrorMsg"
-
+import checkForExistingTicket from "../components/TicketCache"
+import { useHistory } from "react-router-dom"
 export default function StoreListView() {
 	const [stores, setStores] = useState([])
 	const [errorMsg, setErrorMsg] = useState("")
+	const history = useHistory()
+	const authToken = cookie.load("authToken")
 
 	useEffect(async () => {
-		const authToken = cookie.load("authToken")
 		// Fetch store list from server
 		let res = await fetch(API_BASE_URL + "search/" + "0|0", {
 			method: "GET",
@@ -26,6 +28,9 @@ export default function StoreListView() {
 		} else {
 			setErrorMsg(await res.text())
 		}
+
+		// Redirect if we have tickets
+		await checkForExistingTicket(history)
 	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
 
 	const _listStores = () => {

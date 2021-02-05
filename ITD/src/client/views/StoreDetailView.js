@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useHistory, useParams } from "react-router-dom"
 import cookie from "react-cookies"
 import { API_BASE_URL } from "../defaults"
 import { Redirect } from "react-router-dom"
 import ErrorMsg from "../components/ErrorMsg"
+import checkForExistingTicket from "../components/TicketCache"
 
 export default function StoreDetailView() {
 	// storeId
@@ -12,9 +13,10 @@ export default function StoreDetailView() {
 	const [store, setStore] = useState([])
 	const [isTicketReceived, setIsTicketReceived] = useState(false)
 	const [errorMsg, setErrorMsg] = useState("")
+	const authToken = cookie.load("authToken")
+	const history = useHistory()
 
 	useEffect(async () => {
-		const authToken = cookie.load("authToken")
 		// Fetch store list from server
 		let res = await fetch(API_BASE_URL + "store/" + storeId, {
 			method: "GET",
@@ -31,6 +33,9 @@ export default function StoreDetailView() {
 		} else {
 			setErrorMsg("We could'nt fetch the store details")
 		}
+
+		// Redirect if we have tickets
+		await checkForExistingTicket(history)
 	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
 
 	const waitTime = new Date(store.queueWaitTime)

@@ -1,52 +1,9 @@
 import React, { useEffect, useState } from "react"
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, useHistory } from "react-router-dom"
 import cookie from "react-cookies"
 import { API_BASE_URL } from "../defaults"
 import { Redirect } from "react-router-dom"
-
-const FAKE_STORE = {
-	id: "store-1",
-	name: "Store 1",
-	address: "Via Milano 16",
-	open: true,
-	distance: "0.6km",
-	freeTimeslots: 12,
-	queueLength: 15,
-	queueWaitTime: "2008-09-22T14:01:54.9571247Z",
-}
-
-const FAKE_TIMESLOTS = [
-	{
-		id: "d121d85d-3621-4ac1-a2c0-ab635057efb6",
-		day: "Monday",
-		time: "11:00",
-		crowdness: 1,
-	},
-	{
-		id: "31d00b84-1ff9-48fc-aa74-c261e43734c8",
-		day: "Monday",
-		time: "10:30",
-		crowdness: 0,
-	},
-	{
-		id: "74139f05-30d8-4498-acd8-3b526983aa0c",
-		day: "Monday",
-		time: "14:30",
-		crowdness: 2,
-	},
-	{
-		id: "d5b4ed40-f7de-484e-89fc-210ba1ea4f28",
-		day: "Tuesday",
-		time: "9:30",
-		crowdness: 1,
-	},
-	{
-		id: "969786c0-6c55-4a95-b47b-f55690119108",
-		day: "Friday",
-		time: "12:30",
-		crowdness: 2,
-	},
-]
+import checkForExistingTicket from "../components/TicketCache"
 
 export default function TimeslotsView() {
 	const storeId = useParams().id
@@ -54,9 +11,10 @@ export default function TimeslotsView() {
 	const [timeslots, setTimeslots] = useState([])
 	const [button_pressed, setButton] = useState(false)
 	const [selectedTimeslot, setSelectedTimeslot] = useState("")
+	const authToken = cookie.load("authToken")
+	const history = useHistory()
 
 	useEffect(async () => {
-		const authToken = cookie.load("authToken")
 		let res = await fetch(API_BASE_URL + "store/" + storeId, {
 			method: "GET",
 			headers: {
@@ -79,6 +37,9 @@ export default function TimeslotsView() {
 		)
 		let data1 = await res1.json()
 		setTimeslots(data1)
+
+		// Redirect if we have tickets
+		await checkForExistingTicket(history)
 	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
 
 	// Handle selection of a timeslot from the list

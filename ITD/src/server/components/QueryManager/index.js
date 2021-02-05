@@ -130,7 +130,7 @@ exports.getQueryInterface = async () => {
 		 * @returns the userId if found
 		 */
 		validateToken: async (token) => {
-			console.log("Validating token: " + token)
+			// console.log("Validating token: " + token)
 			const res = await mysqlConnection.query(
 				"select user_id from token where token = ?",
 				token

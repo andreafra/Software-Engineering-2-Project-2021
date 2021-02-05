@@ -5,13 +5,29 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"type": "firefox",
+			"request": "launch",
+			"reAttach": true,
+			"name": "Firefox: Launch localhost",
+			"url": "http://localhost:8080",
+			"webRoot": "${workspaceFolder}/src/client/",
+			"pathMappings": [
+				{
+					"url": "http://localhost:8080/__parcel_source_root/src",
+					"path": "${workspaceFolder}/src"
+				}
+			]
+		},
+		{
 			"type": "node",
 			"request": "attach",
 			"name": "Node: Nodemon",
 			"processId": "${command:PickProcess}",
 			"restart": true,
 			"protocol": "inspector",
-			"outFiles": ["${workspaceFolder}/src/server/main.js"]
+			"outFiles": [
+				"${workspaceFolder}/src/server/main.js"
+			]
 		}
 	]
 }
