@@ -80,7 +80,12 @@ export default function StoreListView() {
 					</div>
 				</div>
 				<div className="column is-two-thirds store-map">
-					<StoreMap />
+					<StoreMap
+						stores={stores}
+						onMarkerClick={(store) =>
+							history.push("/stores/" + store.id)
+						}
+					/>
 				</div>
 			</div>
 			<div className="navbar is-fixed-bottom">

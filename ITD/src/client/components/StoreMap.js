@@ -1,18 +1,40 @@
-import React from "react"
-import { Map, GoogleApiWrapper } from "google-maps-react"
+import React, { useState } from "react"
+import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react"
 
+/**
+ * Draw the maps and handles the google API.
+ *
+ * @param {object} props pass a `stores` array of stores and a callback called
+ * when a marker is clicked on map. Callback has assigned store object as paramter.
+ * @returns
+ */
 export function StoreMap(props) {
+	const _mapStores = () => {
+		// haha geddit?
+		return props.stores.map((s) => (
+			<Marker
+				key={s.id}
+				title={s.name}
+				name={s.name}
+				position={{ lat: s.latitude, lng: s.longitude }}
+				onClick={() => props.onMarkerClick(s)}
+			></Marker>
+		))
+	}
+
 	return (
 		<Map
 			google={props.google}
-			zoom={14}
+			zoom={16}
 			containerStyle={containerStyle}
 			style={mapStyles}
 			initialCenter={{
-				lat: -1.2884,
-				lng: 36.8233,
+				lat: 45.478559614074626,
+				lng: 9.228327906101491,
 			}}
-		/>
+		>
+			{_mapStores()}
+		</Map>
 	)
 }
 
