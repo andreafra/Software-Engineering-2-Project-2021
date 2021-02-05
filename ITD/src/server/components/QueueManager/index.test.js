@@ -23,7 +23,7 @@ test("Only one ticket valid in the queue at a time", async () => {
 			storeId,
 			ticketId1.substring(1)
 		)
-		console.log(res1)
+
 		expect(res1).toBe(true)
 
 		ticketId2 = await QueueManager.joinQueue(storeId, "0001")
@@ -31,7 +31,7 @@ test("Only one ticket valid in the queue at a time", async () => {
 			storeId,
 			ticketId2.substring(1)
 		)
-		console.log(res2)
+		
 		expect(res2).toBe(false)
 	})
 })

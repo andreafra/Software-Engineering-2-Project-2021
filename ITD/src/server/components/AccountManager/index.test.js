@@ -2,7 +2,7 @@ const AccountManager = require(".")
 const { InvalidInputError } = require("../../errors/InvalidInputError")
 const QueryManager = require("../QueryManager")
 
-test.only("Check phone number is present", async () => {
+test("Check phone number is present", async () => {
 	const queryInterface = await QueryManager.getQueryInterface()
 	await queryInterface.executeAndRollback(async () => {
 		const code = await AccountManager.loginWithPhoneNumber(

@@ -41,7 +41,7 @@ test("check acceptance if overfull", async () => {
 			ticketId1.substring(1)
 		)
 
-		expect(res1).toBe(true)
+		expect(res1).toBe(false)
 
 		const res2 = await ReservationManager.isTicketValid(
 			storeId,
@@ -95,10 +95,10 @@ test("check reservation info", async () => {
 			"0001"
 		)
 
-		console.log(await ReservationManager.getReservationData(storeId))
+		//console.log(await ReservationManager.getReservationData(storeId))
 
 		const ticket = await queryInterface.getTicket(ticketId2.substring(1))
 
-		console.log(ticket)
+		//console.log(ticket)
 	})
 })
