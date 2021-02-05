@@ -14,7 +14,7 @@ const utils = require("./../../utils")
 exports.makeReservation = async (storeId, reservationId, userId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
-	await queryInterface.clearOldReservations(userId)
+	await queryInterface.clearOldReservations()
 	const hasReservation = await queryInterface.hasReservation(userId)
 
 	if (hasReservation) throw "Already has reservation"
@@ -55,6 +55,7 @@ exports.makeReservation = async (storeId, reservationId, userId) => {
 exports.isTicketValid = async (storeId, ticketId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
+	await queryInterface.clearOldReservations()
 	const ticketInfo = await queryInterface.getTicket(ticketId)
 	const reservationInfo = await queryInterface.getReservation(
 		ticketInfo.reservation_id
@@ -67,6 +68,7 @@ exports.isTicketValid = async (storeId, ticketId) => {
 	const todayTime = today.getHours() * 60 + today.getMinutes()
 
 	if (
+		ticketInfo.status === 'active' &&
 		storeInfo.curr_number < storeInfo.max_capacity &&
 		reservationInfo.is_active &&
 		reservationInfo.weekday === today.getDay() &&
