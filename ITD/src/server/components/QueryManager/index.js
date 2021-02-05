@@ -201,8 +201,8 @@ exports.getQueryInterface = async () => {
 			const currentDate = new Date()
 			return (
 				await mysqlConnection.query(
-					"select sum(max_people_allowed) as sum from reservation where store_id = ? and weekday = ? and start_time >= CURDATE() and start_time <= DATE_ADD(CURDATE(), INTERVAL ? HOUR)",
-					[storeID, currentDate.getDay(), hours]
+					"select sum(max_people_allowed) as sum from reservation where store_id = ? and weekday = ? and start_time >= ? and start_time <= DATE_ADD(?, INTERVAL ? HOUR)",
+					[storeID, currentDate.getDay(), currentDate, currentDate, hours]
 				)
 			)[0].sum
 		},
@@ -233,8 +233,8 @@ exports.getQueryInterface = async () => {
 		 */
 		addUserToQueue: async (userID, storeID) => {
 			await mysqlConnection.query(
-				"insert into ticket (type, status, creation_date, store_id, user_id) values ('queue', 'valid', CURDATE(), ?, ?)",
-				[storeID, userID]
+				"insert into ticket (type, status, creation_date, store_id, user_id) values ('queue', 'valid', ?, ?, ?)",
+				[new Date(), storeID, userID]
 			)
 			return (
 				await mysqlConnection.query("select last_insert_id() as id")
@@ -384,8 +384,8 @@ exports.getQueryInterface = async () => {
 		) => {
 			return (
 				await mysqlConnection.query(
-					"insert into ticket (type, status, creation_date, store_id, user_id, reservation_id, first_timestamp) values ('reservation', 'valid', CURDATE(), ?, ?, ?, ?); select last_insert_id() as id;",
-					[storeId, userId, reservationId, resDay]
+					"insert into ticket (type, status, creation_date, store_id, user_id, reservation_id, first_timestamp) values ('reservation', 'valid', ?, ?, ?, ?, ?); select last_insert_id() as id;",
+					[new Date(), storeId, userId, reservationId, resDay]
 				)
 			)[1][0].id
 		},
@@ -440,20 +440,22 @@ exports.getQueryInterface = async () => {
 
 		setFirst: async (ticketId) => {
 			return await mysqlConnection.query(
-				"update ticket set first_timestamp = NOW() where id = ?",
-				[ticketId]
+				"update ticket set first_timestamp = ? where id = ?",
+				[new Date(), ticketId]
 			)
 		},
 
 		clearOldTickets: async () => {
 			return await mysqlConnection.query(
-				"update ticket set status = 'cancelled' where type = 'queue' and first_timestamp <> NULL and first_timestamp < DATE_SUB(NOW(), INTERVAL 1 MINUTE)"
+				"update ticket set status = 'cancelled' where type = 'queue' and first_timestamp <> NULL and first_timestamp < DATE_SUB(?, INTERVAL 1 MINUTE)",
+				[new Date()]
 			)
 		},
 
 		clearOldReservations: async () => {
 			return await mysqlConnection.query(
-				"update ticket set status = 'cancelled' where type = 'reservation' and first_timestamp < DATE_SUB(NOW(), INTERVAL 5 MINUTE)"
+				"update ticket set status = 'cancelled' where type = 'reservation' and first_timestamp < DATE_SUB(?, INTERVAL ? MINUTE)",
+				[new Date(), 5]
 			)
 		},
 

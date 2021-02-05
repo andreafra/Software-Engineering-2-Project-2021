@@ -6856,6 +6856,7 @@ __metadata:
     express: ^4.17.1
     google-maps-react: ^2.0.6
     jest: ^26.6.3
+    mockdate: ^3.0.2
     mysql: ^2.18.1
     nodemon: ^2.0.7
     parcel: next
@@ -7987,6 +7988,13 @@ __metadata:
   bin:
     mkdirp: bin/cmd.js
   checksum: 1aa3a6a2d7514f094a91329ec09994f5d32d2955a4985ecbb3d86f2aaeafc4aa11521f98d606144c1d49cd9835004d9a73342709b8c692c92e59eacf37412468
+  languageName: node
+  linkType: hard
+
+"mockdate@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "mockdate@npm:3.0.2"
+  checksum: 27a242abaa48f170f6174988b3cd597806715c11d8dc644efa466ca4f1b899e66e6d0618808df60f8a7807c89e6e316b832138f2028039d1caf23341e3d01f90
   languageName: node
   linkType: hard
 

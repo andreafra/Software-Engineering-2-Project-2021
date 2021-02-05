@@ -1,5 +1,6 @@
 const ReservationManager = require(".")
 const QueryManager = require("../QueryManager")
+const MockDate = require('mockdate')
 
 test("check acceptance if overfull", async () => {
 	const queryInterface = await QueryManager.getQueryInterface()
@@ -43,12 +44,17 @@ test("check acceptance if overfull", async () => {
 
 		expect(res1).toBe(false)
 
+		MockDate.set(Date.now() + 1000*60*60*24)
+
 		const res2 = await ReservationManager.isTicketValid(
 			storeId,
 			ticketId2.substring(1)
 		)
 
-		expect(res2).toBe(false)
+		expect(res2).toBe(true)
+
+		MockDate.reset()
+
 	})
 })
 
@@ -88,17 +94,18 @@ test("check reservation info", async () => {
 			reservationSlotId,
 			"0000"
 		)
-
+		
 		const ticketId2 = await ReservationManager.makeReservation(
 			storeId,
 			reservationSlotId,
 			"0001"
-		)
-
-		//console.log(await ReservationManager.getReservationData(storeId))
+			)
+			
+		console.log(await ReservationManager.getReservationData(storeId))
 
 		const ticket = await queryInterface.getTicket(ticketId2.substring(1))
 
-		//console.log(ticket)
+		console.log(ticket)
 	})
+
 })
