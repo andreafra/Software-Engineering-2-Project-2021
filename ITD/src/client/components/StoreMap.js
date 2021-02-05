@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react"
+import React from "react"
+import { Map, GoogleApiWrapper, Marker } from "google-maps-react"
 
 /**
  * Draw the maps and handles the google API.
@@ -9,6 +9,10 @@ import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react"
  * @returns
  */
 export function StoreMap(props) {
+	const coordsArray = props.defaultCoords.split("|")
+	const lat = parseFloat(coordsArray[0])
+	const lng = parseFloat(coordsArray[1])
+
 	const _mapStores = () => {
 		// haha geddit?
 		return props.stores.map((s) => (
@@ -29,8 +33,12 @@ export function StoreMap(props) {
 			containerStyle={containerStyle}
 			style={mapStyles}
 			initialCenter={{
-				lat: 45.478559614074626,
-				lng: 9.228327906101491,
+				lat: lat,
+				lng: lng,
+			}}
+			center={{
+				lat: lat,
+				lng: lng,
 			}}
 		>
 			{_mapStores()}
