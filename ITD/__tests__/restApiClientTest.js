@@ -32,7 +32,7 @@ test("user creation", async () => {
 	})
 })
 
-test("ticket deletion", async () => {
+test("ticket deletion and duplication", async () => {
 	const queryInterface = await QueryManager.getQueryInterface()
 	await queryInterface.executeAndRollback(async () => {
 		const storeId = await queryInterface.createStore(

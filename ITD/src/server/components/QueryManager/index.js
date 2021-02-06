@@ -387,12 +387,30 @@ exports.getQueryInterface = async () => {
 			userId,
 			resDay
 		) => {
-			return (
+			const num_tickets = (
 				await mysqlConnection.query(
-					"insert into ticket (type, status, creation_date, store_id, user_id, reservation_id, first_timestamp) values ('reservation', 'valid', ?, ?, ?, ?, ?); select last_insert_id() as id;",
-					[new Date(), storeId, userId, reservationId, resDay]
+					"select count(*) as count from ticket where status = 'valid' and type = 'reservation' and reservation_id = ?",
+					[reservationId]
 				)
-			)[1][0].id
+			)[0].count
+
+			const max_tickets = (
+				await mysqlConnection.query(
+					"select max_people_allowed from reservation where id = ?",
+					[reservationId]
+				)
+			)[0].max_people_allowed
+
+			if (num_tickets < max_tickets) {
+				return (
+					await mysqlConnection.query(
+						"insert into ticket (type, status, creation_date, store_id, user_id, reservation_id, first_timestamp) values ('reservation', 'valid', ?, ?, ?, ?, ?); select last_insert_id() as id;",
+						[new Date(), storeId, userId, reservationId, resDay]
+					)
+				)[1][0].id
+			}
+
+			throw "Too many reservations!"
 		},
 
 		getTicket: async (ticketId) => {
