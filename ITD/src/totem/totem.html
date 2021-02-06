@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <head>
+  <meta charset="UTF-8" />
   <title>Totem</title>
 </head>
 <body>
-  <table>
+  <h1>Totem - Validate Tickets</h1>
+  <table style="border: 1px dashed black">
     <tr>
       <td>Token</td>
       <td><input type="text" id="token" /></td>
@@ -16,8 +18,18 @@
       <td>Ticket</td>
       <td><input type="text" id="ticket" /></td>
     </tr>
+    <tr>
+      <td>
+        <input type="radio" id="queue" name="type" value="queue" />
+        <label for="queue">Queue</label>
+      </td>
+      <td>
+        <input type="radio" id="reservation" name="type" value="reservation" />
+        <label for="reservation">Reservation</label>
+      </td>
+    </tr>
   </table>
-  <button id="button">Validate</button>
+  <button id="validate">Validate</button>
   <p id="result"></p>
 </body>
 <script>
@@ -25,27 +37,38 @@
   const token = document.getElementById("token")
   const store = document.getElementById("store")
   const ticket = document.getElementById("ticket")
-  const button = document.getElementById("button")
+  const queue = document.getElementById("queue")
+  const button = document.getElementById("validate")
 
-  button.onclick = async () => {
-    const res = await fetch(
-      `http://localhost:3000/api/store/${store.value}/ticket/verify`,
-      {
-        method: "POST",
-        headers: {
-          "X-Auth-Token": token.value,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          receiptId: ticket.value,
-        }),
+  button.addEventListener("click", async () => {
+    result.innerHTML = "Fetching..."
+
+    let prefix = queue.checked ? "Q" : "R"
+
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/store/${store.value}/ticket/verify`,
+        {
+          method: "POST",
+          headers: {
+            "X-Auth-Token": String(token.value),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            receiptId: prefix + String(ticket.value),
+          }),
+        }
+      )
+
+      let json = await res.json()
+
+      if (res.status === 200) {
+        result.innerHTML = `Ticket is ${
+          json.isTicketValid ? "valid" : "not valid"
+        }!`
       }
-    )
-
-    if ((await res.json()).isTicketValid) {
-      result.innerHTML = "Ticket correctly validated"
-    } else {
-      result.innerHTML = "Ticket rejected"
+    } catch (error) {
+      result.innerHTML = "Ticket rejected [" + error.message + "]"
     }
-  }
+  })
 </script>

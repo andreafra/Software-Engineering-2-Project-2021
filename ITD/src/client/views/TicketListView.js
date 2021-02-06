@@ -10,7 +10,11 @@ export default function TicketListView() {
 	const [errorMsg, setErrorMsg] = useState("")
 	const history = useHistory()
 
-	useEffect(async () => {
+	useEffect(() => {
+		_fetchTicket()
+	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
+
+	const _fetchTicket = async () => {
 		const authToken = cookie.load("authToken")
 		// Fetch store list from server
 
@@ -25,15 +29,11 @@ export default function TicketListView() {
 		if (res.status === 200) {
 			let data = await res.json()
 			setTickets([data])
-			// Cache the fact that user has a ticket
-			// This causes users to be redirected to this page as long as
-			// they have a valid ticket.
-			cookie.save("user_has_tickets", true, { path: "/" })
 		} else {
 			setErrorMsg(await res.text())
 			history.push("/stores")
 		}
-	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
+	}
 
 	/**
 	 * Renders the list of tickets belonging to that user.
@@ -80,68 +80,51 @@ export default function TicketListView() {
 		let ticket = tickets[0]
 		const authToken = cookie.load("authToken")
 
-		if (ticket.type == "reservation") {
-			// Delete reservation
-			const res = await fetch(
-				API_BASE_URL +
-					"store/" +
-					ticket.store_id +
-					"/reservation/cancel",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						"X-Auth-Token": authToken,
-					},
-					body: JSON.stringify({
-						reservationReceiptId: ticket.id,
-					}),
-				}
-			)
+		const RESERVATION_URL =
+			API_BASE_URL + "store/" + ticket.store_id + "/reservation/cancel"
+		const RESERVATION_PAYLOAD = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"X-Auth-Token": authToken,
+			},
+			body: JSON.stringify({
+				reservationReceiptId: ticket.id,
+			}),
+		}
 
-			if (res.status !== 200) {
-				setErrorMsg(await res.text())
-			} else {
-				// clear tickets
-				setTickets([])
-				cookie.save("user_has_tickets", false, { path: "/" })
-				history.push("/stores")
-			}
+		const QUEUE_URL =
+			API_BASE_URL + "store/" + ticket.store_id + "/queue/leave"
+		const QUEUE_PAYLOAD = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"X-Auth-Token": authToken,
+			},
+			body: JSON.stringify({
+				queueReceiptId: ticket.id,
+			}),
+		}
+
+		const isReservation = ticket.type === "reservation"
+
+		const res = await fetch(
+			isReservation ? RESERVATION_URL : QUEUE_URL,
+			isReservation ? RESERVATION_PAYLOAD : QUEUE_PAYLOAD
+		)
+
+		if (res.status !== 200) {
+			setErrorMsg(await res.text())
 		} else {
-			// Exit queue
-			const res = await fetch(
-				API_BASE_URL + "store/" + ticket.store_id + "/queue/leave",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						"X-Auth-Token": authToken,
-					},
-					body: JSON.stringify({
-						queueReceiptId: ticket.id,
-					}),
-				}
-			)
-			if (res.status !== 200) {
-				setErrorMsg(await res.text())
-			} else {
-				// clear tickets
-				setTickets([])
-				cookie.save("user_has_tickets", false, { path: "/" })
-				history.push("/stores")
-			}
+			// clear tickets
+			setTickets([])
+			history.push("/stores")
 		}
 	}
 
 	// DEBUG/DEMO utility:
 	const _clearCookies = () => {
 		cookie.remove("authToken")
-		cookie.remove("user_has_tickets")
-		window.location.reload()
-	}
-
-	const _clearTickets = () => {
-		cookie.remove("user_has_tickets")
 		window.location.reload()
 	}
 
@@ -156,12 +139,12 @@ export default function TicketListView() {
 							</p>
 						</div>
 						<div className="level-right">
-							<Link
-								to="/stores"
+							<button
 								className="button is-light is-primary"
+								onClick={_fetchTicket}
 							>
-								Back
-							</Link>
+								Refresh
+							</button>
 						</div>
 					</div>
 					<div className="block">
@@ -169,11 +152,9 @@ export default function TicketListView() {
 					</div>
 					<div className="block">{_showTickets()}</div>
 				</div>
-				<div className="footer has-background-white">
+				{/* <div className="footer has-background-white">
 					<a onClick={_clearCookies}>Clear Cookies</a>
-					<br />
-					<a onClick={_clearTickets}>Clear Tickets</a>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	)

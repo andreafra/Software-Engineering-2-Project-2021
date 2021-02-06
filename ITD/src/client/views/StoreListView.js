@@ -130,7 +130,7 @@ export default function StoreListView() {
 			<div className="navbar is-fixed-bottom">
 				<div className="navbar-item">
 					<div className="columns is-mobile">
-						<div className="column is-half">
+						{/* <div className="column is-half">
 							<Link
 								className="button is-primary is-fullwidth is-rounded"
 								to={
@@ -144,8 +144,8 @@ export default function StoreListView() {
 							>
 								See tickets
 							</Link>
-						</div>
-						<div className="column is-half">
+						</div> */}
+						<div className="column">
 							<Link
 								className="button is-rounded is-fullwidth"
 								to="/settings"

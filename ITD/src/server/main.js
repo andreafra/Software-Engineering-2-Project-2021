@@ -272,6 +272,8 @@ app.post("/api/store/:storeId/ticket/verify", async (req, res) => {
 	let storeId = req.params.storeId
 	let ticketId = req.body.receiptId
 
+	console.log(`Validating ticket: ${storeId} ${ticketId}`)
+
 	try {
 		const userId = await _validateToken(req, res)
 
@@ -283,6 +285,7 @@ app.post("/api/store/:storeId/ticket/verify", async (req, res) => {
 		try {
 			let isValid = false
 			isValid = await TicketManager.checkTicket(storeId, ticketId)
+			console.log(`${ticketId} is ${isValid ? "valid" : "not valid"}!`)
 			res.status(200).send({
 				isTicketValid: isValid,
 			})

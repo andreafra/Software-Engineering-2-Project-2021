@@ -9,24 +9,24 @@ import { API_BASE_URL } from "../defaults"
  */
 export default async function checkForExistingTicket(history) {
 	const authToken = cookie.load("authToken")
-	const hasTicket = cookie.load("user_has_tickets") === "true"
+	// const hasTicket = cookie.load("user_has_tickets") === "true"
 	// Run this code once when a user navigate to any page
 	// Request ticket list ONLY IF they have no tickets.
 	if (authToken) {
-		if (!hasTicket) {
-			let res = await fetch(API_BASE_URL + "user/ticket", {
-				method: "GET",
-				headers: {
-					// Don't forget to pass authorization token in the header
-					"X-Auth-Token": authToken,
-				},
-			})
-			if (res.status === 200) {
-				cookie.save("user_has_tickets", true, { path: "/" })
-				history.push("/tickets")
-			}
-		} else {
+		// if (!hasTicket) {
+		let res = await fetch(API_BASE_URL + "user/ticket", {
+			method: "GET",
+			headers: {
+				// Don't forget to pass authorization token in the header
+				"X-Auth-Token": authToken,
+			},
+		})
+		if (res.status === 200) {
+			console.log("Ticket found, redirecting to /tickets")
 			history.push("/tickets")
 		}
+		// } else {
+		// history.push("/tickets")
+		// }
 	}
 }
