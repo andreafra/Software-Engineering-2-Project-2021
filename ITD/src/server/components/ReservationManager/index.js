@@ -67,8 +67,6 @@ exports.isTicketValid = async (storeId, ticketId) => {
 	const reservationTime = utils.timeToMinutes(reservationInfo.start_time)
 	const todayTime = today.getHours() * 60 + today.getMinutes()
 
-	//console.log(ticketInfo, storeInfo, reservationInfo, todayTime, reservationTime)
-
 	if (
 		ticketInfo.status === 'valid' &&
 		storeInfo.curr_number < storeInfo.max_capacity &&

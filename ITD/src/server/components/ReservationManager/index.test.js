@@ -17,7 +17,7 @@ test("check acceptance if overfull", async () => {
 		)
 		const reservationSlotId = await queryInterface.createReservationSlot(
 			storeId,
-			today.getDay() + 1,
+			(today.getDay() + 1)%7,
 			time,
 			10
 		)
@@ -101,11 +101,11 @@ test("check reservation info", async () => {
 			"0001"
 			)
 			
-		console.log(await ReservationManager.getReservationData(storeId))
+		//console.log(await ReservationManager.getReservationData(storeId))
 
 		const ticket = await queryInterface.getTicket(ticketId2.substring(1))
 
-		console.log(ticket)
+		//console.log(ticket)
 	})
 
 })

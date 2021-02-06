@@ -232,13 +232,12 @@ exports.getQueryInterface = async () => {
 		 * @returns {number} storeId
 		 */
 		addUserToQueue: async (userID, storeID) => {
-			await mysqlConnection.query(
-				"insert into ticket (type, status, creation_date, store_id, user_id) values ('queue', 'valid', ?, ?, ?)",
+			const res = await mysqlConnection.query(
+				"insert into ticket (type, status, creation_date, store_id, user_id) values ('queue', 'valid', ?, ?, ?); select last_insert_id() as id;",
 				[new Date(), storeID, userID]
 			)
-			return (
-				await mysqlConnection.query("select last_insert_id() as id")
-			)[0].id
+
+			return res[1][0].id
 		},
 
 		/**
@@ -438,23 +437,30 @@ exports.getQueryInterface = async () => {
 			return res[0]
 		},
 
-		setFirst: async (ticketId) => {
-			return await mysqlConnection.query(
-				"update ticket set first_timestamp = ? where id = ?",
-				[new Date(), ticketId]
-			)
+		updateFirst: async (storeId) => {
+			const first = (await mysqlConnection.query(
+				"select * from ticket as t1 where t1.type = 'queue' and t1.store_id = ? and t1.status = 'valid' order by t1.creation_date asc limit 1",
+				[storeId]
+			))[0]
+
+			if (first !== undefined && first.first_timestamp === null) {
+				await mysqlConnection.query(
+					"update ticket as t set t.first_timestamp = ? where t.id = ?",
+					[new Date(), first.id]
+				)
+			}
 		},
 
 		clearOldTickets: async () => {
 			return await mysqlConnection.query(
-				"update ticket set status = 'cancelled' where type = 'queue' and first_timestamp <> NULL and first_timestamp < DATE_SUB(?, INTERVAL 1 MINUTE)",
+				"update ticket set status = 'cancelled' where type = 'queue' and first_timestamp < DATE_SUB(?, INTERVAL 1 MINUTE)",
 				[new Date()]
 			)
 		},
 
 		clearOldReservations: async () => {
 			return await mysqlConnection.query(
-				"update ticket set status = 'cancelled' where type = 'reservation' and first_timestamp < DATE_SUB(?, INTERVAL ? MINUTE)",
+				"update ticket set status = 'cancelled' where type = 'reservation' and first_timestamp is not null and first_timestamp < DATE_SUB(?, INTERVAL ? MINUTE)",
 				[new Date(), 5]
 			)
 		},

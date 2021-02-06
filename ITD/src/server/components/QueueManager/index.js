@@ -14,6 +14,8 @@ exports.joinQueue = async (storeId, userId) => {
 	// "Q" added to distinguish between Queue tickets and Reservation tickets
 	let code = "Q" + (await queryInterface.addUserToQueue(userId, storeId))
 
+	await queryInterface.updateFirst(storeId)
+
 	return code
 }
 
@@ -31,10 +33,12 @@ exports.isTicketValid = async (storeId, ticketId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
 	await queryInterface.clearOldTickets()
+	await queryInterface.updateFirst()
 
 	const firstTicket = await queryInterface.getFirstQueueTicket(storeId)
 
 	if (firstTicket === undefined) return false
+
 
 	if (firstTicket.id == ticketId) {
 		const storeData = await queryInterface.getStoreFillLevel(storeId)
@@ -46,15 +50,7 @@ exports.isTicketValid = async (storeId, ticketId) => {
 		if (storeData.curr_number + reservations < storeData.max_capacity) {
 			await queryInterface.useTicket(storeId, ticketId)
 
-			// start to consider the next ticket
-			try {
-				const nextTicket = await queryInterface.getFirstQueueTicket(
-					storeId
-				)
-				await queryInterface.setFirst(nextTicket)
-			} catch (err) {
-				// do nothing
-			}
+			await queryInterface.updateFirst(storeId)
 
 			return true
 		}
@@ -74,7 +70,9 @@ exports.isTicketValid = async (storeId, ticketId) => {
 exports.cancelQueueTicket = async (storeId, ticketId, userId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
-	queryInterface.cancelTicket(storeId, ticketId, userId)
+	await queryInterface.cancelTicket(storeId, ticketId, userId)
+
+	await queryInterface.updateFirst(storeId)
 }
 
 /**
