@@ -5,6 +5,11 @@ import cookie from "react-cookies"
 import { API_BASE_URL } from "../defaults"
 import ErrorMsg from "../components/ErrorMsg"
 
+const LOCALE_IT = "it-IT"
+const TIMEZONE_IT = {
+	timeZone: "Europe/Rome",
+}
+
 export default function TicketListView() {
 	const [tickets, setTickets] = useState([])
 	const [errorMsg, setErrorMsg] = useState("")
@@ -59,9 +64,36 @@ export default function TicketListView() {
 							<p className="subtitle">
 								<b>Type </b> {isQueue ? "Queue" : "Reservation"}
 							</p>
+							{isQueue ? (
+								<p className="is-size-4">
+									<b
+										className={
+											t.first_timestamp
+												? "has-text-success"
+												: ""
+										}
+									>
+										{t.first_timestamp
+											? "It's your turn!"
+											: "You're still in queue!"}
+									</b>
+								</p>
+							) : null}
+							{!isQueue ? (
+								<p className="is-size-4">
+									<b>Reservation time: </b>{" "}
+									{new Date(t.first_timestamp).toLocaleString(
+										LOCALE_IT,
+										TIMEZONE_IT
+									)}
+								</p>
+							) : null}
 							<p className="is-size-5">
 								<b>Creation time: </b>{" "}
-								{new Date(t.creation_date).toLocaleDateString()}
+								{new Date(t.creation_date).toLocaleDateString(
+									LOCALE_IT,
+									TIMEZONE_IT
+								)}
 							</p>
 						</div>
 					</div>
