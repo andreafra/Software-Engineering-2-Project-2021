@@ -32,7 +32,7 @@ const _validateToken = async (req, res) => {
 	// Verify that user have valid token to authenticate
 	let authToken = req.header("X-Auth-Token")
 	try {
-		return AccountManager.validateToken(authToken)
+		return await AccountManager.validateToken(authToken)
 	} catch (e) {
 		res.status(401).send("Invalid auth token")
 		throw new InvalidAuthTokenError()
@@ -77,7 +77,7 @@ app.post("/api/auth/code", async (req, res) => {
 
 app.get("/api/search/:coordinates", async (req, res) => {
 	try {
-		await _validateToken(req, res)
+		let x = await _validateToken(req, res)
 	} catch (error) {
 		return
 	}
@@ -105,38 +105,40 @@ app.get("/api/store/:storeId", async (req, res) => {
 	let storeId = req.params.storeId
 
 	try {
-		_validateToken(req, res)
+		await _validateToken(req, res)
+
+		let storeData, queueData, reservationData
+
+		try {
+			storeData = await StoreSearch.getStore(storeId)
+		} catch (err) {
+			res.status(404).send("Store not found")
+		}
+		try {
+			queueData = await QueueManager.getQueueData(storeId)
+		} catch (err) {
+			queueData = {}
+		}
+		try {
+			reservationData = await ReservationManager.getReservationData(
+				storeId
+			)
+		} catch (err) {
+			reservationData = {}
+		}
+		console.log(storeData)
+		console.log(queueData)
+		console.log(reservationData)
+
+		// return a merged json object
+		res.status(200).json({
+			...storeData,
+			...queueData,
+			...reservationData,
+		})
 	} catch (error) {
 		return
 	}
-
-	let storeData, queueData, reservationData
-
-	try {
-		storeData = await StoreSearch.getStore(storeId)
-	} catch (err) {
-		res.status(404).send("Store not found")
-	}
-	try {
-		queueData = await QueueManager.getQueueData(storeId)
-	} catch (err) {
-		queueData = {}
-	}
-	try {
-		reservationData = await ReservationManager.getReservationData(storeId)
-	} catch (err) {
-		reservationData = {}
-	}
-	console.log(storeData)
-	console.log(queueData)
-	console.log(reservationData)
-
-	// return a merged json object
-	res.status(200).json({
-		...storeData,
-		...queueData,
-		...reservationData,
-	})
 })
 
 app.post("/api/store/:storeId/queue/join", async (req, res) => {

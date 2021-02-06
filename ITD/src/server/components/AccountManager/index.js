@@ -90,7 +90,11 @@ exports.getAccountToken = async (phoneNum) => {
  */
 exports.validateToken = async (token) => {
 	const queryInterface = await QueryManager.getQueryInterface()
-	return await queryInterface.validateToken(token)
+	try {
+		return await queryInterface.validateToken(token)
+	} catch (error) {
+		throw error
+	}
 }
 
 exports.isTotem = async (userId) => {

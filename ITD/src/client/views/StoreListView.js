@@ -33,6 +33,10 @@ export default function StoreListView() {
 			let data = await res.json()
 			console.log(data)
 			setStores(data)
+		} else if (res.status === 401) {
+			console.error("Expired token!")
+			cookie.remove("authToken")
+			history.push("/login")
 		} else {
 			setErrorMsg(await res.text())
 		}

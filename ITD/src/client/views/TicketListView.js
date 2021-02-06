@@ -29,6 +29,10 @@ export default function TicketListView() {
 		if (res.status === 200) {
 			let data = await res.json()
 			setTickets([data])
+		} else if (res.status === 401) {
+			console.error("Expired token!")
+			cookie.remove("authToken")
+			history.push("/login")
 		} else {
 			setErrorMsg(await res.text())
 			history.push("/stores")
@@ -115,6 +119,10 @@ export default function TicketListView() {
 
 		if (res.status !== 200) {
 			setErrorMsg(await res.text())
+		} else if (res.status === 401) {
+			console.error("Expired token!")
+			cookie.remove("authToken")
+			history.push("/login")
 		} else {
 			// clear tickets
 			setTickets([])
