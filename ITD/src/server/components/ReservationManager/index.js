@@ -30,15 +30,22 @@ exports.makeReservation = async (storeId, reservationId, userId) => {
 
 	if (new Date() > resDay) throw "too late!"
 
-	return (
-		"R" +
-		(await queryInterface.createUserReservation(
-			storeId,
-			reservationId,
-			userId,
-			resDay
-		))
+	const createdReservationId = await queryInterface.createUserReservation(
+		storeId,
+		reservationId,
+		userId,
+		resDay
 	)
+
+	const createdReservation = await queryInterface.getTicket(
+		createdReservationId
+	)
+
+	if (createdReservation.user_id === userId) {
+		return "R" + createdReservationId
+	} else {
+		throw "Could not create reservation!"
+	}
 }
 
 /**

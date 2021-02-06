@@ -387,7 +387,7 @@ exports.getQueryInterface = async () => {
 			userId,
 			resDay
 		) => {
-			const num_tickets = (
+			/*const num_tickets = (
 				await mysqlConnection.query(
 					"select count(*) as count from ticket where status = 'valid' and type = 'reservation' and reservation_id = ?",
 					[reservationId]
@@ -410,7 +410,22 @@ exports.getQueryInterface = async () => {
 				)[1][0].id
 			}
 
-			throw "Too many reservations!"
+			throw "Too many reservations!"*/
+
+			return (
+				await mysqlConnection.query(
+					"insert into ticket (type, status, creation_date, store_id, user_id, reservation_id, first_timestamp) select 'reservation', 'valid', ?, ?, ?, ?, ? from dual where ((select count(*) as count from ticket where status = 'valid' and type = 'reservation' and reservation_id = ?) < (select max_people_allowed from reservation where id = ?)); select last_insert_id() as id;",
+					[
+						new Date(),
+						storeId,
+						userId,
+						reservationId,
+						resDay,
+						reservationId,
+						reservationId,
+					]
+				)
+			)[1][0].id
 		},
 
 		getTicket: async (ticketId) => {

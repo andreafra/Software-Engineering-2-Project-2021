@@ -14,8 +14,9 @@ exports.joinQueue = async (storeId, userId) => {
 	await queryInterface.clearOldTickets()
 
 	let res = await queryInterface.getActiveTicketFromUser(userId)
+	let user = await queryInterface.getUser(userId)
 
-	if (res) throw "Ticket already present"
+	if (res && !user.is_totem) throw "Ticket already present"
 
 	// "Q" added to distinguish between Queue tickets and Reservation tickets
 	let code = "Q" + (await queryInterface.addUserToQueue(userId, storeId))

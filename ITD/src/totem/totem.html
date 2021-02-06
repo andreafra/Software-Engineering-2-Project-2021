@@ -18,16 +18,6 @@
       <td>Ticket</td>
       <td><input type="text" id="ticket" /></td>
     </tr>
-    <tr>
-      <td>
-        <input type="radio" id="queue" name="type" value="queue" />
-        <label for="queue">Queue</label>
-      </td>
-      <td>
-        <input type="radio" id="reservation" name="type" value="reservation" />
-        <label for="reservation">Reservation</label>
-      </td>
-    </tr>
   </table>
   <button id="validate">Validate</button>
   <p id="result"></p>
@@ -37,13 +27,10 @@
   const token = document.getElementById("token")
   const store = document.getElementById("store")
   const ticket = document.getElementById("ticket")
-  const queue = document.getElementById("queue")
   const button = document.getElementById("validate")
 
   button.addEventListener("click", async () => {
     result.innerHTML = "Fetching..."
-
-    let prefix = queue.checked ? "Q" : "R"
 
     try {
       const res = await fetch(
