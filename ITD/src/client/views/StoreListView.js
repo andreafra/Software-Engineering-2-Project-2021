@@ -2,20 +2,24 @@ import React, { useEffect, useState } from "react"
 import cookie from "react-cookies"
 import { Link } from "react-router-dom"
 import StoreMap from "../components/StoreMap"
-import { API_BASE_URL, MAX_CODE_LENGTH, MAX_PHONE_LENGTH } from "../defaults"
+import { API_BASE_URL, POLIMI_COORDS } from "../defaults"
 import ErrorMsg from "../components/ErrorMsg"
 import checkForExistingTicket from "../components/TicketCache"
 import { useHistory } from "react-router-dom"
 
 export default function StoreListView() {
 	const [stores, setStores] = useState([])
+	const [useGPS, setUseGPS] = useState(false)
+	const [coords, setCoords] = useState(POLIMI_COORDS)
 	const [errorMsg, setErrorMsg] = useState("")
 	const history = useHistory()
 	const authToken = cookie.load("authToken")
 
 	useEffect(async () => {
+		setErrorMsg("")
+		console.log("Retriving stores...")
 		// Fetch store list from server
-		let res = await fetch(API_BASE_URL + "search/" + "0|0", {
+		let res = await fetch(API_BASE_URL + "search/" + coords, {
 			method: "GET",
 			headers: {
 				// Don't forget to pass authorization token in the header
@@ -32,7 +36,7 @@ export default function StoreListView() {
 
 		// Redirect if we have tickets
 		await checkForExistingTicket(history)
-	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
+	}, [coords]) // Passing [] as second parameter makes the first callback run once when the component mounts.
 
 	const _listStores = () => {
 		return stores.map((store) => (
@@ -70,6 +74,32 @@ export default function StoreListView() {
 		))
 	}
 
+	const _toggleGPS = () => {
+		setUseGPS(!useGPS)
+		if (!useGPS) {
+			// switch to gps
+			// Try use gps api, requires HTTPS
+			if (!navigator.geolocation) {
+				alert("Geolocation is not supported by your browser")
+			} else {
+				navigator.geolocation.getCurrentPosition(
+					// Success
+					(pos) => {
+						let coords = `${pos.coords.latitude}|${pos.coords.longitude}`
+						console.log("Retrived coords... " + coords)
+						setCoords(coords)
+					},
+					// Error
+					() => setErrorMsg("Unable to retrieve position")
+				)
+			}
+		} else {
+			// switch to coords
+			setCoords(POLIMI_COORDS)
+			console.log("Using default coords... " + POLIMI_COORDS)
+		}
+	}
+
 	return (
 		<div>
 			<div className="columns is-gapless store-view">
@@ -81,11 +111,20 @@ export default function StoreListView() {
 				</div>
 				<div className="column is-two-thirds store-map">
 					<StoreMap
+						defaultCoords={coords}
 						stores={stores}
 						onMarkerClick={(store) =>
 							history.push("/stores/" + store.id)
 						}
 					/>
+					<div className="store-searchbox">
+						<a
+							className="button is-small is-warning"
+							onClick={_toggleGPS}
+						>
+							{useGPS ? "Use Coordinates" : "Use GPS"}
+						</a>
+					</div>
 				</div>
 			</div>
 			<div className="navbar is-fixed-bottom">

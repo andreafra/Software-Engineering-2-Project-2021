@@ -15,5 +15,13 @@
 }
 
 .store-map > div {
+  position: relative;
   height: 100%;
+}
+
+.store-map > div.store-searchbox {
+  position: absolute !important;
+  top: 10px !important;
+  margin-left: 10px;
+  height: auto !important;
 }

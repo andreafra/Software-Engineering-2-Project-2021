@@ -1,0 +1,502 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage{color}
+\usepackage{fancyvrb}
+
+%--------------------- OUR COMMANDS ---------------------------%
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault} 
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+%--------------------------------------------------------------%
+
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\usepackage[normalem]{ulem}
+% Avoid problems with \sout in headers with hyperref
+\pdfstringdefDisableCommands{\renewcommand{\sout}{}}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+%--------------- DOCUMENT START -----------------%
+
+\begin{document}
+
+\begin{titlepage}
+	\centering
+    
+    {\normalsize 
+        Software Engineering 2 - Prof. Di Nitto Elisabetta \\ 
+		Dipartimento di Elettronica, Informazione e Bioingegneria \\
+        Politecnico di Milano \par
+    }     \vspace{3cm}
+
+    {\Huge \textbf{CLup - Customer Line-up\\} }    \vspace{1cm}
+  
+    {\large \textbf{ITD\\Implementation and Testing Delieverable} \par}     \vspace{4cm}
+
+	{\normalsize Andrea Franchini(10560276) \\ Ian Di Dio Lavore (10580652)\\ Luigi Fusco(10601210)\par}     \vspace{3cm}
+
+    \includegraphics[scale=0.4]{../DD/images/logo.pdf}
+    \vspace{0.5cm}
+
+
+	{\normalsize 10-01-2020 \par}
+	
+\end{titlepage}
+
+\tableofcontents
+
+%------------------ CONTENT --------------------%
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+\hypertarget{scope}{%
+\subsection{Scope}\label{scope}}
+
+This document describes the implementation and testing process of a
+working prototype of the service described in the ``Requirement Analysis
+and Specification Document'' and ''Design Document''. This document is
+intended to be a reference for the developer team and explains the
+choices regarding used software, frameworks, programming languages. It
+also provide input on how to perform integration testing between the
+implemented components.
+
+\hypertarget{list-of-definitions-and-abbreviations}{%
+\subsection{List of definitions and
+abbreviations}\label{list-of-definitions-and-abbreviations}}
+
+\hypertarget{abbreviations}{%
+\subsection{Abbreviations}\label{abbreviations}}
+
+\begin{itemize}
+\item
+  \textbf{RASD} - Requirement Analysis and Specification Document
+\item
+  \textbf{DD} - Design Document
+\item
+  \textbf{JS} - JavaScript
+\item
+  \textbf{R\emph{n}} - Requirement \emph{n}
+\item
+  \textbf{IT\emph{n}} - Integration Test \emph{n}
+\end{itemize}
+
+\hypertarget{definitions}{%
+\subsection{Definitions}\label{definitions}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Client} - In this document client means a web app.
+\end{itemize}
+
+\hypertarget{reference-documents}{%
+\subsection{Reference documents}\label{reference-documents}}
+
+\begin{itemize}
+\item
+  Requirement Analysis and Specification Document (rasd.pdf)
+\item
+  Design Document (dd.pdf)
+\end{itemize}
+
+\hypertarget{document-structure}{%
+\subsection{Document structure}\label{document-structure}}
+
+\begin{itemize}
+\item
+  Chapter 1 presents the requirements that have been implemented in the
+  prototype.
+\item
+  Chapter 2 presents the adopted programming languages and frameworks,
+  justifying each choice.
+\item
+  Chapter 3 covers the structure of the source code.
+\item
+  Chapter 4 explains the testing process in greater detail.
+\item
+  Chapter 5 provides explanations on how to run, test and build the
+  prototype.
+\end{itemize}
+
+\hypertarget{implemented-requirements}{%
+\section{Implemented Requirements}\label{implemented-requirements}}
+
+Requirements have the same nomenclature present in the RASD and DD.
+
+We anticipate that there is no implementation in the prototype of the
+\emph{Totem} described in the RASD and DD, as that would require extra
+hardware to achieving pretty much the same functionality of the client
+web app. Since the \emph{Totem} is identified as a client with special
+privileges, therefore sharing the same endpoint of a normal client, it's
+only a lack of hardware implementation on the client side.
+
+\hypertarget{implemented}{%
+\subsection{Implemented}\label{implemented}}
+
+\begin{itemize}
+\tightlist
+\item
+  R1 - Allow a User to sign up for an Account after providing a mobile
+  phone number.
+\item
+  R2 - Allow a Registered User to find Stores nearby a specified
+  location.
+\item
+  R4 - Allow a Registered User to get in the virtual line at a
+  specifiedstore.
+\item
+  R6 - Allow a Registered User to preview an estimate of the queue time.
+\item
+  R8 - Allow a Registered User to cancel their reservation.
+\item
+  R9 - Allow a Registered User to leave the virtual queue.
+\item
+  R10 - Allow a Registered User \sout{and a Totem User} to retrieve a
+  scannable QR Code/Barcode that they must present in order to be
+  grantedaccess to a store. \emph{\textbf{Note::} We only implemented
+  the part related to the Registered User, who can obtain a digital
+  ticket containing the scannable code through the client web app.}
+\item
+  R12 - The System cancels User reservations in case of a major delay.
+\item
+  R14 - The System grants a User with a reservation access only within
+  ashort time (set by the manager) after the User's time of reservation.
+\item
+  R15 - Allow System Managers to set the division of the maximum num-ber
+  of people allowed between the normal queue, the priority queue for
+  people with special needs and the book a visit slot ca-pacity.
+\item
+  R16 - The System calculates the average shopping time by recording
+  every time a user enters and exits the store.
+\item
+  R17 - Allow System Managers to set a limit to the people allowed
+  intothe store at a time.
+\item
+  R18 - Allow System Managers to choose the frequency and size of
+  thetime slots.
+\item
+  R20 - Allow System Managers to know the current and past number
+  ofpeople in the store.
+\item
+  R21 - Allow System Managers to check the current status of the
+  queueand of the time slots.
+\end{itemize}
+
+\hypertarget{not-implemented}{%
+\subsection{Not implemented}\label{not-implemented}}
+
+\begin{itemize}
+\item
+  R3 - Allow a Registered User to filter out stores based on
+  availabletimeframes, days and distance. \emph{\textbf{Explanation:}
+  while the implementation isn't difficult, implementing this feature
+  would have slowed down the development and testing process.}
+\item
+  R5 - Allow a Totem User to get in the virtual line of the store where
+  thetotem is installed. \emph{\textbf{Explanation:} implementing the
+  totem interface it's not really useful for a prototype, since this
+  functionality works identically to a customer's client one.}
+\item
+  R11 - The System notifies the Users affected by delay.
+  \emph{\textbf{Explanation:} it requires external paid service that
+  isn't needed for a prototype, especially a web based one. Had we
+  implemented a native mobile app, this feature would have been
+  implemented.}
+\item
+  R13 - The System enforces the limits on the allowed number of
+  con-current Customers inside a store by restricting the access at
+  theentry points (for example, automatic doors or turnstile).
+  \emph{\textbf{Explanation:} The Store API component is not implemented
+  in the prototype as it requires custom integrations with existing API
+  or hardware.}
+\item
+  R19 - Allow System Managers to know the average time spent in
+  thestore. \emph{\textbf{Explanation:} Same reason of R13, it would
+  require access to an existing store API/hardware.}
+\end{itemize}
+
+\hypertarget{adopted-technologies}{%
+\section{Adopted Technologies}\label{adopted-technologies}}
+
+The chosen frameworks and technologies have been chosen with regards the
+Component View (Section 2.2) of the Design Document.
+
+\hypertarget{frameworks-and-programming-languages}{%
+\subsection{Frameworks and programming
+languages}\label{frameworks-and-programming-languages}}
+
+\hypertarget{back-end}{%
+\subsubsection{Back-end}\label{back-end}}
+
+We decided to implement the \emph{Application Server} with JavaScript
+and \href{https://nodejs.org}{NodeJS}, because it offers great
+horizontal scalability and generally good performance in handling
+multiple simultaneous requests. In order to ease development, we chose
+the industry standard server framework
+\href{https://expressjs.com/}{ExpressJS}, which allows us to easily
+implement a REST API for the clients.
+
+The chosen DBMS is \href{https://www.mysql.com/}{MySQL}, because it's a
+time-tested, fast and secure platform.
+
+\hypertarget{front-end}{%
+\subsubsection{Front-end}\label{front-end}}
+
+In order to develop a working prototype in a short timeframe, we decided
+to implement only the web application client, which offers the same
+functionalities of a native application, exception made for push
+notifications. The web app can be also easily ported into a
+\href{https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps}{Progressive
+Web App (PWA)}, which allows users to use it offline.
+
+Of course, being the client a web application, the obvious choice
+regarding suitable programming languages is JavaScript, allowing us to
+have a codebase written in the same language.
+
+We decided to use an industry-standard framework such as
+\href{https://reactjs.org/}{React} to better organize the structure of
+the web app, while maintaing high extendability, modularity and tidiness
+of the code. In order to make requests against the REST API, we used the
+new standard
+\href{https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API}{\texttt{fetch}
+API}.
+
+\hypertarget{additional-software}{%
+\subsection{Additional software}\label{additional-software}}
+
+In this part other notable tools are briefly explained.
+
+\hypertarget{yarn}{%
+\paragraph{Yarn}\label{yarn}}
+
+In order to better organize the project dependencies, it's a wise choice
+to use a packet manager. By having a codebase written entirely in JS, we
+adopted \href{https://yarnpkg.com/}{Yarn}, a fast and reliable packet
+manager for JavaScript. It also handles custom scripts to ease the
+development workflow.
+
+\hypertarget{jest}{%
+\paragraph{Jest}\label{jest}}
+
+To perform unit and integration testing, we've chosen
+\href{https://jestjs.io/}{Jest}, an industry-standard JavaScript testing
+framework.
+
+\hypertarget{docker}{%
+\paragraph{Docker}\label{docker}}
+
+To easily deploy a configured database for development, we utilized a
+MySQL image with \href{https://www.docker.com/}{Docker}, an
+industry-standard container solution.
+
+\hypertarget{source-code-structure}{%
+\section{Source code Structure}\label{source-code-structure}}
+
+TODO
+
+\hypertarget{testing}{%
+\section{Testing}\label{testing}}
+
+TODO
+
+(Refer to DD + procedure, explain at least system tests, would be good
+to consider integration tests)
+
+\hypertarget{installation-instructions}{%
+\section{Installation Instructions}\label{installation-instructions}}
+
+Here we report the instructions to install all software dependencies
+needed to run the service. This instructions are also available in the
+GitHub repository in the ITD folder.
+
+\hypertarget{installing-the-toolchain}{%
+\subsection{Installing the toolchain}\label{installing-the-toolchain}}
+
+\begin{itemize}
+\tightlist
+\item
+  Install \href{https://nodejs.org/}{NodeJS}, possibly the LTS version
+  (14.15.4).
+
+  \begin{itemize}
+  \tightlist
+  \item
+    If you use tools such \texttt{nvm}, please run
+    \texttt{nvm\ install\ -\/-lts} and \texttt{nvm\ use\ -\/-lts}
+  \end{itemize}
+\item
+  Open the terminal and run \texttt{npm\ install\ -g\ yarn} to install
+  the packet manager we're using, \href{https://yarnpkg.com}{Yarn}
+\item
+  If you are developing this project, installing
+  \href{https://github.com/remy/nodemon}{Nodemon} is recommended
+  \texttt{npm\ install\ -g\ nodemon}. Please note that it's already
+  included in the \emph{developer dependencies}, so if you do not wish
+  to install it globally, skip this step.
+\item
+  Clone the repository using either one of the following commands
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{git\ clone\ https://github.com/ian-ofgod/DiDioLavoreFuscoFranchini-CLup}
+  \item
+    \texttt{gh\ repo\ clone\ ian-ofgod/DiDioLavoreFuscoFranchini-CLup}
+  \end{itemize}
+\item
+  Change directory into the ITD folder
+  \texttt{cd\ DiDioLavoreFuscoFranchini-CLup/ITD}
+\item
+  Run \texttt{yarn\ install} to install the dependencies
+\end{itemize}
+
+\hypertarget{setting-up-the-database}{%
+\subsection{Setting up the database}\label{setting-up-the-database}}
+
+You'll have to install \href{https://www.docker.com/}{Docker} on your
+device, and make sure
+\href{https://docs.docker.com/compose/install/}{docker-compose} is
+installed as well.
+
+\begin{itemize}
+\tightlist
+\item
+  Run \texttt{docker-compose\ up\ -d} to spin up the images specified in
+  the \texttt{docker-compose.yml} file.
+\end{itemize}
+
+Visit \url{http://localhost:8081} to see if
+\href{https://www.adminer.org}{Adminer} is running, and log in with the
+credentials specified in the \texttt{.env} file (server: \texttt{db},
+username: \texttt{clup\_admin}, password: \texttt{clup}, database:
+\texttt{db\_clup}).
+
+\begin{quote}
+\hypertarget{alternative-without-docker}{%
+\subsubsection{Alternative without
+Docker}\label{alternative-without-docker}}
+
+\begin{itemize}
+\tightlist
+\item
+  Install \href{https://www.mysql.com}{MySQL} server, then create a
+  schema and a user with the credentials found in the \texttt{.env}
+  file, otherwise create your own and edit the \texttt{.env} file.
+\end{itemize}
+\end{quote}
+
+\begin{itemize}
+\tightlist
+\item
+  In case of errors about permissions, try running the following
+  command, especially if you are not using Docker:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{create} \FunctionTok{user}\NormalTok{ clup\_admin@localhost }\KeywordTok{identified} \KeywordTok{with}\NormalTok{ mysql\_native\_password }\KeywordTok{by} \StringTok{\textquotesingle{}clup\textquotesingle{}}\NormalTok{;}
+\KeywordTok{grant} \KeywordTok{all} \KeywordTok{privileges} \KeywordTok{on} \OperatorTok{*}\NormalTok{ . }\OperatorTok{*} \KeywordTok{to}\NormalTok{ clup\_admin@localhost;}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{verify-the-installation}{%
+\subsection{Verify the installation}\label{verify-the-installation}}
+
+\begin{itemize}
+\tightlist
+\item
+  Run \texttt{yarn\ server-dev} to run the developer server
+\item
+  Run \texttt{yarn\ client-dev} to run the client server
+\item
+  Run \texttt{yarn\ client-build} to compile the client package (output
+  is in \texttt{dist})
+\item
+  Run \texttt{yarn\ test} to run the full test suite with
+  \href{https://jestjs.io}{Jest}
+\end{itemize}
+
+\end{document}
