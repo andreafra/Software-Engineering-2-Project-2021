@@ -3,6 +3,7 @@ dotenv.config()
 
 const mysql = require("promise-mysql")
 const uuid = require("uuid")
+const InvalidAuthTokenError = require("../../errors/InvalidAuthTokenError")
 
 /**
  * Query Manageris a component that handles the interactions with the database,
@@ -137,7 +138,7 @@ exports.getQueryInterface = async () => {
 			)
 
 			if (res.length === 0) {
-				throw "Token not found"
+				throw new InvalidAuthTokenError()
 			}
 
 			return res[0].user_id

@@ -3,6 +3,7 @@ import { useParams, Link, useHistory } from "react-router-dom"
 import cookie from "react-cookies"
 import { API_BASE_URL } from "../defaults"
 import checkForExistingTicket from "../components/TicketCache"
+import ErrorMsg from "../components/ErrorMsg"
 
 export default function TimeslotsView() {
 	const storeId = useParams().id
@@ -14,17 +15,28 @@ export default function TimeslotsView() {
 	const history = useHistory()
 
 	useEffect(async () => {
-		let res = await fetch(API_BASE_URL + "store/" + storeId, {
+		// Fetch store details
+		let resStore = await fetch(API_BASE_URL + "store/" + storeId, {
 			method: "GET",
 			headers: {
 				// Don't forget to pass authorization token in the header
 				"X-Auth-Token": authToken,
 			},
 		})
-		let data = await res.json()
-		setStore(data)
 
-		let res1 = await fetch(
+		if (resStore.status === 200) {
+			let data = await resStore.json()
+			setStore(data)
+		} else if (resStore.status === 401) {
+			console.error("Expired token!")
+			cookie.remove("authToken")
+			history.push("/login")
+		} else {
+			setErrorMsg(await resStore.text())
+		}
+
+		// Fetch store timeslots
+		let resTimeslots = await fetch(
 			API_BASE_URL + "store/" + storeId + "/reservation/timeslots",
 			{
 				method: "GET",
@@ -34,9 +46,16 @@ export default function TimeslotsView() {
 				},
 			}
 		)
-		let data1 = await res1.json()
-		setTimeslots(data1)
-
+		if (resTimeslots.status === 200) {
+			let data1 = await resTimeslots.json()
+			setTimeslots(data1)
+		} else if (resTimeslots.status === 401) {
+			console.error("Expired token!")
+			cookie.remove("authToken")
+			history.push("/login")
+		} else {
+			setErrorMsg(await resTimeslots.text())
+		}
 		// Redirect if we have tickets
 		await checkForExistingTicket(history)
 	}, []) // Passing [] as second parameter makes the first callback run once when the component mounts.
@@ -137,6 +156,10 @@ export default function TimeslotsView() {
 			let data = await res.json()
 			console.log(data)
 			history.push("/tickets")
+		} else if (res.status === 401) {
+			console.error("Expired token!")
+			cookie.remove("authToken")
+			history.push("/login")
 		} else {
 			setErrorMsg(await res.text())
 		}
@@ -162,6 +185,10 @@ export default function TimeslotsView() {
 							</i>
 						</p>
 					</div>
+					<div className="block">
+						<ErrorMsg message={errorMsg} />
+					</div>
+
 					<div className="block">{_getTimeslots()}</div>
 
 					<div className="buttons">

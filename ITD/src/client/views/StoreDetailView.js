@@ -30,8 +30,12 @@ export default function StoreDetailView() {
 			setStore(data)
 		} else if (res.status === 404) {
 			setErrorMsg("Error: store not found")
+		} else if (res.status === 401) {
+			console.error("Expired token!")
+			cookie.remove("authToken")
+			history.push("/login")
 		} else {
-			setErrorMsg("We could'nt fetch the store details")
+			setErrorMsg("We couldn't fetch the store details")
 		}
 
 		// Redirect if we have tickets
@@ -71,6 +75,10 @@ export default function StoreDetailView() {
 
 			setIsTicketReceived(true)
 			console.log(data)
+		} else if (res.status === 401) {
+			console.error("Expired token!")
+			cookie.remove("authToken")
+			history.push("/login")
 		} else {
 			setErrorMsg(await res.text())
 		}
