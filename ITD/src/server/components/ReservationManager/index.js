@@ -15,9 +15,9 @@ exports.makeReservation = async (storeId, reservationId, userId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
 	await queryInterface.clearOldReservations()
-	const hasReservation = await queryInterface.hasReservation(userId)
+	let res = await queryInterface.getActiveTicketFromUser(userId)
 
-	if (hasReservation) throw "Already has reservation"
+	if (res) throw "Ticket already present"
 
 	const reservationInfo = await queryInterface.getReservation(reservationId)
 	const resTime = reservationInfo.start_time.split(":")
@@ -68,7 +68,7 @@ exports.isTicketValid = async (storeId, ticketId) => {
 	const todayTime = today.getHours() * 60 + today.getMinutes()
 
 	if (
-		ticketInfo.status === 'valid' &&
+		ticketInfo.status === "valid" &&
 		storeInfo.curr_number < storeInfo.max_capacity &&
 		reservationInfo.is_active &&
 		reservationInfo.weekday === today.getDay() &&
