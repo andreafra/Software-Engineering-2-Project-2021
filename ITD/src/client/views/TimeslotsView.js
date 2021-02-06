@@ -176,7 +176,7 @@ export default function TimeslotsView() {
 							to={"/stores/" + storeId}
 							className="button is-rounded is-light is-fullwidth"
 						>
-							I don't want to reserve a timeslot
+							Back
 						</Link>
 					</div>
 				</div>

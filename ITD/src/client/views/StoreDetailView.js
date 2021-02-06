@@ -94,7 +94,7 @@ export default function StoreDetailView() {
 								to="/stores"
 								className="button is-light is-primary"
 							>
-								Back to store map
+								Back
 							</Link>
 						</div>
 					</div>
