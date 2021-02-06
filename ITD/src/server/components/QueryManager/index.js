@@ -461,8 +461,8 @@ exports.getQueryInterface = async () => {
 
 		clearOldTickets: async () => {
 			return await mysqlConnection.query(
-				"update ticket set status = 'cancelled' where type = 'queue' and first_timestamp < DATE_SUB(?, INTERVAL 1 MINUTE)",
-				[new Date()]
+				"update ticket set status = 'cancelled' where type = 'queue' and first_timestamp < DATE_SUB(?, INTERVAL ? MINUTE)",
+				[new Date(), 1]
 			)
 		},
 
@@ -487,6 +487,15 @@ exports.getQueryInterface = async () => {
 					userId,
 				])
 			)[0]
+		},
+
+		getVerificationCode: async (userId) => {
+			return (
+				await mysqlConnection.query(
+					"select code from verification_code where number = ?",
+					[userId]
+				)
+			)[0].code
 		},
 
 		/**

@@ -11,6 +11,12 @@ const QueryManager = require("./../QueryManager/index")
  */
 exports.joinQueue = async (storeId, userId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
+	await queryInterface.clearOldTickets()
+
+	let res = await queryInterface.getActiveTicketFromUser(userId)
+
+	if (res) throw "Ticket already present"
+
 	// "Q" added to distinguish between Queue tickets and Reservation tickets
 	let code = "Q" + (await queryInterface.addUserToQueue(userId, storeId))
 
@@ -38,7 +44,6 @@ exports.isTicketValid = async (storeId, ticketId) => {
 	const firstTicket = await queryInterface.getFirstQueueTicket(storeId)
 
 	if (firstTicket === undefined) return false
-
 
 	if (firstTicket.id == ticketId) {
 		const storeData = await queryInterface.getStoreFillLevel(storeId)
