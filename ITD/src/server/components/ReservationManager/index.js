@@ -30,15 +30,22 @@ exports.makeReservation = async (storeId, reservationId, userId) => {
 
 	if (new Date() > resDay) throw "too late!"
 
-	return (
-		"R" +
-		(await queryInterface.createUserReservation(
-			storeId,
-			reservationId,
-			userId,
-			resDay
-		))
+	const createdReservationId = await queryInterface.createUserReservation(
+		storeId,
+		reservationId,
+		userId,
+		resDay
 	)
+
+	const createdReservation = await queryInterface.getTicket(
+		createdReservationId
+	)
+
+	if (createdReservation.user_id === userId) {
+		return "R" + createdReservationId
+	} else {
+		throw "Could not create reservation!"
+	}
 }
 
 /**
@@ -105,11 +112,13 @@ exports.cancelReservation = async (storeId, ticketId, userId) => {
 exports.getReservationData = async (storeId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
-	const data = await queryInterface.getReservationData(storeId)
+	let data = await queryInterface.getReservationData(storeId)
 	for (let i = 0; i < data.length; ++i)
 		data[i].crowdness = Math.floor(
 			(data[i].count * 3) / data[i].max_people_allowed
 		)
+
+	data = data.filter((e) => e.crowdness < 3)
 
 	return data
 }

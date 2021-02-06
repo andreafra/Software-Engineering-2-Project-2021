@@ -1,6 +1,6 @@
 const ReservationManager = require(".")
 const QueryManager = require("../QueryManager")
-const MockDate = require('mockdate')
+const MockDate = require("mockdate")
 
 test("check acceptance if overfull", async () => {
 	const queryInterface = await QueryManager.getQueryInterface()
@@ -17,7 +17,7 @@ test("check acceptance if overfull", async () => {
 		)
 		const reservationSlotId = await queryInterface.createReservationSlot(
 			storeId,
-			(today.getDay() + 1)%7,
+			(today.getDay() + 1) % 7,
 			time,
 			10
 		)
@@ -44,7 +44,7 @@ test("check acceptance if overfull", async () => {
 
 		expect(res1).toBe(false)
 
-		MockDate.set(Date.now() + 1000*60*60*24)
+		MockDate.set(Date.now() + 1000 * 60 * 60 * 24)
 
 		const res2 = await ReservationManager.isTicketValid(
 			storeId,
@@ -54,11 +54,10 @@ test("check acceptance if overfull", async () => {
 		expect(res2).toBe(true)
 
 		MockDate.reset()
-
 	})
 })
 
-test("check reservation info", async () => {
+test("prevent overbooking", async () => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
 	await queryInterface.executeAndRollback(async () => {
@@ -67,7 +66,7 @@ test("check reservation info", async () => {
 		const storeId = await queryInterface.createStore(
 			"esselunga",
 			"via zurigo 14",
-			1,
+			10,
 			0,
 			0
 		)
@@ -76,36 +75,29 @@ test("check reservation info", async () => {
 			storeId,
 			today.getDay() + 1,
 			time,
-			10
-		)
-
-		await queryInterface.createReservationSlot(
-			storeId,
-			today.getDay() + 2,
-			time,
-			10
+			1
 		)
 
 		await queryInterface.createUser("0000", "luigi", "fusco")
 		await queryInterface.createUser("0001", "andrea", "franchini")
 
-		const ticketId1 = await ReservationManager.makeReservation(
+		await ReservationManager.makeReservation(
 			storeId,
 			reservationSlotId,
 			"0000"
 		)
-		
-		const ticketId2 = await ReservationManager.makeReservation(
-			storeId,
-			reservationSlotId,
-			"0001"
+
+		let flag = false
+		try {
+			await ReservationManager.makeReservation(
+				storeId,
+				reservationSlotId,
+				"0001"
 			)
-			
-		//console.log(await ReservationManager.getReservationData(storeId))
+		} catch (err) {
+			flag = true
+		}
 
-		const ticket = await queryInterface.getTicket(ticketId2.substring(1))
-
-		//console.log(ticket)
+		expect(flag).toBe(true)
 	})
-
 })
