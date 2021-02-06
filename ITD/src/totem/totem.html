@@ -4,22 +4,24 @@
   <title>Totem</title>
 </head>
 <body>
-  <h1>Totem - Validate Tickets</h1>
+  <h1>Totem - Validate Tickets Or Join Queue</h1>
   <table style="border: 1px dashed black">
     <tr>
       <td>Token</td>
-      <td><input type="text" id="token" /></td>
+      <td><input type="text" id="token" value="totem-token" /></td>
     </tr>
     <tr>
       <td>Store</td>
-      <td><input type="text" id="store" /></td>
+      <td><input type="text" id="store" value="1" /></td>
     </tr>
     <tr>
       <td>Ticket</td>
       <td><input type="text" id="ticket" /></td>
     </tr>
   </table>
+  <br />
   <button id="validate">Validate</button>
+  <button id="create">Create</button>
   <p id="result"></p>
 </body>
 <script>
@@ -28,6 +30,31 @@
   const store = document.getElementById("store")
   const ticket = document.getElementById("ticket")
   const button = document.getElementById("validate")
+  const create = document.getElementById("create")
+
+  create.addEventListener("click", async () => {
+    result.innerHTML = "Fetching..."
+
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/store/${store.value}/queue/join`,
+        {
+          method: "POST",
+          headers: {
+            "X-Auth-Token": String(token.value),
+          },
+        }
+      )
+
+      let json = await res.json()
+
+      if (res.status === 200) {
+        result.innerHTML = `Code is [${json.receiptId}]`
+      }
+    } catch (error) {
+      result.innerHTML = "Could not create ticket: [" + error.message + "]"
+    }
+  })
 
   button.addEventListener("click", async () => {
     result.innerHTML = "Fetching..."
@@ -42,7 +69,7 @@
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            receiptId: prefix + String(ticket.value),
+            receiptId: String(ticket.value),
           }),
         }
       )
