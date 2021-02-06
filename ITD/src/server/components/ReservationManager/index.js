@@ -105,11 +105,13 @@ exports.cancelReservation = async (storeId, ticketId, userId) => {
 exports.getReservationData = async (storeId) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 
-	const data = await queryInterface.getReservationData(storeId)
+	let data = await queryInterface.getReservationData(storeId)
 	for (let i = 0; i < data.length; ++i)
 		data[i].crowdness = Math.floor(
 			(data[i].count * 3) / data[i].max_people_allowed
 		)
+
+	data = data.filter((e) => e.crowdness < 3)
 
 	return data
 }
