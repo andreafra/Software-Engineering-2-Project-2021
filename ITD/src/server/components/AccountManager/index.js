@@ -92,3 +92,10 @@ exports.validateToken = async (token) => {
 	const queryInterface = await QueryManager.getQueryInterface()
 	return await queryInterface.validateToken(token)
 }
+
+exports.isTotem = async (userId) => {
+	const queryInterface = await QueryManager.getQueryInterface()
+	const user = await queryInterface.getUser(userId)
+
+	return user.is_totem === 1
+}

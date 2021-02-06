@@ -251,29 +251,6 @@ app.post("/api/store/:storeId/reservation/cancel", async (req, res) => {
 	}
 })
 
-app.post("/api/store/:storeId/ticket/verify", async (req, res) => {
-	let storeId = req.params.storeId
-	let ticketId = req.body.receiptId
-
-	try {
-		// DEBUG/DEMO: Skip authentication
-		// await _validateToken(req, res)
-
-		try {
-			let isValid = false
-			isValid = await TicketManager.checkTicket(storeId, ticketId)
-			res.status(200).send({
-				isTicketValid: isValid,
-			})
-		} catch (err) {
-			res.status(404).send("Store/receipt not found")
-			return
-		}
-	} catch (error) {
-		return
-	}
-})
-
 app.get("/api/user/ticket", async (req, res) => {
 	try {
 		let userId = await _validateToken(req, res)
@@ -284,6 +261,33 @@ app.get("/api/user/ticket", async (req, res) => {
 			res.status(200).send(ticket)
 		} catch (err) {
 			res.status(404).send("No tickets found")
+			return
+		}
+	} catch (error) {
+		return
+	}
+})
+
+app.post("/api/store/:storeId/ticket/verify", async (req, res) => {
+	let storeId = req.params.storeId
+	let ticketId = req.body.receiptId
+
+	try {
+		const userId = await _validateToken(req, res)
+
+		if (!(await AccountManager.isTotem(userId))) {
+			res.status(401).send("Access forbidden")
+			return
+		}
+
+		try {
+			let isValid = false
+			isValid = await TicketManager.checkTicket(storeId, ticketId)
+			res.status(200).send({
+				isTicketValid: isValid,
+			})
+		} catch (err) {
+			res.status(404).send("Store/receipt not found")
 			return
 		}
 	} catch (error) {

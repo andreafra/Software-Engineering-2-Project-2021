@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+  <title>Totem</title>
+</head>
+<body>
+  <table>
+    <tr>
+      <td>Token</td>
+      <td><input type="text" id="token" /></td>
+    </tr>
+    <tr>
+      <td>Store</td>
+      <td><input type="text" id="store" /></td>
+    </tr>
+    <tr>
+      <td>Ticket</td>
+      <td><input type="text" id="ticket" /></td>
+    </tr>
+  </table>
+  <button id="button">Validate</button>
+  <p id="result"></p>
+</body>
+<script>
+  const result = document.getElementById("result")
+  const token = document.getElementById("token")
+  const store = document.getElementById("store")
+  const ticket = document.getElementById("ticket")
+  const button = document.getElementById("button")
+
+  button.onclick = async () => {
+    const res = await fetch(
+      `http://localhost:3000/api/store/${store.value}/ticket/verify`,
+      {
+        method: "POST",
+        headers: {
+          "X-Auth-Token": token.value,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          receiptId: ticket.value,
+        }),
+      }
+    )
+
+    if ((await res.json()).isTicketValid) {
+      result.innerHTML = "Ticket correctly validated"
+    } else {
+      result.innerHTML = "Ticket rejected"
+    }
+  }
+</script>

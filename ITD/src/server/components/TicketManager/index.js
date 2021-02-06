@@ -2,6 +2,15 @@ const ReservationManager = require("../ReservationManager")
 const QueueManager = require("../QueueManager")
 const QueryManager = require("../QueryManager")
 
+const ticketClearCallback = async () => {
+	const queryInterface = await QueryManager.getQueryInterface()
+	await queryInterface.clearOldTickets()
+	await queryInterface.updateFirst()
+	setTimeout(ticketClearCallback, 10 * 1000)
+}
+
+setTimeout(ticketClearCallback, 10 * 1000)
+
 /**
  * This method takes as input the identification number of the ticket.
  * It contacts the corresponding component (ReservationManager or QueueManager)

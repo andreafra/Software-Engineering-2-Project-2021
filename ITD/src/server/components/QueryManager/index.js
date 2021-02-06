@@ -202,7 +202,13 @@ exports.getQueryInterface = async () => {
 			return (
 				await mysqlConnection.query(
 					"select sum(max_people_allowed) as sum from reservation where store_id = ? and weekday = ? and start_time >= ? and start_time <= DATE_ADD(?, INTERVAL ? HOUR)",
-					[storeID, currentDate.getDay(), currentDate, currentDate, hours]
+					[
+						storeID,
+						currentDate.getDay(),
+						currentDate,
+						currentDate,
+						hours,
+					]
 				)
 			)[0].sum
 		},
@@ -438,10 +444,12 @@ exports.getQueryInterface = async () => {
 		},
 
 		updateFirst: async (storeId) => {
-			const first = (await mysqlConnection.query(
-				"select * from ticket as t1 where t1.type = 'queue' and t1.store_id = ? and t1.status = 'valid' order by t1.creation_date asc limit 1",
-				[storeId]
-			))[0]
+			const first = (
+				await mysqlConnection.query(
+					"select * from ticket as t1 where t1.type = 'queue' and t1.store_id = ? and t1.status = 'valid' order by t1.creation_date asc limit 1",
+					[storeId]
+				)
+			)[0]
 
 			if (first !== undefined && first.first_timestamp === null) {
 				await mysqlConnection.query(
@@ -471,6 +479,14 @@ exports.getQueryInterface = async () => {
 				[userId]
 			)
 			return res[0]
+		},
+
+		getUser: async (userId) => {
+			return (
+				await mysqlConnection.query("select * from user where id = ?", [
+					userId,
+				])
+			)[0]
 		},
 
 		/**
