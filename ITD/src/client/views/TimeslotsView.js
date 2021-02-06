@@ -68,60 +68,49 @@ export default function TimeslotsView() {
 	// Parses available timeslots and lists them with separators
 	const _getTimeslots = () => {
 		let ret = []
-		let timeslotsSorted = timeslots
+		let sortedTimeslots = timeslots
 			.sort((a, b) => a.weekday - b.weekday)
 			.sort((a, b) => {
 				let a_time = a.start_time.split(":")
 				let b_time = b.start_time.split(":")
 				return a_time[0] * 60 + a_time[1] - (b_time[0] * 60 + b_time[1])
 			})
-		timeslotsSorted.forEach((ts) => {
-			if (ts.weekday == 1) {
-				ts.weekday = "Monday"
-			} else if (ts.weekday == 2) {
-				ts.weekday = "Tuesday"
-			} else if (ts.weekday == 2) {
-				ts.weekday = "Wednesday"
-			} else if (ts.weekday == 2) {
-				ts.weekday = "Thursday"
-			} else if (ts.weekday == 2) {
-				ts.weekday = "Friday"
-			} else if (ts.weekday == 2) {
-				ts.weekday = "Saturday"
-			} else {
-				ts.weekday = "Sunday"
-			}
-		})
 		DAYS.forEach((d) => {
 			// Get all the timeslots in that day
-			let slots = timeslotsSorted.filter((t) => t.weekday === d)
+			let slots = sortedTimeslots.filter((t) => t.weekday === d.id)
 			if (slots.length > 0) {
 				// Add a separator for each day
 				ret.push(
-					<h3 key={d} className="title is-4 pt-4">
-						{d}
+					<h3 key={d.name} className="title is-4 pt-4">
+						{d.name}
 					</h3>
 				)
 
-				let elems = slots.map((t) => (
-					<button
-						key={t.id}
-						onClick={() => _selectTimeslot(t.id)}
-						className={
-							"button mr-1 is-family-code " +
-							(t.id === selectedTimeslot ? "is-primary" : "")
-						}
-					>
-						{t.start_time}
-						<span
+				let elems = slots.map((t) => {
+					let startTime = t.start_time.split(":")
+
+					return (
+						<button
+							key={t.id}
+							onClick={() => _selectTimeslot(t.id)}
 							className={
-								"ml-2 tag " + getCrowdnessColor(t.crowdness)
+								"button mr-1 is-family-code " +
+								(t.id === selectedTimeslot ? "is-primary" : "")
 							}
 						>
-							{t.crowdness}
-						</span>
-					</button>
-				))
+							{startTime[0]}
+							{":"}
+							{startTime[1]}
+							<span
+								className={
+									"ml-2 tag " + getCrowdnessColor(t.crowdness)
+								}
+							>
+								{t.crowdness}
+							</span>
+						</button>
+					)
+				})
 				ret.push(elems)
 			}
 		})
@@ -214,34 +203,14 @@ export default function TimeslotsView() {
 
 // helpers
 const DAYS = [
-	"Monday",
-	"Tuesday",
-	"Wednesday",
-	"Thursday",
-	"Friday",
-	"Saturday",
-	"Sunday",
+	{ id: 1, name: "Monday" },
+	{ id: 2, name: "Tuesday" },
+	{ id: 3, name: "Wednesday" },
+	{ id: 4, name: "Thursday" },
+	{ id: 5, name: "Friday" },
+	{ id: 6, name: "Saturday" },
+	{ id: 7, name: "Sunday" },
 ]
-
-function getDayId(day) {
-	switch (day) {
-		case "Monday":
-			return 0
-		case "Tuesday":
-			return 1
-		case "Wednesday":
-			return 2
-		case "Thursday":
-			return 3
-		case "Friday":
-			return 4
-		case "Saturday":
-			return 5
-		case "Sunday":
-		default:
-			return 6
-	}
-}
 
 function getCrowdnessColor(crowdness) {
 	switch (crowdness) {
