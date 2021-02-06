@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom"
 export default function StoreListView() {
 	const [stores, setStores] = useState([])
 	const [useGPS, setUseGPS] = useState(false)
-	const [coords, setCoords] = useState(POLIMI_COORDS)
+	const [coords, setCoords] = useState(_parseCoords(POLIMI_COORDS))
 	const [errorMsg, setErrorMsg] = useState("")
 	const history = useHistory()
 	const authToken = cookie.load("authToken")
@@ -19,13 +19,16 @@ export default function StoreListView() {
 		setErrorMsg("")
 		console.log("Retriving stores...")
 		// Fetch store list from server
-		let res = await fetch(API_BASE_URL + "search/" + coords, {
-			method: "GET",
-			headers: {
-				// Don't forget to pass authorization token in the header
-				"X-Auth-Token": authToken,
-			},
-		})
+		let res = await fetch(
+			API_BASE_URL + `search/${coords.lat}|${coords.lng}`,
+			{
+				method: "GET",
+				headers: {
+					// Don't forget to pass authorization token in the header
+					"X-Auth-Token": authToken,
+				},
+			}
+		)
 		if (res.status === 200) {
 			let data = await res.json()
 			console.log(data)
@@ -54,7 +57,13 @@ export default function StoreListView() {
 						</p>
 						<p>
 							<b>Distance </b>
-							{store.distance}
+							{_getDistance(
+								coords.lat,
+								coords.lng,
+								store.latitude,
+								store.longitude
+							)}{" "}
+							m
 						</p>
 						<p>
 							<b>Open </b>
@@ -85,7 +94,10 @@ export default function StoreListView() {
 				navigator.geolocation.getCurrentPosition(
 					// Success
 					(pos) => {
-						let coords = `${pos.coords.latitude}|${pos.coords.longitude}`
+						let coords = {
+							lat: pos.coords.latitude,
+							lng: pos.coords.longitude,
+						}
 						console.log("Retrived coords... " + coords)
 						setCoords(coords)
 					},
@@ -95,7 +107,7 @@ export default function StoreListView() {
 			}
 		} else {
 			// switch to coords
-			setCoords(POLIMI_COORDS)
+			setCoords(_parseCoords(POLIMI_COORDS))
 			console.log("Using default coords... " + POLIMI_COORDS)
 		}
 	}
@@ -111,7 +123,7 @@ export default function StoreListView() {
 				</div>
 				<div className="column is-two-thirds store-map">
 					<StoreMap
-						defaultCoords={coords}
+						coords={coords}
 						stores={stores}
 						onMarkerClick={(store) =>
 							history.push("/stores/" + store.id)
@@ -158,4 +170,37 @@ export default function StoreListView() {
 			</div>
 		</div>
 	)
+}
+
+const _parseCoords = (coords) => {
+	const coordsArray = coords.split("|")
+	const lat = parseFloat(coordsArray[0])
+	const lng = parseFloat(coordsArray[1])
+	return { lat: lat, lng: lng }
+}
+
+/**
+ * Get distance between to points.
+ * From: https://stackoverflow.com/questions/639695/
+ * Explanation: https://en.wikipedia.org/wiki/Haversine_formula
+ *
+ * @param {number} lat1
+ * @param {number} lon1
+ * @param {number} lat2
+ * @param {number} lon2
+ * @returns {number} distance
+ */
+const _getDistance = (lat1, lon1, lat2, lon2) => {
+	var R = 6378.137 // Radius of earth in KM
+	var dLat = (lat2 * Math.PI) / 180 - (lat1 * Math.PI) / 180
+	var dLon = (lon2 * Math.PI) / 180 - (lon1 * Math.PI) / 180
+	var a =
+		Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+		Math.cos((lat1 * Math.PI) / 180) *
+			Math.cos((lat2 * Math.PI) / 180) *
+			Math.sin(dLon / 2) *
+			Math.sin(dLon / 2)
+	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+	var d = R * c
+	return Math.trunc(d * 1000) // meters
 }

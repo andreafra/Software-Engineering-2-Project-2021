@@ -9,9 +9,8 @@ import { Map, GoogleApiWrapper, Marker } from "google-maps-react"
  * @returns
  */
 export function StoreMap(props) {
-	const coordsArray = props.defaultCoords.split("|")
-	const lat = parseFloat(coordsArray[0])
-	const lng = parseFloat(coordsArray[1])
+	const lat = props.coords.lat
+	const lng = props.coords.lng
 
 	const _mapStores = () => {
 		// haha geddit?

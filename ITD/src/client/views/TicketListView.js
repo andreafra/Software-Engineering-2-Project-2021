@@ -67,7 +67,7 @@ export default function TicketListView() {
 								className="button is-danger is-rounded"
 								onClick={_deleteTicket}
 							>
-								{isQueue ? "Exit Queue" : "Delete Reservation"}
+								{isQueue ? "Leave Queue" : "Delete Reservation"}
 							</button>
 						</p>
 					</footer>
@@ -152,9 +152,14 @@ export default function TicketListView() {
 					</div>
 					<div className="block">{_showTickets()}</div>
 				</div>
-				{/* <div className="footer has-background-white">
-					<a onClick={_clearCookies}>Clear Cookies</a>
-				</div> */}
+				<div className="footer has-background-white is-centered">
+					<a
+						className="button is-small is-danger is-light"
+						onClick={_clearCookies}
+					>
+						Logout
+					</a>
+				</div>
 			</div>
 		</div>
 	)
