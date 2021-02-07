@@ -5,7 +5,6 @@ services:
     image: mysql
     container_name: clup_db
     command: --default-authentication-plugin=mysql_native_password
-    restart: always
     privileged: true
     ports:
       - 3306:3306
@@ -16,42 +15,46 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
-      - ./database/conf:/etc/mysql/conf.d #this will export the custom.cnf in the ./database/conf/ folder
-      - ./database/init/:/docker-entrypoint-initdb.d #this will execute only if db_data is empty
+      - ./database/conf:/etc/mysql/conf.d
+      - ./database/init/:/docker-entrypoint-initdb.d
     cap_add:
-      - SYS_NICE # CAP_SYS_NICE
+      - SYS_NICE
+    networks:
+      - clup_net
 
   adminer:
     image: adminer
     depends_on:
       - db
     container_name: clup_adminer
-    privileged: true
-    restart: always
     ports:
       - 8081:8080
+    networks:
+      - clup_net
 
-  server-dev:
+  server:
     container_name: clup_server
     build: .
-    privileged: true
     depends_on:
       - db
     command: server-dev
     ports:
       - "3000:3000"
+    networks:
+      - clup_net
 
-  client-dev:
+  client:
     container_name: clup_client
     build: .
-    privileged: true
-    depends_on:
-      - db
-      - server-dev
     command: client-dev
     ports:
       - "8080:8080"
+    networks:
+      - clup_net
 
 volumes:
   db_data:
     name: db_data
+
+networks:
+  clup_net:
