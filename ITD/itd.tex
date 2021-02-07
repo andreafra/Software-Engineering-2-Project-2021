@@ -206,12 +206,9 @@ abbreviations}\label{list-of-definitions-and-abbreviations}}
 
 Requirements have the same nomenclature present in the RASD and DD.
 
-We anticipate that there is no implementation in the prototype of the
-\emph{Totem} described in the RASD and DD, as that would require extra
-hardware to achieving pretty much the same functionality of the client
-web app. Since the \emph{Totem} is identified as a client with special
-privileges, therefore sharing the same endpoint of a normal client, it's
-only a lack of hardware implementation on the client side.
+We anticipate that the prototype implementation of the
+\emph{Totem} is an exemplification of what described in the RASD and DD, but of course lacks the extra hardware, such a scanner.
+The main features are present, for example validating a ticket or joining the queue.
 
 \hypertarget{implemented}{%
 \subsection{Implemented}\label{implemented}}
@@ -222,11 +219,11 @@ only a lack of hardware implementation on the client side.
   R1 - Allow a User to sign up for an Account after providing a mobile
   phone number.
 \item
-  R2 - Allow a Registered User to find Stores nearby a specified
-  location.
+  R2 - Allow a Registered User to find Stores nearby \sout{a specified} \emph{the user or an hardcoded}
+  location. \emph{\textbf{Note: }This is because the Google Maps API that converts addresses to coordinates is paid.}
 \item
   R4 - Allow a Registered User to get in the virtual line at a
-  specifiedstore.
+  specified store.
 \item
   R6 - Allow a Registered User to preview an estimate of the queue time.
 \item
@@ -234,35 +231,14 @@ only a lack of hardware implementation on the client side.
 \item
   R9 - Allow a Registered User to leave the virtual queue.
 \item
-  R10 - Allow a Registered User \sout{and a Totem User} to retrieve a
+  R10 - Allow a Registered User and a Totem User to retrieve a
   scannable QR Code/Barcode that they must present in order to be
-  grantedaccess to a store. \emph{\textbf{Note::} We only implemented
-  the part related to the Registered User, who can obtain a digital
-  ticket containing the scannable code through the client web app.}
+  granted access to a store.
 \item
   R12 - The System cancels User reservations in case of a major delay.
 \item
   R14 - The System grants a User with a reservation access only within
   ashort time (set by the manager) after the User's time of reservation.
-\item
-  R15 - Allow System Managers to set the division of the maximum num-ber
-  of people allowed between the normal queue, the priority queue for
-  people with special needs and the book a visit slot ca-pacity.
-\item
-  R16 - The System calculates the average shopping time by recording
-  every time a user enters and exits the store.
-\item
-  R17 - Allow System Managers to set a limit to the people allowed
-  intothe store at a time.
-\item
-  R18 - Allow System Managers to choose the frequency and size of
-  thetime slots.
-\item
-  R20 - Allow System Managers to know the current and past number
-  ofpeople in the store.
-\item
-  R21 - Allow System Managers to check the current status of the
-  queueand of the time slots.
 \end{itemize}
 
 \hypertarget{not-implemented}{%
@@ -293,16 +269,36 @@ only a lack of hardware implementation on the client side.
   in the prototype as it requires custom integrations with existing API
   or hardware.}
 \item
+  R15 - Allow System Managers to set the division of the maximum num-ber
+  of people allowed between the normal queue, the priority queue for
+  people with special needs and the book a visit slot ca-pacity.
+\item
+  R16 - The System calculates the average shopping time by recording
+  every time a user enters and exits the store.
+\item
+  R17 - Allow System Managers to set a limit to the people allowed
+  intothe store at a time.
+\item
+  R18 - Allow System Managers to choose the frequency and size of
+  thetime slots.
+\item
   R19 - Allow System Managers to know the average time spent in
   thestore. \emph{\textbf{Explanation:} Same reason of R13, it would
   require access to an existing store API/hardware.}
+\item
+  R20 - Allow System Managers to know the current and past number
+  ofpeople in the store.
+\item
+  R21 - Allow System Managers to check the current status of the
+  queueand of the time slots.
+
 \end{itemize}
 
 \hypertarget{adopted-technologies}{%
 \section{Adopted Technologies}\label{adopted-technologies}}
 
 The chosen frameworks and technologies have been chosen with regards the
-Component View (Section 2.2) of the Design Document.
+Component View (Section 2.2) of the Design Document. Components not critical for a prototype such as a reverse proxy, a CDN, or firewalls have been disregarded in this implementation.
 
 \hypertarget{frameworks-and-programming-languages}{%
 \subsection{Frameworks and programming
@@ -373,9 +369,69 @@ MySQL image with \href{https://www.docker.com/}{Docker}, an
 industry-standard container solution.
 
 \hypertarget{source-code-structure}{%
-\section{Source code Structure}\label{source-code-structure}}
+\section{Source Code Structure}\label{source-code-structure}}
 
-TODO
+The whole project is contained in a single repository. In the root directory (while referring to the repository of this project, such directory is \texttt{/ITD/}). In the root folder are present many config files, notable entries are:
+\begin{itemize}
+  \item \texttt{package.json} specifies the project dependencies and contains scripts to ease development.
+  \item \texttt{docker-compose.yml} specifies the deploy configuration of this prototype and allow to setup easily the needed services.
+  \item \texttt{.env} contains some system parameters. Albeit it should not be committed in a Git repository, we believe it's an acceptable exception for a prototype.
+\end{itemize}
+
+The relevant folders are the following:
+
+\begin{itemize}
+  \item \texttt{database} contains configurations and dump for the MySQL database.
+  \item \texttt{src} contains the source code of the prototype.
+  \begin{itemize}
+    \item \texttt{client} contains the client source code.
+    \begin{itemize}
+      \item \texttt{components} contains React modules that implement one single function.
+      \begin{itemize}
+        \item \texttt{App.js} is the root of the web application.
+        \item \texttt{Button.js} represent a simple button component.
+        \item \texttt{ErrorMsg.js} is a panel to display errors.
+        \item \texttt{Field.js} is a form field with options to limit input.
+        \item \texttt{PrivateRoute.js} is a custom routing component needed to route an unauthorized user to the login page.
+        \item \texttt{StoreMap.js} display a maps to display stores through the Google Maps API and draws markers on it.
+        \item \texttt{TicketCache.js} reroutes users that have a ticket to the ticket view.
+      \end{itemize}
+      \item \texttt{css} contains \texttt{styles.css}, a CSS file to tweak minor aspects of the web app. The overall style is handled through a library loaded from the dependencies.
+      \item \texttt{images} contains various icons for the web app.
+      \item \texttt{views} contains the various views that the web app can show. Views handles the fetching of data from servers and display it.
+      \begin{itemize}
+        \item \texttt{LoginView.js} handles the login process (corresponds to RASD Fig. 5A, 5B).
+        \item \texttt{SettingsView.js} handles the logout of a user. Various, not-implemented settings would be configurable from here.
+        \item \texttt{StoreDetailView.js} shows the details of a single store, and allow a user to join the queue or go the timeslot view (corresponds to RASD Fig. 5E).
+        \item \texttt{StoreListView.js} shows the stores in the vicinity of a user (corresponds to RASD Fig. 5C)
+        \item \texttt{TicketListView.js} shows active tickets of a user (corresponds to RASD Fig. 5G, 5H)
+        \item \texttt{TimeslotsView.js} shows the available timeslots to a user, allowing them to make a reservation (corresponds to RASD Fig. 5A, 5F).
+        \item \texttt{WelcomeView.js} is the first view an new user sees.
+      \end{itemize}
+      \item \texttt{defaults.js} contains constants used in the web app.
+      \item \texttt{index.html} is the root of the web app. Mandatory since it's a website.
+      \item \texttt{index.js} is the entry point of the web app logic. It is loaded by \texttt{index.html} and loads \texttt{components/App.js}
+    \end{itemize}
+    % -------- SERVER ---------- %
+    \item \texttt{server} contains the server source code.
+    \begin{itemize}
+      \item \texttt{components} contains the various service components needed by the server. They correspond to the homonymous components presented in the DD. In particular \texttt{QueryManager} handles the connection to the DBMS service. Certain methods of these components have been slightly changed to simplify the implementation (for example, the id of a reservation is generated by the database instead of being send to it). The overall functionality of a component is kept unchanged.
+      \begin{itemize}
+        \item \texttt{AccountManager}
+        \item \texttt{QueryManager}
+        \item \texttt{QueueManager}
+        \item \texttt{ReservationManager}
+        \item \texttt{SmsApi} (stub, instead of sending an SMS prints it to \texttt{stdout})
+        \item \texttt{StoreSearch}
+        \item \texttt{TicketManager}
+      \end{itemize}
+      \item \texttt{errors} contains definitions of various errors that the server can throw.
+      \item \texttt{main.js} the entry point of the server. Contains the REST API endpoints. The REST API is developed according to the DD.
+      \item \texttt{utils.js} contains utility functions.
+    \end{itemize}
+    \item \texttt{totem} contains an example of the totem interface and software.
+  \end{itemize}
+\end{itemize}
 
 \hypertarget{testing}{%
 \section{Testing}\label{testing}}
