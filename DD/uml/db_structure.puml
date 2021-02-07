@@ -1,7 +1,7 @@
 @startuml db_structure
 
 skinparam {
-   dpi 300
+   dpi 200
 }
 
 '..... ENTITIES START......'
@@ -9,15 +9,16 @@ together {
     entity ticket{
         **id**
         status
+        type
         creation_date
         usage_timestamp
     }
 
     entity queue_ticket {
+        first_timestamp
     }
 
     entity reservation_ticket{
-            date_of_reservation
     }
 
     entity priority_ticket{
@@ -26,25 +27,43 @@ together {
 
 together {
     entity user{
-        **id**
+        **phone_number**
+        name 
+        surname
         is_totem
-        phone_number
     }
     entity free_timeslot_notification{
         **id**
-        user
+        user_id
         weekday
         start_time
         end_time
     }
+    entity verification_code{
+    **number**
+    code
 }
 
-entity timeslot{
+entity token {
+    **user_id**
+    token
+    end_timestamp
+}
+
+entity favorite{
+    **user_id**
+    **store_id**
+}
+
+}
+
+entity reservation{
     **id**
     weekday
     start_time
     max_people_allowed
-    status
+    is_active
+
 }
 
 entity store{
@@ -52,6 +71,9 @@ entity store{
     name
     address
     max_capacity
+    curr_number
+    latitude
+    longitude
 }
 
 entity admin{
@@ -62,6 +84,7 @@ entity admin{
 
 
 
+
 '.... ENTITIES END ....'
 
 
@@ -69,8 +92,10 @@ entity admin{
 store }|--|{ admin : manages
 store }o--|| queue_ticket : has_queue
 store }o--|| priority_ticket : has_priority_queue
-store }o--|| timeslot : has_timeslot
+store }o--|| reservation : has_timeslot
 store }o--o{ user : fav_stores
+
+
 
 
 user }o--|| free_timeslot_notification : sets
@@ -80,7 +105,13 @@ ticket <|-- queue_ticket
 ticket <|-- reservation_ticket
 ticket <|-- priority_ticket
 
-reservation_ticket ||--o{ timeslot : associated_with
+reservation_ticket ||--o{ reservation : associated_with
+
+user |o--|| verification_code
+user |o--|| token
+user }o--|{favorite
+
+
 
 
 '.... RELATIONS END .....'
