@@ -229,7 +229,7 @@ Admin services have not been implemented, as we deemed them not important for a 
   specified store.
 \item
   R5 - Allow a Totem User to get in the virtual line of the store where
-  thetotem is installed. \emph{\textbf{Note:} For the purposes of the demo, the user interface of the totem contains fields to specify the auth token and the store id. In the final systems these would be hard-coded and dependent on where the totem is installed.}
+  the totem is installed. \emph{\textbf{Note:} For the purposes of the demo, the user interface of the totem contains fields to specify the auth token and the store id. In the final systems these would be hard-coded and dependent on where the totem is installed.}
 \item
   R6 - Allow a Registered User to preview an estimate of the queue time.
 \item
@@ -242,6 +242,11 @@ Admin services have not been implemented, as we deemed them not important for a 
   granted access to a store.
 \item
   R12 - The System cancels User reservations in case of a major delay.
+\item
+  R13 - The System enforces the limits on the allowed number of
+  concurrent Customers inside a store by restricting the access at
+  the entry points (for example, automatic doors or turnstile).
+  \emph{\textbf{Note:} Although the physical barrier is not present, the functionality is implemented in software and a text message is shown indicating if access is granted or not.}
 \item
   R14 - The System grants a User with a reservation access only within
   ashort time (set by the manager) after the User's time of reservation.
@@ -262,13 +267,6 @@ Admin services have not been implemented, as we deemed them not important for a 
   isn't needed for a prototype, especially a web based one. Had we
   implemented a native mobile app, this feature would have been
   implemented.}
-\item
-  R13 - The System enforces the limits on the allowed number of
-  concurrent Customers inside a store by restricting the access at
-  the entry points (for example, automatic doors or turnstile).
-  \emph{\textbf{Explanation:} The Store API component is not implemented
-  in the prototype as it requires custom integrations with existing API
-  or hardware.}
 \item
   R15 - Allow System Managers to set the division of the maximum number
   of people allowed between the normal queue, the priority queue for
@@ -432,6 +430,7 @@ The relevant folders are the following:
       \item \texttt{utils.js} contains utility functions.
     \end{itemize}
     \item \texttt{totem} contains an example of the totem interface and software.
+    \item \texttt{store} contains a demo to trigger the detection of an exit from a specific store for demo purposes.
   \end{itemize}
 \end{itemize}
 
