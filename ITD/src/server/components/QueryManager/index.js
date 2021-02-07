@@ -449,8 +449,8 @@ exports.getQueryInterface = async () => {
 
 		useTicket: async (storeId, ticketId) => {
 			await mysqlConnection.query(
-				"update ticket set status = 'used' where id = ? and store_id = ?; update store set curr_number = curr_number + 1;",
-				[ticketId, storeId]
+				"update ticket set status = 'used' where id = ? and store_id = ?; update store set curr_number = curr_number + 1 where id = ?;",
+				[ticketId, storeId, storeId]
 			)
 		},
 
@@ -530,6 +530,13 @@ exports.getQueryInterface = async () => {
 					[userId]
 				)
 			)[0].code
+		},
+
+		decrementCount: async (storeId) => {
+			await mysqlConnection.query(
+				"update store set curr_number = IF(curr_number > 0, curr_number - 1, 0) where id = ?",
+				[storeId]
+			)
 		},
 
 		/**

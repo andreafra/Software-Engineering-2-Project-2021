@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<head>
+  <title>Store API</title>
+</head>
+<body>
+  <h1>Store API simulator</h1>
+  Store <input id="store" value="1" />
+  <button id="button">Checkout</button>
+</body>
+<script>
+  const button = document.getElementById("button")
+  const store = document.getElementById("store")
+
+  button.addEventListener("click", async () => {
+    const res = await fetch(
+      `http://localhost:3000/api/store/${store.value}/checkout`,
+      {
+        method: "POST",
+      }
+    )
+  })
+</script>

@@ -48,3 +48,9 @@ exports.getTicket = async (userId) => {
 	if (res) return res
 	else throw new Error("No tickets found!")
 }
+
+exports.checkout = async (storeId) => {
+	const queryInterface = await QueryManager.getQueryInterface()
+
+	await queryInterface.decrementCount(storeId)
+}

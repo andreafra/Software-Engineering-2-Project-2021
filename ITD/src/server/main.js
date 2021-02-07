@@ -300,6 +300,17 @@ app.post("/api/store/:storeId/ticket/verify", async (req, res) => {
 	}
 })
 
+app.post("/api/store/:storeId/checkout", async (req, res) => {
+	let storeId = req.params.storeId
+
+	try {
+		await TicketManager.checkout(storeId)
+		res.status(200).send("")
+	} catch (err) {
+		res.status(404).send("")
+	}
+})
+
 // TESTING
 // Export the server instance so that we can test it with Supertest and Jest
 module.exports = app
