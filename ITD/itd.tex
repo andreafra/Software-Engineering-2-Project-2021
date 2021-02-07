@@ -4,6 +4,7 @@
 %
 \documentclass[
 ]{article}
+\usepackage{listings}
 \usepackage{amsmath,amssymb}
 \usepackage{lmodern}
 \usepackage{ifxetex,ifluatex}
@@ -467,8 +468,31 @@ Here we report the instructions to install all software dependencies
 needed to run the service. This instructions are also available in the
 GitHub repository in the ITD folder.
 
+\subsection{RECOMMENDED WAY}\label{recommended-install}
+\begin{itemize}
+  \item Download the content of the ITD folder
+  \item Install \href{https://docs.docker.com/get-docker/}{Docker} and \href{https://docs.docker.com/compose/install/}{docker-compose}
+  \item Navigate to the main directory (the one with the docker-compose.yml file)
+  \item Run: 
+  \begin{lstlisting}[language=bash]
+    docker-compose up -d
+  \end{lstlisting}
+  \item To see the internal logs of the NodeJS server
+  \begin{lstlisting}[language=bash]
+    docker logs --follow clup_server 
+  \end{lstlisting}
+\end{itemize}
+
+
+
+NOTE: if you are on Linux (and you haven't created a docker user) please add "sudo" to the preceding commands)
+
+
+
+\subsection{Development setup}\label{dev-install}
+
 \hypertarget{installing-the-toolchain}{%
-\subsection{Installing the toolchain}\label{installing-the-toolchain}}
+\subsubsection{Installing the toolchain}\label{installing-the-toolchain}}
 
 \begin{itemize}
 \tightlist
@@ -509,7 +533,7 @@ GitHub repository in the ITD folder.
 \end{itemize}
 
 \hypertarget{setting-up-the-database}{%
-\subsection{Setting up the database}\label{setting-up-the-database}}
+\subsubsection{Setting up the database}\label{setting-up-the-database}}
 
 You'll have to install \href{https://www.docker.com/}{Docker} on your
 device, and make sure
@@ -519,8 +543,8 @@ installed as well.
 \begin{itemize}
 \tightlist
 \item
-  Run \texttt{docker-compose\ up\ -d} to spin up the images specified in
-  the \texttt{docker-compose.yml} file.
+  Run \texttt{docker-compose\ -f\ docker-compose.dev.yml\ up\ -d} to spin up the images specified in
+  the \texttt{docker-compose.dev.yml} file.
 \end{itemize}
 
 Visit \url{http://localhost:8081} to see if
@@ -529,10 +553,7 @@ credentials specified in the \texttt{.env} file (server: \texttt{db},
 username: \texttt{clup\_admin}, password: \texttt{clup}, database:
 \texttt{db\_clup}).
 
-\begin{quote}
-\hypertarget{alternative-without-docker}{%
-\subsubsection{Alternative without
-Docker}\label{alternative-without-docker}}
+Without Docker:
 
 \begin{itemize}
 \tightlist
@@ -541,7 +562,7 @@ Docker}\label{alternative-without-docker}}
   schema and a user with the credentials found in the \texttt{.env}
   file, otherwise create your own and edit the \texttt{.env} file.
 \end{itemize}
-\end{quote}
+
 
 \begin{itemize}
 \tightlist
@@ -558,7 +579,7 @@ Docker}\label{alternative-without-docker}}
 \end{Shaded}
 
 \hypertarget{verify-the-installation}{%
-\subsection{Verify the installation}\label{verify-the-installation}}
+\subsubsection{Verify the installation}\label{verify-the-installation}}
 
 \begin{itemize}
 \tightlist
@@ -572,6 +593,10 @@ Docker}\label{alternative-without-docker}}
 \item
   Run \texttt{yarn\ test} to run the full test suite with
   \href{https://jestjs.io}{Jest}
+  \begin{itemize}
+    \item   NOTE: Run \texttt{yarn\ clear-db} before the tests to clear the DB tuples
+    \item   NOTE: To restore the DB status to the DEMO one, run \texttt{yarn\ reset-db}
+  \end{itemize}
 \end{itemize}
 
 \end{document}
