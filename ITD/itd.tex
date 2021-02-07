@@ -487,14 +487,8 @@ The two proposed setup are mutually exclusive:
   \item Download the content of the ITD folder
   \item Install \href{https://docs.docker.com/get-docker/}{Docker} and \href{https://docs.docker.com/compose/install/}{docker-compose}
   \item Navigate to the main directory (the one with the docker-compose.yml file)
-  \item Run: 
-  \begin{lstlisting}[language=bash]
-    docker-compose up -d
-  \end{lstlisting}
-  \item To see the internal logs of the NodeJS server
-  \begin{lstlisting}[language=bash]
-    docker logs --follow clup_server 
-  \end{lstlisting}
+  \item Run: \texttt{docker-compose up -d}
+  \item To see the internal logs of the NodeJS server: \texttt{docker logs -\/-follow clup\_server}
 \end{itemize}
 
 
