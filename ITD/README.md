@@ -17,7 +17,17 @@ Make sure these ports are available if you're trying to setup up the project.
 
 This project is developed in JavaScript and run on NodeJS. You'll have to install a couple of tools in order to get started.
 
-### Installing the toolchain
+### RECOMMENDED WAY
+- Download the content of the ITD folder
+- Install Docker and docker-compose
+- Navigate to the main directory (the one with the docker-compose.yml file)
+- Run: docker-compose up -d
+ -To see the internal logs of the NodeJS server: docker logs --follow clup_server
+ 
+NOTE: if you are on Linux (and you haven’t created a docker user) please add "sudo" to the preceding
+commands)
+
+### Installing the toolchain (dev setup)
 
 - Install [NodeJS](https://nodejs.org/), possibly the LTS version.
   - If you use tools such `nvm`, please run `nvm install --lts` and `nvm use --lts`
@@ -76,7 +86,11 @@ Everything should be installed correctly now. Try running spinning up the server
   > Then from the Debug Menu select "Node: Nodemon", click the green "play" button and attach the debugger to the nodemon process (it should be the first one in the list).
 - Run `yarn client-dev` to run the client server
 - Run `yarn client-build` to compile the client package (output is in `dist`)
-- Run `yarn test` to run the test suite with [Jest](https://jestjs.io). If you need to pass Jest additional parameters, use `yarn test -- <parameters here>`.
+- Run `yarn test -i` to run the test suite with [Jest](https://jestjs.io). If you need to pass Jest additional parameters, use `yarn test -- <parameters here>`.
+  -  NOTE: Stop the execution of the server before running tests.
+  - NOTE: Inside .env change DB_ADDRESS="db" to DB_ADDRESS="localhost"
+  - NOTE: Run yarn clear-db before the tests to clear the DB tuples
+  - NOTE: To restore the DB status to the DEMO one, run yarn reset-db
 
 <a name="deployment"></a>
 
