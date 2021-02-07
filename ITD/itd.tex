@@ -571,7 +571,7 @@ Without Docker:
 \item
   Install \href{https://www.mysql.com}{MySQL} server, then create a
   schema and a user with the credentials found in the \texttt{.env}
-  file, otherwise create your own and edit the \texttt{.env} file.
+  file, otherwise create your own and edit the \texttt{.env} file. A dump is available in the \texttt{database/init} folder.
 \end{itemize}
 
 
@@ -602,9 +602,10 @@ Without Docker:
   Run \texttt{yarn\ client-build} to compile the client package (output
   is in \texttt{dist})
 \item
-  Run \texttt{yarn\ test} to run the full test suite with
+  Run \texttt{yarn\ test -i} to run the full test suite with
   \href{https://jestjs.io}{Jest}
   \begin{itemize}
+    \item   NOTE: Stop the execution of the server before running tests.
     \item   NOTE: Inside \texttt{.env} change \texttt{DB\_ADDRESS="db"} to \texttt{DB\_ADDRESS="localhost"}
     \item   NOTE: Run \texttt{yarn\ clear-db} before the tests to clear the DB tuples
     \item   NOTE: To restore the DB status to the DEMO one, run \texttt{yarn\ reset-db}
