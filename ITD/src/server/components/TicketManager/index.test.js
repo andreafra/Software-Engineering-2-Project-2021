@@ -26,5 +26,13 @@ test("Check queue ticket", async () => {
 		// check non-existing user not to be in queue
 		let notValid = await ticketManager.checkTicket(storeID, "Q9876")
 		expect(notValid).toBe(false)
+
+		await ticketManager.checkout(storeID)
+		let store = await queryInterface.getStore(storeID)
+		expect(store.curr_number).toBe(0)
+
+		await ticketManager.checkout(storeID)
+		store = await queryInterface.getStore(storeID)
+		expect(store.curr_number).toBe(0)
 	})
 })

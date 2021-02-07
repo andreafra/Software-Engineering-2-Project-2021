@@ -48,10 +48,12 @@ exports.isTicketValid = async (storeId, ticketId) => {
 
 	if (firstTicket.id == ticketId) {
 		const storeData = await queryInterface.getStoreFillLevel(storeId)
-		const reservations = await queryInterface.getStoreNextReservations(
+		let reservations = await queryInterface.getStoreNextReservations(
 			storeId,
 			2
 		)
+
+		if (reservations === null) reservations = 0
 
 		if (storeData.curr_number + reservations < storeData.max_capacity) {
 			await queryInterface.useTicket(storeId, ticketId)

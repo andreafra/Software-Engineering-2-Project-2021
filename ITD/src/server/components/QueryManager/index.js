@@ -78,10 +78,10 @@ exports.getQueryInterface = async () => {
 		 * @param {string} name the user's name
 		 * @param {string} surname the user's surname
 		 */
-		createUser: async (phoneNum, name, surname) => {
+		createUser: async (phoneNum, name, surname, totem = false) => {
 			await mysqlConnection.query(
-				"insert into user (id, name, surname) values (?,?,?)",
-				[phoneNum, name, surname]
+				"insert into user (id, name, surname, is_totem) values (?,?,?,?)",
+				[phoneNum, name, surname, totem]
 			)
 		},
 

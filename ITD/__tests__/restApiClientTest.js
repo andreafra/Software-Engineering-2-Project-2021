@@ -90,3 +90,91 @@ test("ticket deletion and duplication", async () => {
 			.expect(404)
 	})
 })
+
+test("access not granted due to reservation", async () => {
+	const queryInterface = await QueryManager.getQueryInterface()
+	await queryInterface.executeAndRollback(async () => {
+		const storeId = await queryInterface.createStore(
+			"esselunga",
+			"via zurigo 14",
+			2,
+			0,
+			0
+		)
+
+		const today = new Date()
+
+		await queryInterface.createReservationSlot(
+			storeId,
+			today.getDay(),
+			`${today.getHours() + 1}:${today.getMinutes()}`,
+			1
+		)
+
+		await queryInterface.createUser("totem", "Totemo", "De Totemis", true)
+		const totemToken = await queryInterface.createUserToken("totem")
+
+		const number1 = "+393925555050"
+		const number2 = "+393399957698"
+
+		let res = await request
+			.post("/api/auth/login")
+			.send({ phoneNumber: number1 })
+			.set("Content-Type", "application/json")
+
+		let smsToken = await queryInterface.getVerificationCode(number1)
+
+		res = await request
+			.post("/api/auth/code")
+			.send({ SMSCode: smsToken, phoneNumber: number1 })
+			.set("Content-Type", "application/json")
+
+		let authToken1 = res.body.authToken
+
+		res = await request
+			.post("/api/auth/login")
+			.send({ phoneNumber: number2 })
+			.set("Content-Type", "application/json")
+
+		smsToken = await queryInterface.getVerificationCode(number2)
+
+		res = await request
+			.post("/api/auth/code")
+			.send({ SMSCode: smsToken, phoneNumber: number2 })
+			.set("Content-Type", "application/json")
+
+		let authToken2 = res.body.authToken
+
+		res = await request
+			.post(`/api/store/${storeId}/queue/join`)
+			.set("X-Auth-Token", authToken1)
+			.expect(200)
+
+		const ticket1 = res.body.receiptId
+
+		res = await request
+			.post(`/api/store/${storeId}/queue/join`)
+			.set("X-Auth-Token", authToken2)
+			.expect(200)
+
+		const ticket2 = res.body.receiptId
+
+		res = await request
+			.post(`/api/store/${storeId}/ticket/verify`)
+			.set("X-Auth-Token", totemToken)
+			.send({ receiptId: ticket1 })
+			.set("Content-Type", "application/json")
+			.expect(200)
+
+		expect(res.body.isTicketValid).toBe(true)
+
+		res = await request
+			.post(`/api/store/${storeId}/ticket/verify`)
+			.set("X-Auth-Token", totemToken)
+			.send({ receiptId: ticket2 })
+			.set("Content-Type", "application/json")
+			.expect(200)
+
+		expect(res.body.isTicketValid).toBe(false)
+	})
+})
