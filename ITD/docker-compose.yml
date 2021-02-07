@@ -23,19 +23,31 @@ services:
 
   adminer:
     image: adminer
+    depends_on:
+      - db
     container_name: clup_adminer
+    privileged: true
     restart: always
     ports:
       - 8081:8080
 
   server-dev:
+    container_name: clup_server
     build: .
+    privileged: true
+    depends_on:
+      - db
     command: server-dev
     ports:
       - "3000:3000"
 
   client-dev:
+    container_name: clup_client
     build: .
+    privileged: true
+    depends_on:
+      - db
+      - server-dev
     command: client-dev
     ports:
       - "8080:8080"
