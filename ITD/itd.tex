@@ -363,10 +363,11 @@ framework.
 
 \hypertarget{docker}{%
 \paragraph{Docker}\label{docker}}
-
-To easily deploy a configured database for development, we utilized a
-MySQL image with \href{https://www.docker.com/}{Docker}, an
-industry-standard container solution.
+We decided from the beginning that our architecture would need to be as scalable as possible in the long run.
+Containerizing our components was essential for this purpose and it provided a fast deployment option for the developers in out team. 
+As described in the section \ref{installation-instructions}, by using Docker we enabled the deployment of the whole infrastructure with just one command.
+To easily deploy a configured database for development, we utilized a MySQL image, an industry-standard container solution.
+To manipulate the DB, we used Adminer, a lightweight management system for SQL.
 
 \hypertarget{source-code-structure}{%
 \section{Source Code Structure}\label{source-code-structure}}
@@ -467,6 +468,10 @@ System testing was designed in order to check the correctness of the following s
 Here we report the instructions to install all software dependencies
 needed to run the service. This instructions are also available in the
 GitHub repository in the ITD folder.
+The two proposed setup are mutually exclusive: 
+\begin{itemize}
+  \item If you run the "recommended way" to later run the "development setup" you have to remember stop the containers that are active or else you will end up with conflicts on the active PORTS
+\end{itemize}
 
 \subsection{RECOMMENDED WAY}\label{recommended-install}
 \begin{itemize}
