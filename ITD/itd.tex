@@ -122,7 +122,7 @@
     \vspace{0.5cm}
 
 
-	{\normalsize 10-01-2020 \par}
+	{\normalsize 07-02-2020 \par}
 	
 \end{titlepage}
 
@@ -160,8 +160,6 @@ abbreviations}\label{list-of-definitions-and-abbreviations}}
   \textbf{JS} - JavaScript
 \item
   \textbf{R\emph{n}} - Requirement \emph{n}
-\item
-  \textbf{IT\emph{n}} - Integration Test \emph{n}
 \end{itemize}
 
 \hypertarget{definitions}{%
@@ -328,12 +326,15 @@ Web App (PWA)}, which allows users to use it offline.
 
 Of course, being the client a web application, the obvious choice
 regarding suitable programming languages is JavaScript, allowing us to
-have a codebase written in the same language.
+have a codebase written in the same language. JavaScript is a solid language that, although its quirks, has great documentation and a vast user knowledgebase. 
+TypeScript, a superset of JavaScript that enforces explicit types, has not been used because it would have slowed down the development process. In a real-world use case, it should definitely be considered, as it provides by itself a way to better document code without effort.
 
 We decided to use an industry-standard framework such as
 \href{https://reactjs.org/}{React} to better organize the structure of
 the web app, while maintaing high extendability, modularity and tidiness
-of the code. In order to make requests against the REST API, we used the
+of the code. React is a JavaScript framework that allow to develop a web application through JavaScript, and utilizes a special syntax very similar to HTML to describe the components. React also support functional programming, meaning that each component of the web application defined by the developer (e.g.: a view, a button...) is represented by a function. By combining these components it's easy to maintaing a clean and reusable codebase.
+
+To make requests against the REST API, we used the
 new standard
 \href{https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API}{\texttt{fetch}
 API}.
@@ -359,7 +360,7 @@ development workflow.
 
 To perform unit and integration testing, we've chosen
 \href{https://jestjs.io/}{Jest}, an industry-standard JavaScript testing
-framework.
+framework, initally created for internal use at Facebook. It allows to easily and rapidly define tests associated to a particular functional unit by changing the JS test file extension to ".test.js". This way each functional unit can have its respective test in the same directory.
 
 \hypertarget{docker}{%
 \paragraph{Docker}\label{docker}}
@@ -382,7 +383,8 @@ The whole project is contained in a single repository. In the root directory (wh
 The relevant folders are the following:
 
 \begin{itemize}
-  \item \texttt{database} contains configurations and dump for the MySQL database.
+  \item \texttt{\_\_tests\_\_} contains additional integrations tests.
+  \item \texttt{database} contains configurations and dumps for the MySQL database.
   \item \texttt{src} contains the source code of the prototype.
   \begin{itemize}
     \item \texttt{client} contains the client source code.
@@ -438,9 +440,7 @@ The relevant folders are the following:
 \hypertarget{testing}{%
 \section{Testing}\label{testing}}
 
-Testing was performed using \emph{Jest}, a JavaScript testing framework which is maintained and used by Facebook. It allows to easily and rapidly define tests associated to a particular functional unit by naming in a specific way test files.
-
-Testing was performed in a bottom-up fashion, following the schema described in the Design Document. The first module to be developed and tested was the QueryManager, with all other functionalities depending on it. In order to make the test easily replicable, all tests are performed in a transaction which is always rolled back, and the tests are executed sequencially. This way, each test assumes an empty database, and leaves the database empty after execution. The \emph{fakedate} module was used in order to alter the current time returned by the system and testing time related events, like the cancellation of a ticket or the correct execution of a reservation. For this reason, all dates are generated in the business tier instead of the database.
+Testing using \emph{Jest} was performed in a bottom-up fashion, following the schema described in the Design Document. The first module to be developed and tested was the QueryManager, with all other functionalities depending on it. In order to make the test easily replicable, all tests are performed in a transaction which is always rolled back, and the tests are executed sequencially. This way, each test assumes an empty database, and leaves the database empty after execution. The \emph{fakedate} module was used in order to alter the current time returned by the system and testing time related events, like the cancellation of a ticket or the correct execution of a reservation. For this reason, all dates are generated in the business tier instead of the database.
 
 Tests were written and executed in sync with the development of the associated functional unit, in order to test step by step the correctness of the implemented subfunctionalities, progressively moving towards more complex and complete tests. For this reason our tests cover both the basic functionaities and the corner cases.
 
@@ -602,9 +602,15 @@ Without Docker:
   Run \texttt{yarn\ test} to run the full test suite with
   \href{https://jestjs.io}{Jest}
   \begin{itemize}
+    \item   NOTE: Inside \texttt{.env} change \texttt{DB\_ADDRESS="db"} to \texttt{DB\_ADDRESS="localhost"}
     \item   NOTE: Run \texttt{yarn\ clear-db} before the tests to clear the DB tuples
     \item   NOTE: To restore the DB status to the DEMO one, run \texttt{yarn\ reset-db}
   \end{itemize}
 \end{itemize}
+
+\subsubsection{Using the system}
+The web application should be served at \texttt{localhost:8080}, while the REST API should be available at \texttt{localhost:3000}. Adminer can be used to configure and access the database easily at \texttt{localhost:8081}, the credentials are the one in the \texttt{.env} file.
+
+To view the token example page, open the HTML file contained in \texttt{src/totem} in your browser.
 
 \end{document}
