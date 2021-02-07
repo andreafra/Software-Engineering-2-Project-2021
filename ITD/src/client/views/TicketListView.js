@@ -51,13 +51,18 @@ export default function TicketListView() {
 	const _showTickets = () => {
 		return tickets.map((t) => {
 			let isQueue = t.type === "queue"
-
+			let ticketNormalized
+			if (isQueue) {
+				ticketNormalized = "Q" + t.id
+			} else {
+				ticketNormalized = "R" + t.id
+			}
 			return (
 				<div className="card" key={t.id}>
 					<div className="card-content">
 						<div className="content has-text-centered">
-							<QRCode value={String(t.id)} />
-							<p className="title">#{t.id}</p>
+							<QRCode value={String(ticketNormalized)} />
+							<p className="title">{ticketNormalized}</p>
 							<p className="subtitle">
 								<b>Id store: </b> {String(t.store_id)}
 							</p>
