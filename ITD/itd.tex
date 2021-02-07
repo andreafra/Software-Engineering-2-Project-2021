@@ -347,6 +347,8 @@ API}.
 
 The totem is implemented as a barebone web interface sending requests to the backend. It contains all the functionalities of the physical totem, with the added flexibility of specifying the identification token and the associated store for demo purposes.
 
+The functionality of detecting an exit from the store is implemented as a button in a dedicated front-end. In the real system the event would be triggered based on the needs of the store by an existing system, like the creation of a receipt or a receipt scanner at the exit of the store.
+
 \hypertarget{additional-software}{%
 \subsection{Additional software}\label{additional-software}}
 
@@ -439,16 +441,16 @@ The relevant folders are the following:
       \item \texttt{utils.js} contains utility functions.
     \end{itemize}
     \item \texttt{totem} contains an example of the totem interface and software.
-    \item \texttt{store} contains a demo to trigger the detection of an exit from a specific store for demo purposes.
+    \item \texttt{store} contains a demo to trigger the detection of an exit from a specific store.
   \end{itemize}
 \end{itemize}
 
 \hypertarget{testing}{%
 \section{Testing}\label{testing}}
 
-Testing using \emph{Jest} was performed in a bottom-up fashion, following the schema described in the Design Document. The first module to be developed and tested was the QueryManager, with all other functionalities depending on it. In order to make the test easily replicable, all tests are performed in a transaction which is always rolled back, and the tests are executed sequencially. This way, each test assumes an empty database, and leaves the database empty after execution. The \emph{fakedate} module was used in order to alter the current time returned by the system and testing time related events, like the cancellation of a ticket or the correct execution of a reservation. For this reason, all dates are generated in the business tier instead of the database.
+Testing using \emph{Jest} was performed in a bottom-up fashion, following the schema described in the Design Document. The first module to be developed and tested was the QueryManager, with all other functionalities depending on it. Few tests target the QueryManager directly, as the single functionalities it offers are often extremely simple, and are better suited to be tested when interacting with eachother to execute higher level functionalities. In order to make the tests easily replicable, all tests are performed in a transaction which is always rolled back, and the tests are executed sequencially. This way, each test assumes an empty database, and leaves the database empty after execution. The \emph{fakedate} module was used in order to alter the current time returned by the system and testing time related events, like the cancellation of a ticket or the correct execution of a reservation. For this reason, all dates are generated in the business tier instead of the database.
 
-Tests were written and executed in sync with the development of the associated functional unit, in order to test step by step the correctness of the implemented subfunctionalities, progressively moving towards more complex and complete tests. For this reason our tests cover both the basic functionaities and the corner cases.
+Tests were written and executed in sync with the development of the associated functional unit, in order to test step by step the correctness of the implemented subfunctionalities, progressively moving towards more complex and complete tests. For this reason our tests cover both the basic functionalities and the corner cases, with a particular focus on the enforcement of access constraints and on the automatic cancellation of tickets.
 
 System testing was performed using the \emph{supertest} framework in conjunction with \emph{Jest}. \emph{supertest} allows to generate an instance of the server and to simulate calls to the REST API directly from code. System testing was performed simulating a possible normal use of the system, while stimulating all possible functionalities and situations.
 
@@ -456,6 +458,7 @@ System testing was designed in order to check the correctness of the following s
 \begin{itemize}
   \item Creation and login of a user
   \item Creation of a queue ticket
+  \item Automatic cancellation of a queue ticket
   \item Deletion of a queue ticket
   \item Ticket checking:
   \begin{itemize}
