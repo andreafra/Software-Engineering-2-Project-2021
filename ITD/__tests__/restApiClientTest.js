@@ -1,7 +1,9 @@
+const { query } = require("express")
 const supertest = require("supertest")
 const app = require("../src/server/main")
 const request = supertest(app)
 const QueryManager = require("./../src/server/components/QueryManager")
+const MockDate = require("mockdate")
 
 describe("GET /", () => {
 	it("responds with greeting", async (done) => {
@@ -172,6 +174,81 @@ test("access not granted due to reservation", async () => {
 			.post(`/api/store/${storeId}/ticket/verify`)
 			.set("X-Auth-Token", totemToken)
 			.send({ receiptId: ticket2 })
+			.set("Content-Type", "application/json")
+			.expect(200)
+
+		expect(res.body.isTicketValid).toBe(false)
+	})
+})
+
+test("make and use reservations", async () => {
+	const queryInterface = await QueryManager.getQueryInterface()
+	await queryInterface.executeAndRollback(async () => {
+		const storeId = await queryInterface.createStore(
+			"esselunga",
+			"via zurigo 14",
+			10,
+			0,
+			0
+		)
+
+		const today = new Date()
+
+		const timeslotId = await queryInterface.createReservationSlot(
+			storeId,
+			today.getDay(),
+			`${today.getHours() + 1}:${today.getMinutes()}`,
+			2
+		)
+
+		await queryInterface.createUser("totem", "Totemo", "De Totemis", true)
+		const totemToken = await queryInterface.createUserToken("totem")
+
+		await queryInterface.createUser("user", "", "")
+		const token = await queryInterface.createUserToken("user")
+		await queryInterface.createUser("second", "", "")
+		const tokenSecond = await queryInterface.createUserToken("second")
+
+		res = await request
+			.post(`/api/store/${storeId}/reservation/book/${timeslotId}`)
+			.set("X-Auth-Token", token)
+			.expect(200)
+
+		const ticket = res.body.receiptId
+
+		res = await request
+			.post(`/api/store/${storeId}/reservation/book/${timeslotId}`)
+			.set("X-Auth-Token", tokenSecond)
+			.expect(200)
+
+		const ticketSecond = res.body.receiptId
+
+		res = await request
+			.post(`/api/store/${storeId}/ticket/verify`)
+			.set("X-Auth-Token", totemToken)
+			.send({ receiptId: ticket })
+			.set("Content-Type", "application/json")
+			.expect(200)
+
+		expect(res.body.isTicketValid).toBe(false)
+
+		MockDate.set(today.getTime() + 60 * 60 * 1000)
+
+		res = await request
+			.post(`/api/store/${storeId}/ticket/verify`)
+			.set("X-Auth-Token", totemToken)
+			.send({ receiptId: ticket })
+			.set("Content-Type", "application/json")
+			.expect(200)
+
+		expect(res.body.isTicketValid).toBe(true)
+
+		MockDate.set(today.getTime() + 66 * 60 * 1000)
+
+		res = await request
+			.post(`/api/store/${storeId}/ticket/verify`)
+			.set("X-Auth-Token", totemToken)
+			.send({ receiptId: ticketSecond })
 			.set("Content-Type", "application/json")
 			.expect(200)
 
