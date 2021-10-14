@@ -1,8 +1,8 @@
 # DiDioLavoreFuscoFranchini-CLup
 ## Contributors
-- Ian Di Dio Lavore
-- Luigi Fusco
-- Andrea Franchini
+- Ian Di Dio Lavore (@Ian-OfGod)
+- Luigi Fusco (@LuigiFusco)
+- Andrea Franchini (@QUB3X)
 
 ## Documents
 - [RASD](https://github.com/ian-ofgod/DiDioLavoreFuscoFranchini-CLup/blob/main/RASD/rasd.pdf)
